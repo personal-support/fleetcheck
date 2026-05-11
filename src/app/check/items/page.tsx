@@ -138,14 +138,14 @@ export default function ChecklistItemsPage() {
           await supabase.from('vehicles').update({ last_km: km, last_check_at: new Date().toISOString(), last_location_lat: latFinal, last_location_lng: lngFinal }).eq('id', vehicle.id)
           sessionStorage.setItem('fc_checklist_id', inserted.id)
           clearSession()
-          router.push('/check/done?phase=departure')
+          sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/done?phase=departure')
           return
         }
       } catch { /* fall to offline */ }
     }
     await savePendingChecklist({ localId: `local_${Date.now()}`, checklist: checklistData as never, photoBlobs: photoBlobs.current, createdAt: Date.now() })
     clearSession()
-    router.push('/check/done?phase=departure&offline=1')
+    sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/done?phase=departure&offline=1')
   }
 
   function clearSession() {

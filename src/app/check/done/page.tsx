@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
 
@@ -9,6 +10,16 @@ function DoneContent() {
   const offline = params.get('offline') === '1'
   const phase = params.get('phase') ?? 'departure'
   const isArrival = phase === 'arrival'
+
+  useEffect(() => {
+    // Se acessado pelo historico do browser (botao voltar), redireciona para scan
+    const justCompleted = sessionStorage.getItem('fc_just_completed')
+    if (!justCompleted) {
+      router.replace('/check/scan')
+      return
+    }
+    sessionStorage.removeItem('fc_just_completed')
+  }, [router])
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#0a0c0f' }}>
@@ -41,11 +52,11 @@ function DoneContent() {
         {!isArrival && !offline && (
           <div className="mb-6 px-4 py-3 rounded-xl text-left" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
             <p style={{ color: '#f97316', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Lembrete</p>
-            <p style={{ color: '#6b7280', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → o sistema detecta a viagem aberta → registre a chegada.</p>
+            <p style={{ color: '#6b7280', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
           </div>
         )}
 
-        <button onClick={() => router.push('/check/scan')}
+        <button onClick={() => router.replace('/check/scan')}
           style={{ width: '100%', padding: 14, borderRadius: 10, background: isArrival ? '#22c55e' : '#f97316', color: isArrival ? '#0a0c0f' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
           {isArrival ? '✓ CONCLUÍDO' : 'OK, ENTENDIDO'}
         </button>
