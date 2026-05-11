@@ -21,7 +21,29 @@ export async function POST(request: NextRequest) {
             },
             {
               type: 'text',
-              text: 'Esta é uma foto do hodômetro/painel de um veículo. Leia o valor de quilometragem (KM ou odômetro). Responda APENAS com o número inteiro, sem pontos, vírgulas, espaços ou texto adicional. Se não conseguir ler, responda com: 0',
+              text: `Você é um especialista em leitura de hodômetros de veículos brasileiros.
+
+Sua tarefa: encontrar e retornar APENAS o valor do HODÔMETRO TOTAL (quilometragem total acumulada do veículo).
+
+REGRAS OBRIGATÓRIAS:
+1. O hodômetro total tem geralmente 5 ou 6 dígitos (ex: 110846, 162984, 146528)
+2. Costuma aparecer com o sufixo "km" ou "KM" próximo ao número
+3. Pode aparecer com rótulos como "ODO", "KM TOTAL", ou simplesmente "km"
+
+NÃO LEIA (ignore completamente):
+- Velocidade atual: número grande no centro do painel (ex: 0, 60, 120)
+- Hodômetro parcial/viagem: número pequeno com 3-4 dígitos (ex: 1324, 0.0, 45.2)
+- Hora/relógio: formato HH:MM (ex: 13:30, 0:00)
+- Temperatura: número pequeno com °C
+- RPM: números no tacômetro
+
+PADRÃO COMUM nos painéis brasileiros:
+- Display vermelho (VW/Gol): hodômetro fica no display digital central, última linha, formato "XXXXXKM"
+- Display laranja circular (Fiat Uno/Argo): hodômetro fica na parte inferior do display redondo, com sufixo "km"  
+- Display azul digital (Chevrolet Onix): hodômetro fica à direita do display, abaixo do parcial, com sufixo "km"
+
+Responda APENAS com o número inteiro do hodômetro total, sem pontos, vírgulas, espaços, letras ou qualquer outro caractere.
+Se não conseguir identificar com certeza, responda: 0`,
             },
           ],
         },
