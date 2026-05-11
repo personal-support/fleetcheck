@@ -51,22 +51,26 @@ export default function LoginPage() {
 
   return (
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-bg)' }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 20px 20px' }}>
 
-        {/* Logo + Product name */}
-        <div className="animate-fade-up" style={{ textAlign: 'center', marginBottom: 32 }}>
+      {/* Top bar */}
+      <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
           <img
             src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
             alt="Consuldata"
-            style={{ height: 48, width: 'auto', marginBottom: 16, objectFit: 'contain' }}
+            style={{ height: 36, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 6 }}>
-            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: 'var(--cd-navy)', letterSpacing: '-0.5px' }}>FLEET</span>
-            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: 'var(--cd-orange)', letterSpacing: '-0.5px' }}>CHECK</span>
-          </div>
-          <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginTop: 4 }}>Gestão de frota · Consuldata Teleprocessamento</p>
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+            FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
+          </span>
+          <div style={{ width: 80 }} />
         </div>
+      </header>
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 20px 20px' }}>
+
+        {/* Card */}
 
         {/* Card */}
         <div className="cd-card animate-fade-up" style={{ width: '100%', maxWidth: 400, overflow: 'hidden', animationDelay: '0.08s' }}>
