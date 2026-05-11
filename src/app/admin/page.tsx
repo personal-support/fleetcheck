@@ -39,7 +39,7 @@ export default function AdminPage() {
       `)
       .order('created_at', { ascending: false })
       .limit(50)
-    if (data) setChecklists(data as ChecklistRow[])
+    if (data) setChecklists(data as unknown as ChecklistRow[])
     setLoading(false)
   }
 
