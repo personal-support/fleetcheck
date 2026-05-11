@@ -148,7 +148,7 @@ export default function OdometerPage() {
   const cssZoom = zoomSupported ? 1 : zoom
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#070a14' }}>
       {/* Header */}
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-2 mb-3">
@@ -175,7 +175,7 @@ export default function OdometerPage() {
 
             {/* Video container */}
             <div className="rounded-2xl overflow-hidden relative flex-1"
-              style={{ background: '#111318', height: 'min(52vh, 320px)', maxHeight: 320 }}>
+              style={{ background: '#0d1124', height: 'min(52vh, 320px)', maxHeight: 320 }}>
               <video
                 ref={videoRef}
                 autoPlay playsInline muted
@@ -193,11 +193,11 @@ export default function OdometerPage() {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div style={{
                   width: 260, height: 90,
-                  border: '2px solid rgba(249,115,22,0.7)',
+                  border: '2px solid rgba(252,181,47,0.7)',
                   borderRadius: 10,
                   boxShadow: '0 0 0 2000px rgba(0,0,0,0.25)',
                 }}>
-                  <div style={{ position: 'absolute', top: -18, left: '50%', transform: 'translateX(-50%)', background: 'rgba(249,115,22,0.85)', borderRadius: 4, padding: '2px 8px' }}>
+                  <div style={{ position: 'absolute', top: -18, left: '50%', transform: 'translateX(-50%)', background: 'rgba(252,181,47,0.85)', borderRadius: 4, padding: '2px 8px' }}>
                     <p style={{ fontSize: 10, color: 'white', whiteSpace: 'nowrap' }}>Alinhe o display aqui</p>
                   </div>
                 </div>
@@ -206,7 +206,7 @@ export default function OdometerPage() {
               {/* Zoom indicator */}
               {zoom > 1 && (
                 <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '3px 8px' }}>
-                  <p style={{ fontSize: 12, color: '#f97316', fontWeight: 700 }}>{zoom.toFixed(1)}×</p>
+                  <p style={{ fontSize: 12, color: '#fcb52f', fontWeight: 700 }}>{zoom.toFixed(1)}×</p>
                 </div>
               )}
             </div>
@@ -223,7 +223,7 @@ export default function OdometerPage() {
                 step={0.1}
                 value={zoom}
                 onChange={e => applyZoom(parseFloat(e.target.value))}
-                style={{ flex: 1, accentColor: '#f97316' }}
+                style={{ flex: 1, accentColor: '#fcb52f' }}
               />
               <span style={{ fontSize: 11, color: '#6b7280', minWidth: 28 }}>
                 {maxZoom > 1 ? `${Math.round(maxZoom)}×` : '5×'}
@@ -234,11 +234,11 @@ export default function OdometerPage() {
 
             <div className="flex gap-3 mt-4">
               <button onClick={capture}
-                style={{ flex: 1, padding: 16, borderRadius: 12, background: '#f97316', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
+                style={{ flex: 1, padding: 16, borderRadius: 12, background: '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
                 📸 Fotografar
               </button>
               <button onClick={() => { stopCamera(); setCorrecting(true); setStep('confirm') }}
-                style={{ padding: '16px 14px', borderRadius: 12, background: '#111318', border: '1px solid #1e2229', color: '#6b7280', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                style={{ padding: '16px 14px', borderRadius: 12, background: '#0d1124', border: '1px solid #1a2040', color: '#6b7280', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                 Digitar KM
               </button>
             </div>
@@ -254,7 +254,7 @@ export default function OdometerPage() {
             )}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-                style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+                style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
               <p style={{ color: '#e8eaf0', fontSize: 15 }}>Lendo hodômetro com IA...</p>
             </div>
           </div>
@@ -299,9 +299,9 @@ export default function OdometerPage() {
                   onChange={e => setKmInput(e.target.value)}
                   placeholder={lastKm ? `Último: ${lastKm.toLocaleString('pt-BR')}` : 'Ex: 110846'}
                   autoFocus
-                  style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
-                  onFocus={e => e.target.style.borderColor = '#f97316'}
-                  onBlur={e => e.target.style.borderColor = '#1e2229'}
+                  style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
+                  onFocus={e => e.target.style.borderColor = '#fcb52f'}
+                  onBlur={e => e.target.style.borderColor = '#1a2040'}
                 />
               </div>
             )}
@@ -310,7 +310,7 @@ export default function OdometerPage() {
 
             <div className="flex flex-col gap-2 mt-auto">
               <button onClick={confirm}
-                style={{ width: '100%', padding: 14, borderRadius: 10, background: '#f97316', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
+                style={{ width: '100%', padding: 14, borderRadius: 10, background: '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
                 CONFIRMAR E CONTINUAR →
               </button>
 

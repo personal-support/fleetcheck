@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -67,29 +69,29 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen" style={{ background: '#070a14' }}>
       {/* Header */}
-      <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid #1e2229' }}>
+      <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid #1a2040' }}>
         <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
           <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0' }}>
-            FLEET<span style={{ color: '#f97316' }}>CHECK</span>
+            FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
             <span style={{ fontSize: 14, fontWeight: 400, color: '#6b7280', marginLeft: 8 }}>Admin</span>
           </h1>
           <div className="flex gap-2 flex-wrap">
             <button onClick={() => router.push('/check/scan')}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#6b7280', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#6b7280', fontSize: 12, cursor: 'pointer' }}>
               Checklist
             </button>
             <button onClick={() => router.push('/admin/drivers')}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
               Motoristas
             </button>
             <button onClick={() => router.push('/admin/vehicles')}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
               Veículos
             </button>
             <button onClick={handleLogout}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
               Sair
             </button>
           </div>
@@ -104,7 +106,7 @@ export default function AdminPage() {
           { label: 'Pendências', value: nokCount, color: '#ef4444' },
           { label: 'Hoje', value: todayCount, color: '#22c55e' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="p-3 rounded-xl text-center" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+          <div key={label} className="p-3 rounded-xl text-center" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
             <p style={{ fontSize: 22, fontWeight: 800, color, fontFamily: "'Barlow Condensed', sans-serif" }}>{value}</p>
             <p style={{ fontSize: 9, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
           </div>
@@ -119,7 +121,7 @@ export default function AdminPage() {
           { key: 'nok',  label: '🔴 Com pendência' },
         ] as const).map(({ key, label }) => (
           <button key={key} onClick={() => setFilter(key)}
-            style={{ padding: '6px 14px', borderRadius: 8, fontSize: 12, cursor: 'pointer', background: filter === key ? '#f97316' : '#111318', border: `1px solid ${filter === key ? '#f97316' : '#1e2229'}`, color: filter === key ? 'white' : '#6b7280' }}>
+            style={{ padding: '6px 14px', borderRadius: 8, fontSize: 12, cursor: 'pointer', background: filter === key ? '#fcb52f' : '#0d1124', border: `1px solid ${filter === key ? '#fcb52f' : '#1a2040'}`, color: filter === key ? 'white' : '#6b7280' }}>
             {label}
           </button>
         ))}
@@ -128,7 +130,7 @@ export default function AdminPage() {
       {/* List */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
         </div>
       ) : (
         <div className="px-5 pb-8 flex flex-col gap-3">
@@ -145,7 +147,7 @@ export default function AdminPage() {
 
             return (
               <div key={c.id} className="p-4 rounded-xl"
-                style={{ background: '#111318', border: `1px solid ${isOpen ? 'rgba(234,179,8,0.3)' : nok ? 'rgba(239,68,68,0.3)' : '#1e2229'}` }}>
+                style={{ background: '#0d1124', border: `1px solid ${isOpen ? 'rgba(234,179,8,0.3)' : nok ? 'rgba(239,68,68,0.3)' : '#1a2040'}` }}>
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <p style={{ fontSize: 16, fontWeight: 700, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif" }}>
@@ -205,6 +207,7 @@ export default function AdminPage() {
           })}
         </div>
       )}
+      <ConsuldataFooter />
     </main>
   )
 }

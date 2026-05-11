@@ -90,9 +90,9 @@ export default function AdminDriversPage() {
   function resetForm() { setShowForm(false); setNewPassword(''); setError('') }
 
   return (
-    <main className="min-h-screen" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen" style={{ background: '#070a14' }}>
       {/* Header */}
-      <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1e2229' }}>
+      <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1a2040' }}>
         <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -101,7 +101,7 @@ export default function AdminDriversPage() {
         <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#e8eaf0', flex: 1 }}>MOTORISTAS</h1>
         {!showForm && (
           <button onClick={() => setShowForm(true)}
-            style={{ padding: '7px 14px', borderRadius: 8, background: '#f97316', color: 'white', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer' }}>
+            style={{ padding: '7px 14px', borderRadius: 8, background: '#fcb52f', color: 'white', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer' }}>
             + Cadastrar
           </button>
         )}
@@ -109,11 +109,11 @@ export default function AdminDriversPage() {
 
       {/* Info banner */}
       {!showForm && (
-        <div className="mx-5 mt-4 p-4 rounded-xl" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
+        <div className="mx-5 mt-4 p-4 rounded-xl" style={{ background: 'rgba(252,181,47,0.06)', border: '1px solid rgba(252,181,47,0.15)' }}>
           <p style={{ fontSize: 13, color: '#e8eaf0', lineHeight: 1.6 }}>
             Motoristas se cadastram em{' '}
-            <span style={{ color: '#f97316', fontWeight: 600 }}>fleetcheck.vercel.app/register</span>{' '}
-            usando e-mail <span style={{ color: '#f97316' }}>@consuldata.com.br</span>, CPF e data de nascimento.
+            <span style={{ color: '#fcb52f', fontWeight: 600 }}>fleetcheck.vercel.app/register</span>{' '}
+            usando e-mail <span style={{ color: '#fcb52f' }}>@consuldata.com.br</span>, CPF e data de nascimento.
             O sistema gera a senha automaticamente.
           </p>
           <p style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>
@@ -124,20 +124,20 @@ export default function AdminDriversPage() {
 
       {/* NEW PASSWORD CONFIRMATION */}
       {newPassword && (
-        <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#111318', border: '2px solid rgba(34,197,94,0.4)' }}>
+        <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#0d1124', border: '2px solid rgba(34,197,94,0.4)' }}>
           <p style={{ fontSize: 12, color: '#22c55e', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>✓ Motorista cadastrado</p>
           <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 12 }}>Anote a senha e entregue ao motorista:</p>
-          <div className="p-4 rounded-xl text-center mb-3" style={{ background: '#0a0c0f', border: '1px solid rgba(249,115,22,0.3)' }}>
+          <div className="p-4 rounded-xl text-center mb-3" style={{ background: '#070a14', border: '1px solid rgba(252,181,47,0.3)' }}>
             <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Senha gerada</p>
-            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 38, fontWeight: 800, color: '#f97316', letterSpacing: 4 }}>{newPassword}</p>
+            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 38, fontWeight: 800, color: '#fcb52f', letterSpacing: 4 }}>{newPassword}</p>
           </div>
           <div className="flex gap-2">
             <button onClick={() => copyText(newPassword, 'new')}
-              style={{ flex: 1, padding: 10, borderRadius: 8, background: copiedId === 'new' ? 'rgba(34,197,94,0.1)' : '#1e2229', border: `1px solid ${copiedId === 'new' ? '#22c55e' : '#2a2f38'}`, color: copiedId === 'new' ? '#22c55e' : '#e8eaf0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: 10, borderRadius: 8, background: copiedId === 'new' ? 'rgba(34,197,94,0.1)' : '#1a2040', border: `1px solid ${copiedId === 'new' ? '#22c55e' : '#252d50'}`, color: copiedId === 'new' ? '#22c55e' : '#e8eaf0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
               {copiedId === 'new' ? '✓ Copiado' : '📋 Copiar senha'}
             </button>
             <button onClick={resetForm}
-              style={{ padding: '10px 14px', borderRadius: 8, background: 'none', border: '1px solid #1e2229', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+              style={{ padding: '10px 14px', borderRadius: 8, background: 'none', border: '1px solid #1a2040', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
               Fechar
             </button>
           </div>
@@ -146,7 +146,7 @@ export default function AdminDriversPage() {
 
       {/* REGISTER FORM */}
       {showForm && !newPassword && (
-        <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+        <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
           <div className="flex items-center justify-between mb-4">
             <h3 style={{ fontSize: 15, fontWeight: 600, color: '#e8eaf0' }}>Cadastrar motorista</h3>
             <button onClick={resetForm} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: 18 }}>×</button>
@@ -160,31 +160,31 @@ export default function AdminDriversPage() {
                 <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>{label}</label>
                 <input type={type} placeholder={placeholder} value={form[key as keyof typeof form]}
                   onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
-                  onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                  onFocus={e => e.target.style.borderColor = '#fcb52f'} onBlur={e => e.target.style.borderColor = '#1a2040'} />
               </div>
             ))}
             <div>
               <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>CPF</label>
               <input type="text" inputMode="numeric" placeholder="000.000.000-00" value={form.cpf} maxLength={14}
                 onChange={e => setForm(p => ({ ...p, cpf: formatCPF(e.target.value) }))}
-                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 15, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
-                onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 15, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
+                onFocus={e => e.target.style.borderColor = '#fcb52f'} onBlur={e => e.target.style.borderColor = '#1a2040'} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Data de nascimento</label>
               <input type="date" value={form.birth_date} onChange={e => setForm(p => ({ ...p, birth_date: e.target.value }))}
-                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
-                onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
+                onFocus={e => e.target.style.borderColor = '#fcb52f'} onBlur={e => e.target.style.borderColor = '#1a2040'} />
             </div>
             {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
             <div className="flex gap-2 mt-1">
               <button onClick={registerDriver} disabled={saving}
-                style={{ flex: 1, padding: 11, borderRadius: 8, background: saving ? '#7c3d12' : '#f97316', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
+                style={{ flex: 1, padding: 11, borderRadius: 8, background: saving ? '#7a5c0a' : '#fcb52f', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
                 {saving ? 'Cadastrando...' : 'Cadastrar e gerar senha'}
               </button>
               <button onClick={resetForm}
-                style={{ padding: '11px 14px', borderRadius: 8, background: 'none', border: '1px solid #1e2229', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+                style={{ padding: '11px 14px', borderRadius: 8, background: 'none', border: '1px solid #1a2040', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
                 Cancelar
               </button>
             </div>
@@ -200,7 +200,7 @@ export default function AdminDriversPage() {
 
         {loading && (
           <div className="flex justify-center py-8">
-            <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+            <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
           </div>
         )}
 
@@ -211,12 +211,12 @@ export default function AdminDriversPage() {
         )}
 
         {drivers.map(d => (
-          <div key={d.id} className="p-4 rounded-xl" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+          <div key={d.id} className="p-4 rounded-xl" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(249,115,22,0.12)' }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#f97316' }}>
+                  style={{ background: 'rgba(252,181,47,0.12)' }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#fcb52f' }}>
                     {d.name.split(' ').map((n: string) => n[0]).slice(0, 2).join('')}
                   </span>
                 </div>
@@ -228,12 +228,12 @@ export default function AdminDriversPage() {
               {d.generated_password && (
                 <button onClick={() => copyText(d.generated_password!, d.id)}
                   title="Copiar senha"
-                  style={{ flexShrink: 0, padding: '5px 10px', borderRadius: 6, background: copiedId === d.id ? 'rgba(34,197,94,0.1)' : '#0a0c0f', border: `1px solid ${copiedId === d.id ? '#22c55e' : '#1e2229'}`, color: copiedId === d.id ? '#22c55e' : '#6b7280', fontSize: 11, cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 1 }}>
+                  style={{ flexShrink: 0, padding: '5px 10px', borderRadius: 6, background: copiedId === d.id ? 'rgba(34,197,94,0.1)' : '#070a14', border: `1px solid ${copiedId === d.id ? '#22c55e' : '#1a2040'}`, color: copiedId === d.id ? '#22c55e' : '#6b7280', fontSize: 11, cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 1 }}>
                   {copiedId === d.id ? '✓' : d.generated_password}
                 </button>
               )}
             </div>
-            <div className="flex gap-2 mt-3" style={{ borderTop: '1px solid #1e2229', paddingTop: 10 }}>
+            <div className="flex gap-2 mt-3" style={{ borderTop: '1px solid #1a2040', paddingTop: 10 }}>
               {d.cpf && <span style={{ fontSize: 11, color: '#6b7280' }}>CPF: {d.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</span>}
               <span style={{ fontSize: 11, color: '#6b7280', marginLeft: 'auto' }}>
                 Desde {new Date(d.created_at).toLocaleDateString('pt-BR')}

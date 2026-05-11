@@ -149,7 +149,7 @@ export default function ArrivalPage() {
     const nokFields = currentOccItem.if_nok?.fields ?? []
     const photoField = nokFields.find(f => f.type === 'photo')
     return (
-      <main className="min-h-screen flex flex-col" style={{ background: '#0a0c0f' }}>
+      <main className="min-h-screen flex flex-col" style={{ background: '#070a14' }}>
         <div className="px-5 pt-6 pb-4">
           <button onClick={() => setAddingOccurrence(false)} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: 13, padding: 0 }}>← Cancelar</button>
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 24, fontWeight: 800, color: '#ef4444', marginTop: 8 }}>
@@ -164,7 +164,7 @@ export default function ArrivalPage() {
                 <div className="flex flex-wrap gap-2">
                   {field.options?.map(opt => (
                     <button key={opt} onClick={() => setNokData(prev => ({ ...prev, [field.id]: opt }))}
-                      style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, background: nokData[field.id] === opt ? '#f97316' : '#111318', border: `1px solid ${nokData[field.id] === opt ? '#f97316' : '#1e2229'}`, color: nokData[field.id] === opt ? 'white' : '#6b7280', cursor: 'pointer' }}>
+                      style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, background: nokData[field.id] === opt ? '#fcb52f' : '#0d1124', border: `1px solid ${nokData[field.id] === opt ? '#fcb52f' : '#1a2040'}`, color: nokData[field.id] === opt ? 'white' : '#6b7280', cursor: 'pointer' }}>
                       {opt}
                     </button>
                   ))}
@@ -172,7 +172,7 @@ export default function ArrivalPage() {
               ) : (
                 <input type="text" placeholder={field.placeholder} value={nokData[field.id] ?? ''}
                   onChange={e => setNokData(prev => ({ ...prev, [field.id]: e.target.value }))}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }} />
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }} />
               )}
             </div>
           ))}
@@ -181,7 +181,7 @@ export default function ArrivalPage() {
               <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Foto (opcional)</label>
               <input ref={fileInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) { setPhotoBlob(f); setPhotoPreview(URL.createObjectURL(f)) } }} />
               {!photoPreview ? (
-                <button onClick={() => fileInputRef.current?.click()} style={{ width: '100%', padding: 16, borderRadius: 12, background: '#111318', border: '2px dashed #1e2229', color: '#6b7280', cursor: 'pointer', fontSize: 14 }}>📸 Tirar foto</button>
+                <button onClick={() => fileInputRef.current?.click()} style={{ width: '100%', padding: 16, borderRadius: 12, background: '#0d1124', border: '2px dashed #1a2040', color: '#6b7280', cursor: 'pointer', fontSize: 14 }}>📸 Tirar foto</button>
               ) : (
                 <div className="relative">
                   <img src={photoPreview} className="rounded-xl w-full object-cover" style={{ maxHeight: 160 }} />
@@ -201,7 +201,7 @@ export default function ArrivalPage() {
 
   // ARRIVAL MAIN SCREEN
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#070a14' }}>
       <div className="px-5 pt-6 pb-4">
         <div className="flex items-center gap-2 mb-3">
           <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', padding: 0 }}>
@@ -216,10 +216,10 @@ export default function ArrivalPage() {
         <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0' }}>CHEGADA</h2>
 
         {/* KM summary */}
-        <div className="p-4 rounded-xl" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+        <div className="p-4 rounded-xl" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
           <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>KM de chegada</p>
           <div className="flex items-center justify-between">
-            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#f97316' }}>
+            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#fcb52f' }}>
               {km.toLocaleString('pt-BR')} km
             </p>
             {kmWasManual && <span style={{ fontSize: 10, color: '#eab308', padding: '2px 8px', borderRadius: 12, background: 'rgba(234,179,8,0.1)' }}>digitado</span>}
@@ -261,7 +261,7 @@ export default function ArrivalPage() {
           <div className="grid grid-cols-1 gap-2">
             {items.map(item => (
               <button key={item.id} onClick={() => startAddOccurrence(item)}
-                style={{ padding: '12px 16px', borderRadius: 10, background: '#111318', border: '1px solid #1e2229', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10 }}>
+                style={{ padding: '12px 16px', borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10 }}>
                 <span style={{ fontSize: 18 }}>{item.icon}</span>
                 <span style={{ fontSize: 13, color: '#6b7280' }}>+ {item.label}</span>
               </button>
@@ -274,14 +274,14 @@ export default function ArrivalPage() {
           <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Observações (opcional)</label>
           <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Alguma observação sobre a viagem..."
             rows={3}
-            style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none', resize: 'none' }}
-            onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+            style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none', resize: 'none' }}
+            onFocus={e => e.target.style.borderColor = '#fcb52f'} onBlur={e => e.target.style.borderColor = '#1a2040'} />
         </div>
 
         {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
 
         <button onClick={finishArrival} disabled={saving}
-          style={{ width: '100%', padding: 16, borderRadius: 12, background: saving ? '#7c3d12' : '#22c55e', color: saving ? '#e8eaf0' : '#0a0c0f', fontWeight: 800, fontSize: 16, border: 'none', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: "'Barlow Condensed', sans-serif', letterSpacing: '0.5px" }}>
+          style={{ width: '100%', padding: 16, borderRadius: 12, background: saving ? '#7a5c0a' : '#22c55e', color: saving ? '#e8eaf0' : '#070a14', fontWeight: 800, fontSize: 16, border: 'none', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: "'Barlow Condensed', sans-serif', letterSpacing: '0.5px" }}>
           {saving ? 'Registrando...' : '✓ CONFIRMAR CHEGADA'}
         </button>
       </div>

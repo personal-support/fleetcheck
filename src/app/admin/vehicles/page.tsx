@@ -61,16 +61,16 @@ function QRCanvas({ vehicleId, plate }: { vehicleId: string; plate: string }) {
 
   return (
     <div className="flex flex-col items-center gap-3 p-4 rounded-xl"
-      style={{ background: '#0a0c0f', border: '1px solid #1e2229' }}>
+      style={{ background: '#070a14', border: '1px solid #1a2040' }}>
       <canvas ref={canvasRef} style={{ borderRadius: 8, display: 'block' }} />
       <p style={{ fontSize: 13, fontWeight: 700, color: '#e8eaf0', letterSpacing: 2, fontFamily: "'Barlow Condensed', sans-serif" }}>{plate}</p>
       <div className="flex gap-2 w-full">
         <button onClick={download}
-          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
+          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
           ⬇ Baixar PNG
         </button>
         <button onClick={print}
-          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#f97316', border: 'none', color: 'white', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
+          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#fcb52f', border: 'none', color: 'white', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
           🖨 Imprimir
         </button>
       </div>
@@ -120,9 +120,9 @@ export default function AdminVehiclesPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen" style={{ background: '#070a14' }}>
       {/* Header */}
-      <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1e2229' }}>
+      <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1a2040' }}>
         <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -132,14 +132,14 @@ export default function AdminVehiclesPage() {
           VEÍCULOS
         </h1>
         <button onClick={() => { setAdding(!adding); setError('') }}
-          style={{ padding: '7px 14px', borderRadius: 8, background: adding ? '#111318' : '#f97316', color: adding ? '#6b7280' : 'white', fontSize: 12, fontWeight: 600, border: adding ? '1px solid #1e2229' : 'none', cursor: 'pointer' }}>
+          style={{ padding: '7px 14px', borderRadius: 8, background: adding ? '#0d1124' : '#fcb52f', color: adding ? '#6b7280' : 'white', fontSize: 12, fontWeight: 600, border: adding ? '1px solid #1a2040' : 'none', cursor: 'pointer' }}>
           {adding ? 'Cancelar' : '+ Adicionar'}
         </button>
       </div>
 
       {/* Add form */}
       {adding && (
-        <div className="mx-5 mt-4 p-4 rounded-xl animate-fade-up" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+        <div className="mx-5 mt-4 p-4 rounded-xl animate-fade-up" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
           <h3 style={{ fontSize: 14, fontWeight: 600, color: '#e8eaf0', marginBottom: 12 }}>Novo veículo</h3>
           <div className="flex flex-col gap-3">
             {[
@@ -152,13 +152,13 @@ export default function AdminVehiclesPage() {
                 <input type={key === 'year' ? 'number' : 'text'} placeholder={placeholder}
                   value={form[key as keyof typeof form]}
                   onChange={e => setForm(prev => ({ ...prev, [key]: e.target.value }))}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
-                  onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                  onFocus={e => e.target.style.borderColor = '#fcb52f'} onBlur={e => e.target.style.borderColor = '#1a2040'} />
               </div>
             ))}
             {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
             <button onClick={addVehicle} disabled={saving}
-              style={{ padding: 11, borderRadius: 8, background: saving ? '#7c3d12' : '#f97316', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
+              style={{ padding: 11, borderRadius: 8, background: saving ? '#7a5c0a' : '#fcb52f', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
               {saving ? 'Salvando...' : 'Salvar veículo'}
             </button>
           </div>
@@ -176,7 +176,7 @@ export default function AdminVehiclesPage() {
               return v ? <QRCanvas vehicleId={v.id} plate={v.plate} /> : null
             })()}
             <button onClick={() => setShowQR(null)}
-              style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 10, background: '#111318', border: '1px solid #1e2229', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+              style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
               Fechar
             </button>
           </div>
@@ -188,14 +188,14 @@ export default function AdminVehiclesPage() {
         {loading && (
           <div className="flex justify-center py-10">
             <div className="w-7 h-7 rounded-full border-2 border-t-transparent animate-spin"
-              style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+              style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
           </div>
         )}
         {!loading && vehicles.length === 0 && (
           <p style={{ color: '#6b7280', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo cadastrado</p>
         )}
         {vehicles.map(v => (
-          <div key={v.id} className="p-4 rounded-xl" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+          <div key={v.id} className="p-4 rounded-xl" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
             <div className="flex items-start justify-between">
               <div>
                 <p style={{ fontSize: 19, fontWeight: 800, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>
@@ -208,7 +208,7 @@ export default function AdminVehiclesPage() {
                 </p>
               </div>
               <button onClick={() => setShowQR(v.id)}
-                style={{ padding: '8px 14px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                style={{ padding: '8px 14px', borderRadius: 8, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                   <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
                   <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>

@@ -49,8 +49,8 @@ export default function ChecklistItemsPage() {
   }
 
   if (!template || !vehicle) {
-    return <main className="min-h-screen flex items-center justify-center" style={{ background: '#0a0c0f' }}>
-      <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+    return <main className="min-h-screen flex items-center justify-center" style={{ background: '#070a14' }}>
+      <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
     </main>
   }
 
@@ -159,14 +159,14 @@ export default function ChecklistItemsPage() {
   if (isDone) {
     const nokCount = results.filter(r => r.status === 'nok').length
     return (
-      <main className="min-h-screen flex flex-col" style={{ background: '#0a0c0f' }}>
+      <main className="min-h-screen flex flex-col" style={{ background: '#070a14' }}>
         <div className="px-5 pt-6 pb-2"><div className="step-bar"><div className="step-bar-fill" style={{ width: '95%' }} /></div></div>
         <div className="flex-1 flex flex-col items-center px-5 pt-8 animate-fade-up">
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0', marginBottom: 4 }}>RESUMO DA SAÍDA</h2>
           <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 20 }}>{vehicle.plate} · {km.toLocaleString('pt-BR')} km</p>
           <div className="w-full max-w-sm">
             {results.map((r, i) => (
-              <div key={r.id} className="flex items-center justify-between py-3" style={{ borderBottom: '1px solid #1e2229' }}>
+              <div key={r.id} className="flex items-center justify-between py-3" style={{ borderBottom: '1px solid #1a2040' }}>
                 <span style={{ color: '#e8eaf0', fontSize: 14 }}>{items[i]?.icon} {items[i]?.label}</span>
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 20, background: r.status === 'ok' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)', color: r.status === 'ok' ? '#22c55e' : '#ef4444' }}>
                   {r.status === 'ok' ? 'OK' : 'PENDÊNCIA'}
@@ -179,11 +179,11 @@ export default function ChecklistItemsPage() {
               <p style={{ color: '#ef4444', fontSize: 13 }}>⚠️ {nokCount} pendência{nokCount > 1 ? 's' : ''} registrada{nokCount > 1 ? 's' : ''}.</p>
             </div>
           )}
-          <div className="mt-4 w-full max-w-sm px-4 py-3 rounded-xl" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
-            <p style={{ color: '#f97316', fontSize: 12 }}>🚗 Ao chegar ao destino, abra o app e registre a chegada para fechar esta viagem.</p>
+          <div className="mt-4 w-full max-w-sm px-4 py-3 rounded-xl" style={{ background: 'rgba(252,181,47,0.06)', border: '1px solid rgba(252,181,47,0.15)' }}>
+            <p style={{ color: '#fcb52f', fontSize: 12 }}>🚗 Ao chegar ao destino, abra o app e registre a chegada para fechar esta viagem.</p>
           </div>
           <button onClick={finishChecklist} disabled={saving}
-            style={{ marginTop: 20, width: '100%', maxWidth: 360, padding: 14, borderRadius: 10, background: saving ? '#7c3d12' : '#f97316', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
+            style={{ marginTop: 20, width: '100%', maxWidth: 360, padding: 14, borderRadius: 10, background: saving ? '#7a5c0a' : '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
             {saving ? 'Registrando saída...' : 'CONFIRMAR SAÍDA →'}
           </button>
         </div>
@@ -192,11 +192,11 @@ export default function ChecklistItemsPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#070a14' }}>
       <div className="px-5 pt-6 pb-4">
         <div className="flex items-center justify-between mb-3">
           <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{vehicle.plate} · Saída · Item {currentIndex + 1}/{items.length}</p>
-          <span style={{ fontSize: 11, color: '#f97316', fontWeight: 600 }}>{Math.round((currentIndex / items.length) * 100)}%</span>
+          <span style={{ fontSize: 11, color: '#fcb52f', fontWeight: 600 }}>{Math.round((currentIndex / items.length) * 100)}%</span>
         </div>
         <div className="step-bar"><div className="step-bar-fill" style={{ width: `${progress}%` }} /></div>
       </div>
@@ -232,14 +232,14 @@ export default function ChecklistItemsPage() {
                   <div className="flex flex-wrap gap-2">
                     {field.options?.map(opt => (
                       <button key={opt} onClick={() => setNokData(prev => ({ ...prev, [field.id]: opt }))}
-                        style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, background: nokData[field.id] === opt ? '#f97316' : '#111318', border: `1px solid ${nokData[field.id] === opt ? '#f97316' : '#1e2229'}`, color: nokData[field.id] === opt ? 'white' : '#6b7280', cursor: 'pointer' }}>
+                        style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, background: nokData[field.id] === opt ? '#fcb52f' : '#0d1124', border: `1px solid ${nokData[field.id] === opt ? '#fcb52f' : '#1a2040'}`, color: nokData[field.id] === opt ? 'white' : '#6b7280', cursor: 'pointer' }}>
                         {opt}
                       </button>
                     ))}
                   </div>
                 ) : (
                   <input type="text" placeholder={field.placeholder} value={nokData[field.id] ?? ''} onChange={e => setNokData(prev => ({ ...prev, [field.id]: e.target.value }))}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }} />
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }} />
                 )}
               </div>
             ))}
@@ -248,7 +248,7 @@ export default function ChecklistItemsPage() {
                 <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Foto {isPhotoRequired ? '(obrigatória)' : '(opcional)'}</label>
                 <input ref={fileInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handlePhotoChange} />
                 {!photoPreview ? (
-                  <button onClick={() => fileInputRef.current?.click()} style={{ width: '100%', padding: 16, borderRadius: 12, background: '#111318', border: '2px dashed #1e2229', color: '#6b7280', cursor: 'pointer', fontSize: 14 }}>📸 Tirar foto</button>
+                  <button onClick={() => fileInputRef.current?.click()} style={{ width: '100%', padding: 16, borderRadius: 12, background: '#0d1124', border: '2px dashed #1a2040', color: '#6b7280', cursor: 'pointer', fontSize: 14 }}>📸 Tirar foto</button>
                 ) : (
                   <div className="relative">
                     <img src={photoPreview} alt="Foto" className="rounded-xl w-full object-cover" style={{ maxHeight: 160 }} />
@@ -258,7 +258,7 @@ export default function ChecklistItemsPage() {
               </div>
             )}
             <button onClick={submitNok} disabled={isPhotoRequired && !photoBlob}
-              style={{ width: '100%', padding: 14, borderRadius: 10, marginTop: 'auto', marginBottom: 20, background: isPhotoRequired && !photoBlob ? '#2a2f38' : '#ef4444', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: isPhotoRequired && !photoBlob ? 'not-allowed' : 'pointer' }}>
+              style={{ width: '100%', padding: 14, borderRadius: 10, marginTop: 'auto', marginBottom: 20, background: isPhotoRequired && !photoBlob ? '#252d50' : '#ef4444', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: isPhotoRequired && !photoBlob ? 'not-allowed' : 'pointer' }}>
               REGISTRAR PENDÊNCIA →
             </button>
           </div>

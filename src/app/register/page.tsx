@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -127,7 +129,7 @@ export default function RegisterPage() {
   // SUCCESS SCREEN
   if (generatedPassword) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#0a0c0f' }}>
+      <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#070a14' }}>
         <div className="w-full max-w-sm animate-fade-up">
           <div className="text-center mb-6">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
@@ -144,18 +146,18 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          <div className="rounded-2xl p-6" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+          <div className="rounded-2xl p-6" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
             <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 16, lineHeight: 1.6 }}>
-              Sua senha de acesso foi gerada. <strong style={{ color: '#f97316' }}>Anote agora</strong> — você vai precisar dela toda vez que entrar.
+              Sua senha de acesso foi gerada. <strong style={{ color: '#fcb52f' }}>Anote agora</strong> — você vai precisar dela toda vez que entrar.
             </p>
 
             {/* Password display */}
             <div className="rounded-xl p-5 text-center mb-4"
-              style={{ background: '#0a0c0f', border: '2px solid rgba(249,115,22,0.4)' }}>
+              style={{ background: '#070a14', border: '2px solid rgba(252,181,47,0.4)' }}>
               <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
                 Sua senha
               </p>
-              <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 42, fontWeight: 800, color: '#f97316', letterSpacing: 4 }}>
+              <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 42, fontWeight: 800, color: '#fcb52f', letterSpacing: 4 }}>
                 {generatedPassword}
               </p>
             </div>
@@ -163,8 +165,8 @@ export default function RegisterPage() {
             <button onClick={copyPassword}
               style={{
                 width: '100%', padding: 12, borderRadius: 10, marginBottom: 12,
-                background: copied ? 'rgba(34,197,94,0.1)' : '#1e2229',
-                border: `1px solid ${copied ? '#22c55e' : '#2a2f38'}`,
+                background: copied ? 'rgba(34,197,94,0.1)' : '#1a2040',
+                border: `1px solid ${copied ? '#22c55e' : '#252d50'}`,
                 color: copied ? '#22c55e' : '#e8eaf0', fontSize: 13,
                 fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
               }}>
@@ -172,10 +174,10 @@ export default function RegisterPage() {
             </button>
 
             {/* Login info summary */}
-            <div className="p-4 rounded-xl" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(252,181,47,0.06)', border: '1px solid rgba(252,181,47,0.15)' }}>
               <p style={{ fontSize: 12, color: '#e8eaf0', lineHeight: 1.7 }}>
-                <strong style={{ color: '#f97316' }}>E-mail:</strong> {form.email}<br />
-                <strong style={{ color: '#f97316' }}>Senha:</strong> {generatedPassword}<br />
+                <strong style={{ color: '#fcb52f' }}>E-mail:</strong> {form.email}<br />
+                <strong style={{ color: '#fcb52f' }}>Senha:</strong> {generatedPassword}<br />
                 <strong style={{ color: '#6b7280', fontSize: 11 }}>Guarde estas informações.</strong>
               </p>
             </div>
@@ -184,30 +186,31 @@ export default function RegisterPage() {
               onClick={() => router.push('/login')}
               style={{
                 width: '100%', marginTop: 16, padding: 14, borderRadius: 10,
-                background: '#f97316', color: 'white', fontWeight: 700,
+                background: '#fcb52f', color: 'white', fontWeight: 700,
                 fontSize: 15, border: 'none', cursor: 'pointer',
               }}>
               IR PARA O LOGIN →
             </button>
           </div>
         </div>
-      </main>
+        <ConsuldataFooter />
+    </main>
     )
   }
 
   // REGISTER FORM
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#0a0c0f' }}>
+    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#070a14' }}>
       <div className="w-full max-w-sm animate-fade-up">
         {/* Header */}
         <div className="text-center mb-6">
           <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#e8eaf0' }}>
-            FLEET<span style={{ color: '#f97316' }}>CHECK</span>
+            FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
           </h1>
           <p style={{ color: '#6b7280', fontSize: 13, marginTop: 2 }}>Primeiro acesso — Motorista</p>
         </div>
 
-        <div className="rounded-2xl p-6" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+        <div className="rounded-2xl p-6" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
           <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
             Preencha seus dados. Sua senha será gerada automaticamente.
           </p>
@@ -221,9 +224,9 @@ export default function RegisterPage() {
               <input type="email" value={form.email}
                 onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
                 placeholder="seu.nome@consuldata.com.br" required
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
-                onFocus={e => e.target.style.borderColor = '#f97316'}
-                onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                onFocus={e => e.target.style.borderColor = '#fcb52f'}
+                onBlur={e => e.target.style.borderColor = '#1a2040'} />
             </div>
 
             {/* Name */}
@@ -234,9 +237,9 @@ export default function RegisterPage() {
               <input type="text" value={form.name}
                 onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="João da Silva" required
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
-                onFocus={e => e.target.style.borderColor = '#f97316'}
-                onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                onFocus={e => e.target.style.borderColor = '#fcb52f'}
+                onBlur={e => e.target.style.borderColor = '#1a2040'} />
             </div>
 
             {/* CPF */}
@@ -247,9 +250,9 @@ export default function RegisterPage() {
               <input type="text" inputMode="numeric" value={form.cpf}
                 onChange={e => handleCPF(e.target.value)}
                 placeholder="000.000.000-00" required maxLength={14}
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 16, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
-                onFocus={e => e.target.style.borderColor = '#f97316'}
-                onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 16, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
+                onFocus={e => e.target.style.borderColor = '#fcb52f'}
+                onBlur={e => e.target.style.borderColor = '#1a2040'} />
             </div>
 
             {/* Birth date */}
@@ -260,9 +263,9 @@ export default function RegisterPage() {
               <input type="date" value={form.birth_date}
                 onChange={e => setForm(prev => ({ ...prev, birth_date: e.target.value }))}
                 required max={new Date().toISOString().split('T')[0]}
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
-                onFocus={e => e.target.style.borderColor = '#f97316'}
-                onBlur={e => e.target.style.borderColor = '#1e2229'} />
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
+                onFocus={e => e.target.style.borderColor = '#fcb52f'}
+                onBlur={e => e.target.style.borderColor = '#1a2040'} />
             </div>
 
             {error && (
@@ -274,7 +277,7 @@ export default function RegisterPage() {
             <button type="submit" disabled={loading}
               style={{
                 width: '100%', padding: 14, borderRadius: 10, marginTop: 4,
-                background: loading ? '#7c3d12' : '#f97316',
+                background: loading ? '#7a5c0a' : '#fcb52f',
                 color: 'white', fontWeight: 700, fontSize: 15,
                 border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48,
               }}>
