@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Vehicle } from '@/types'
@@ -8,196 +8,242 @@ import type { Vehicle } from '@/types'
 export default function ScanPage() {
   const router = useRouter()
   const scannerRef = useRef<HTMLDivElement>(null)
+  const html5QrRef = useRef<{ stop: () => Promise<void> } | null>(null)
+  const [mode, setMode] = useState<'scan' | 'list'>('scan')
+  const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [scanning, setScanning] = useState(false)
-  const [error, setError] = useState('')
+  const [loadingVehicle, setLoadingVehicle] = useState(false)
   const [vehicle, setVehicle] = useState<Vehicle | null>(null)
-  const [loading, setLoading] = useState(false)
-  const html5QrRef = useRef<unknown>(null)
+  const [openChecklist, setOpenChecklist] = useState<{ id: string } | null>(null)
+  const [error, setError] = useState('')
+  const [user, setUser] = useState<{ name: string } | null>(null)
 
   useEffect(() => {
-    let scanner: { start: Function; stop: Function } | null = null
+    loadUser()
+    loadVehicles()
+  }, [])
 
-    async function initScanner() {
-      if (!scannerRef.current) return
+  useEffect(() => {
+    if (mode === 'scan') startScanner()
+    return () => { html5QrRef.current?.stop().catch(() => {}) }
+  }, [mode])
+
+  async function loadUser() {
+    const supabase = createClient()
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    if (!authUser) { router.replace('/login'); return }
+    const { data } = await supabase.from('users').select('name').eq('id', authUser.id).single()
+    if (data) setUser(data)
+  }
+
+  async function loadVehicles() {
+    const supabase = createClient()
+    const { data } = await supabase
+      .from('vehicles').select('*').eq('active', true).order('plate')
+    if (data) setVehicles(data as Vehicle[])
+  }
+
+  const startScanner = useCallback(async () => {
+    if (!scannerRef.current) return
+    setError('')
+    try {
       const { Html5Qrcode } = await import('html5-qrcode')
-      scanner = new Html5Qrcode('qr-reader')
+      const scanner = new Html5Qrcode('qr-reader')
       html5QrRef.current = scanner
       setScanning(true)
-
-      try {
-        await (scanner as { start: Function }).start(
-          { facingMode: 'environment' },
-          { fps: 10, qrbox: { width: 250, height: 250 } },
-          async (decodedText: string) => {
-            await (scanner as { stop: Function }).stop()
-            setScanning(false)
-            await loadVehicle(decodedText)
-          },
-          () => {}
-        )
-      } catch {
-        setError('Não foi possível acessar a câmera. Verifique as permissões.')
-        setScanning(false)
-      }
-    }
-
-    initScanner()
-
-    return () => {
-      if (scanner) {
-        (scanner as { stop: Function }).stop().catch(() => {})
-      }
+      await scanner.start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: { width: 220, height: 220 } },
+        async (decoded: string) => {
+          await scanner.stop()
+          setScanning(false)
+          await selectVehicleById(decoded.trim())
+        },
+        () => {}
+      )
+    } catch {
+      setError('Câmera indisponível.')
+      setMode('list')
     }
   }, [])
 
-  async function loadVehicle(vehicleId: string) {
-    setLoading(true)
+  async function selectVehicleById(vehicleId: string) {
+    setLoadingVehicle(true)
     setError('')
-
     const supabase = createClient()
     const { data, error } = await supabase
-      .from('vehicles')
-      .select('*')
-      .eq('id', vehicleId)
-      .eq('active', true)
-      .single()
-
+      .from('vehicles').select('*').eq('id', vehicleId).eq('active', true).single()
     if (error || !data) {
-      setError('Veículo não encontrado ou QR Code inválido.')
-      setLoading(false)
-      setTimeout(() => {
-        setError('')
-        setScanning(true)
-      }, 2500)
+      setError('Veículo não encontrado. Tente pela lista.')
+      setLoadingVehicle(false)
+      setTimeout(() => { setError(''); if (mode === 'scan') startScanner() }, 2500)
       return
     }
-
-    setVehicle(data as Vehicle)
-    setLoading(false)
+    await confirmVehicle(data as Vehicle)
+    setLoadingVehicle(false)
   }
 
-  function startChecklist() {
+  async function confirmVehicle(v: Vehicle) {
+    setVehicle(v)
+    // Check for open checklist on this vehicle
+    const supabase = createClient()
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    if (!authUser) return
+    const { data } = await supabase
+      .from('checklists')
+      .select('id')
+      .eq('vehicle_id', v.id)
+      .eq('status', 'open')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single()
+    setOpenChecklist(data ? { id: data.id } : null)
+  }
+
+  function proceed() {
     if (!vehicle) return
     sessionStorage.setItem('fc_vehicle', JSON.stringify(vehicle))
-    router.push('/check/odometer')
+    if (openChecklist) {
+      sessionStorage.setItem('fc_checklist_id', openChecklist.id)
+      sessionStorage.setItem('fc_phase', 'arrival')
+      router.push('/check/arrival')
+    } else {
+      sessionStorage.removeItem('fc_checklist_id')
+      sessionStorage.setItem('fc_phase', 'departure')
+      router.push('/check/odometer')
+    }
+  }
+
+  const logout = async () => {
+    await createClient().auth.signOut()
+    router.replace('/login')
   }
 
   return (
     <main className="min-h-screen flex flex-col" style={{ background: '#0a0c0f' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-6 pb-4">
+      <div className="flex items-center justify-between px-5 pt-6 pb-3">
         <div>
           <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0' }}>
             FLEET<span style={{ color: '#f97316' }}>CHECK</span>
           </h1>
-          <p style={{ color: '#6b7280', fontSize: 12 }}>Aponte para o QR Code do veículo</p>
+          {user && <p style={{ color: '#6b7280', fontSize: 12 }}>Olá, {user.name.split(' ')[0]}</p>}
         </div>
-        <div className="w-10 h-10 rounded-full flex items-center justify-center"
-          style={{ background: '#111318', border: '1px solid #1e2229' }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="8" r="4" stroke="#6b7280" strokeWidth="1.5"/>
-            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-        </div>
+        <button onClick={logout} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: 12 }}>
+          Sair
+        </button>
       </div>
 
-      {/* Scanner area */}
-      <div className="flex-1 flex flex-col items-center justify-center px-5">
-        {!vehicle ? (
-          <>
-            <div className="relative w-full max-w-sm">
-              <div
-                id="qr-reader"
-                ref={scannerRef}
-                className="rounded-2xl overflow-hidden"
-                style={{ background: '#111318', minHeight: 300 }}
-              />
-              {/* Corner markers overlay */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <div className="relative w-52 h-52">
-                  {[
-                    'top-0 left-0 border-t-2 border-l-2 rounded-tl-lg',
-                    'top-0 right-0 border-t-2 border-r-2 rounded-tr-lg',
-                    'bottom-0 left-0 border-b-2 border-l-2 rounded-bl-lg',
-                    'bottom-0 right-0 border-b-2 border-r-2 rounded-br-lg',
-                  ].map((cls, i) => (
-                    <div key={i} className={`absolute w-6 h-6 ${cls}`}
-                      style={{ borderColor: '#f97316' }} />
-                  ))}
-                </div>
+      {/* Mode tabs */}
+      {!vehicle && (
+        <div className="flex gap-2 px-5 pb-3">
+          {(['scan', 'list'] as const).map(m => (
+            <button key={m} onClick={() => setMode(m)}
+              style={{
+                padding: '7px 16px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                background: mode === m ? '#f97316' : '#111318',
+                border: `1px solid ${mode === m ? '#f97316' : '#1e2229'}`,
+                color: mode === m ? 'white' : '#6b7280',
+              }}>
+              {m === 'scan' ? '📷 QR Code' : '📋 Lista de veículos'}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="flex-1 flex flex-col px-5 pb-6">
+
+        {/* VEHICLE CONFIRMED */}
+        {vehicle ? (
+          <div className="animate-fade-up max-w-sm w-full mx-auto">
+            {openChecklist ? (
+              <div className="mb-4 px-4 py-3 rounded-xl"
+                style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.25)' }}>
+                <p style={{ color: '#eab308', fontSize: 13, fontWeight: 600 }}>⚠ Viagem em aberto</p>
+                <p style={{ color: '#6b7280', fontSize: 12, marginTop: 2 }}>
+                  Este veículo tem uma saída registrada sem chegada. Finalize a viagem atual.
+                </p>
               </div>
-            </div>
-
-            {scanning && !error && !loading && (
-              <p className="mt-5 animate-fade-up" style={{ color: '#6b7280', fontSize: 13 }}>
-                Buscando QR Code...
-              </p>
-            )}
-
-            {loading && (
-              <p className="mt-5 animate-fade-up" style={{ color: '#f97316', fontSize: 13 }}>
-                Identificando veículo...
-              </p>
-            )}
-
-            {error && (
-              <div className="mt-5 px-4 py-3 rounded-xl animate-fade-up"
-                style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)' }}>
-                <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>
+            ) : (
+              <div className="mb-4 px-4 py-3 rounded-xl"
+                style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
+                <p style={{ color: '#22c55e', fontSize: 13, fontWeight: 600 }}>✓ Veículo identificado</p>
+                <p style={{ color: '#6b7280', fontSize: 12, marginTop: 2 }}>Nenhuma viagem em aberto.</p>
               </div>
             )}
-          </>
-        ) : (
-          /* Vehicle confirm card */
-          <div className="w-full max-w-sm animate-fade-up">
-            <div className="rounded-2xl p-6" style={{ background: '#111318', border: '1px solid #1e2229' }}>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center animate-pulse-ring"
-                  style={{ background: 'rgba(249,115,22,0.15)' }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+
+            <div className="rounded-2xl p-5" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ background: 'rgba(249,115,22,0.12)' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="#f97316" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     <circle cx="7.5" cy="15.5" r="1" fill="#f97316"/>
                     <circle cx="16.5" cy="15.5" r="1" fill="#f97316"/>
                   </svg>
                 </div>
                 <div>
-                  <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Veículo identificado</p>
-                  <h2 style={{ fontSize: 20, fontWeight: 700, color: '#e8eaf0', lineHeight: 1.2 }}>{vehicle.plate}</h2>
+                  <p style={{ fontSize: 20, fontWeight: 800, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{vehicle.plate}</p>
+                  <p style={{ fontSize: 13, color: '#6b7280' }}>{vehicle.model} · {vehicle.year}</p>
                 </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-3 mb-5">
+              <div className="grid grid-cols-2 gap-2 mb-4">
                 {[
-                  { label: 'Modelo', value: vehicle.model },
-                  { label: 'Ano', value: vehicle.year?.toString() ?? '-' },
-                  { label: 'KM anterior', value: vehicle.last_km ? `${vehicle.last_km.toLocaleString('pt-BR')} km` : 'Sem registro' },
+                  { label: 'KM anterior', value: vehicle.last_km ? `${vehicle.last_km.toLocaleString('pt-BR')} km` : '—' },
                   { label: 'Último check', value: vehicle.last_check_at ? new Date(vehicle.last_check_at).toLocaleDateString('pt-BR') : 'Nunca' },
                 ].map(({ label, value }) => (
                   <div key={label} className="p-3 rounded-xl" style={{ background: '#0a0c0f' }}>
                     <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{label}</p>
-                    <p style={{ fontSize: 14, fontWeight: 500, color: '#e8eaf0' }}>{value}</p>
+                    <p style={{ fontSize: 13, fontWeight: 500, color: '#e8eaf0' }}>{value}</p>
                   </div>
                 ))}
               </div>
-
-              <button
-                onClick={startChecklist}
-                style={{
-                  width: '100%', padding: '14px', borderRadius: 10,
-                  background: '#f97316', color: 'white',
-                  fontWeight: 700, fontSize: 15, border: 'none',
-                  cursor: 'pointer', letterSpacing: '0.02em',
-                }}
-              >
-                INICIAR CHECKLIST →
+              <button onClick={proceed}
+                style={{ width: '100%', padding: 14, borderRadius: 10, background: openChecklist ? '#eab308' : '#f97316', color: openChecklist ? '#0a0c0f' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
+                {openChecklist ? '⚠ REGISTRAR CHEGADA →' : '🚗 INICIAR SAÍDA →'}
               </button>
-
-              <button
-                onClick={() => setVehicle(null)}
-                style={{ width: '100%', marginTop: 10, padding: '10px', background: 'none', border: 'none', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}
-              >
-                Escanear outro veículo
+              <button onClick={() => { setVehicle(null); setOpenChecklist(null); setError('') }}
+                style={{ width: '100%', marginTop: 8, padding: 8, background: 'none', border: 'none', color: '#6b7280', fontSize: 12, cursor: 'pointer' }}>
+                Escolher outro veículo
               </button>
+            </div>
+          </div>
+        ) : mode === 'scan' ? (
+          /* QR SCANNER */
+          <div className="flex-1 flex flex-col">
+            <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 12 }}>Aponte a câmera para o QR Code fixado no veículo</p>
+            <div className="rounded-2xl overflow-hidden relative flex-1" style={{ background: '#111318', minHeight: 280 }}>
+              <div id="qr-reader" ref={scannerRef} className="w-full h-full" style={{ minHeight: 280 }} />
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="relative w-52 h-52">
+                  {['top-0 left-0 border-t-2 border-l-2 rounded-tl-lg','top-0 right-0 border-t-2 border-r-2 rounded-tr-lg','bottom-0 left-0 border-b-2 border-l-2 rounded-bl-lg','bottom-0 right-0 border-b-2 border-r-2 rounded-br-lg'].map((cls, i) => (
+                    <div key={i} className={`absolute w-7 h-7 ${cls}`} style={{ borderColor: '#f97316' }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+            {loadingVehicle && <p className="mt-3 animate-fade-up" style={{ color: '#f97316', fontSize: 13 }}>Identificando veículo...</p>}
+            {error && <p className="mt-3 animate-fade-up" style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
+            {scanning && !error && !loadingVehicle && <p className="mt-3" style={{ color: '#6b7280', fontSize: 12, textAlign: 'center' }}>Buscando QR Code...</p>}
+          </div>
+        ) : (
+          /* VEHICLE LIST */
+          <div className="flex-1">
+            <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 12 }}>Toque no veículo que você vai utilizar</p>
+            {vehicles.length === 0 && (
+              <p style={{ color: '#6b7280', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo disponível</p>
+            )}
+            <div className="flex flex-col gap-2">
+              {vehicles.map(v => (
+                <button key={v.id} onClick={() => confirmVehicle(v)}
+                  style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: '#111318', border: '1px solid #1e2229', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{v.plate}</p>
+                    <p style={{ fontSize: 12, color: '#6b7280' }}>{v.model} · {v.year}</p>
+                  </div>
+                  <span style={{ color: '#f97316', fontSize: 18 }}>›</span>
+                </button>
+              ))}
             </div>
           </div>
         )}
