@@ -6,12 +6,10 @@ const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
 export async function POST(request: NextRequest) {
   const { email, name, cpf, birth_date, password } = await request.json()
 
-  // Validate domain
   if (!email?.endsWith('@consuldata.com.br')) {
     return NextResponse.json({ error: 'E-mail deve ser @consuldata.com.br.' }, { status: 400 })
   }
 
-  // Needs service role key to create user without email confirmation
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!serviceRoleKey) {
     return NextResponse.json({ error: 'Configuração incompleta. Fale com o administrador.' }, { status: 500 })
@@ -23,18 +21,14 @@ export async function POST(request: NextRequest) {
     { auth: { autoRefreshToken: false, persistSession: false } }
   )
 
-  // Check if CPF already registered
-  const { data: existing } = await supabase
-    .from('users')
-    .select('id')
-    .eq('cpf', cpf)
-    .single()
-
-  if (existing) {
-    return NextResponse.json({ error: 'CPF já cadastrado. Fale com o administrador.' }, { status: 409 })
+  // CPF ja cadastrado?
+  const { data: existingCpf } = await supabase
+    .from('users').select('id').eq('cpf', cpf).single()
+  if (existingCpf) {
+    return NextResponse.json({ error: 'CPF já cadastrado. Use a tela de login com seu e-mail.' }, { status: 409 })
   }
 
-  // Create auth user (email_confirm: true = skip confirmation email)
+  // Cria usuario no Auth (email_confirm=true pula confirmacao por email)
   const { data: authData, error: authError } = await supabase.auth.admin.createUser({
     email,
     password,
@@ -46,11 +40,12 @@ export async function POST(request: NextRequest) {
     if (authError.message.includes('already registered')) {
       return NextResponse.json({ error: 'E-mail já cadastrado. Use a tela de login.' }, { status: 409 })
     }
+    console.error('Auth error:', authError)
     return NextResponse.json({ error: 'Erro ao criar acesso. Fale com o administrador.' }, { status: 500 })
   }
 
-  // Create user record in public.users
-  const { error: userError } = await supabase.from('users').insert({
+  // Upsert: cobre caso onde trigger ja inseriu registro basico
+  const { error: userError } = await supabase.from('users').upsert({
     id: authData.user.id,
     company_id: CONSULDATA_COMPANY_ID,
     name,
@@ -59,13 +54,19 @@ export async function POST(request: NextRequest) {
     cpf,
     birth_date,
     generated_password: password,
-  })
+    active: true,
+  }, { onConflict: 'id' })
 
   if (userError) {
-    // Rollback auth user
+    console.error('User upsert error:', userError)
     await supabase.auth.admin.deleteUser(authData.user.id)
     return NextResponse.json({ error: 'Erro ao salvar dados. Tente novamente.' }, { status: 500 })
   }
+
+  // Marca convite como usado se existir
+  await supabase.from('user_invites')
+    .update({ used_at: new Date().toISOString() })
+    .eq('email', email).is('used_at', null)
 
   return NextResponse.json({ success: true })
 }
