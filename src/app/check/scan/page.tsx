@@ -136,7 +136,7 @@ export default function ScanPage() {
         .single()
 
       if (driverOpen) {
-        const other = driverOpen.vehicles as { plate: string; model: string } | null
+        const other = (Array.isArray(driverOpen.vehicles) ? driverOpen.vehicles[0] : driverOpen.vehicles) as { plate: string; model: string } | null
         setVehicle(null)
         setError(
           `Você tem uma viagem em aberto no veículo ${other?.plate ?? 'outro veículo'} (${other?.model ?? ''}). Finalize-a antes de iniciar uma nova.`
