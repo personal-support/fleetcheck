@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
 html, body {
-  background-color: #f0f2f9;
-  color: #0f1535;
-  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  background-color: #ebeff2;
+  color: #555555;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
 }
@@ -17,7 +21,7 @@ button, a { touch-action: manipulation; }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #c5ccdf; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #b6bcc2; border-radius: 4px; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -25,20 +29,23 @@ button, a { touch-action: manipulation; }
 }
 
 @keyframes pulse-ring {
-  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13,27,142,0.3); }
-  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(13,27,142,0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13,27,142,0); }
+  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(248,105,36,0.4); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(248,105,36,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(248,105,36,0); }
 }
 
-.animate-fade-up { animation: fadeUp 0.35s ease forwards; }
+.animate-fade-up { animation: fadeUp 0.3s ease forwards; }
 .animate-pulse-ring { animation: pulse-ring 2s infinite; }
 
-.step-bar { height: 4px; background: #dde2f0; border-radius: 2px; overflow: hidden; }
-.step-bar-fill { height: 100%; background: #0D1B8E; border-radius: 2px; transition: width 0.4s ease; }
-
-.card {
-  background: #ffffff;
-  border: 1px solid #dde2f0;
-  border-radius: 16px;
-  box-shadow: 0 1px 4px rgba(13,27,142,0.06);
+.step-bar {
+  height: 4px;
+  background: #e4e4e4;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.step-bar-fill {
+  height: 100%;
+  background: #f86924;
+  border-radius: 4px;
+  transition: width 0.4s ease;
 }

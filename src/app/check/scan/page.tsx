@@ -171,7 +171,7 @@ export default function ScanPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#f0f2f9' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-5 pb-3">
         <div className="flex items-center gap-3">
@@ -182,13 +182,13 @@ export default function ScanPage() {
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
           <div>
-            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 18, fontWeight: 800, color: '#0f1535', lineHeight: 1 }}>
-              FLEET<span style={{ color: '#0D1B8E' }}>CHECK</span>
+            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 18, fontWeight: 800, color: '#555555', lineHeight: 1 }}>
+              FLEET<span style={{ color: '#212771' }}>CHECK</span>
             </p>
-            {userName && <p style={{ color: '#64748b', fontSize: 11 }}>Olá, {userName}</p>}
+            {userName && <p style={{ color: '#8d949a', fontSize: 11 }}>Olá, {userName}</p>}
           </div>
         </div>
-        <button onClick={logout} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: 12 }}>
+        <button onClick={logout} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', fontSize: 12 }}>
           Sair
         </button>
       </div>
@@ -200,26 +200,26 @@ export default function ScanPage() {
             {openChecklist ? (
               <div className="mb-4 px-4 py-3 rounded-xl" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.25)' }}>
                 <p style={{ color: '#eab308', fontSize: 13, fontWeight: 600 }}>⚠ Viagem em aberto</p>
-                <p style={{ color: '#64748b', fontSize: 12, marginTop: 2 }}>Este veículo tem uma saída sem chegada registrada. Finalize a viagem atual.</p>
+                <p style={{ color: '#8d949a', fontSize: 12, marginTop: 2 }}>Este veículo tem uma saída sem chegada registrada. Finalize a viagem atual.</p>
               </div>
             ) : (
               <div className="mb-4 px-4 py-3 rounded-xl" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
                 <p style={{ color: '#22c55e', fontSize: 13, fontWeight: 600 }}>✓ Veículo disponível</p>
-                <p style={{ color: '#64748b', fontSize: 12, marginTop: 2 }}>Nenhuma viagem em aberto.</p>
+                <p style={{ color: '#8d949a', fontSize: 12, marginTop: 2 }}>Nenhuma viagem em aberto.</p>
               </div>
             )}
             <div className="rounded-2xl p-5" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(252,181,47,0.12)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(248,105,36,0.12)' }}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="#fcb52f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="7.5" cy="15.5" r="1" fill="#fcb52f"/>
-                    <circle cx="16.5" cy="15.5" r="1" fill="#fcb52f"/>
+                    <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="#f86924" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="7.5" cy="15.5" r="1" fill="#f86924"/>
+                    <circle cx="16.5" cy="15.5" r="1" fill="#f86924"/>
                   </svg>
                 </div>
                 <div>
-                  <p style={{ fontSize: 20, fontWeight: 800, color: '#0f1535', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{vehicle.plate}</p>
-                  <p style={{ fontSize: 13, color: '#64748b' }}>{vehicle.model} · {vehicle.year}</p>
+                  <p style={{ fontSize: 20, fontWeight: 800, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{vehicle.plate}</p>
+                  <p style={{ fontSize: 13, color: '#8d949a' }}>{vehicle.model} · {vehicle.year}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2 mb-4">
@@ -227,18 +227,18 @@ export default function ScanPage() {
                   { label: 'KM anterior', value: vehicle.last_km ? `${vehicle.last_km.toLocaleString('pt-BR')} km` : '—' },
                   { label: 'Último check', value: vehicle.last_check_at ? new Date(vehicle.last_check_at).toLocaleDateString('pt-BR') : 'Nunca' },
                 ].map(({ label, value }) => (
-                  <div key={label} className="p-3 rounded-xl" style={{ background: '#f0f2f9' }}>
-                    <p style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{label}</p>
-                    <p style={{ fontSize: 13, fontWeight: 500, color: '#0f1535' }}>{value}</p>
+                  <div key={label} className="p-3 rounded-xl" style={{ background: '#ebeff2' }}>
+                    <p style={{ fontSize: 10, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{label}</p>
+                    <p style={{ fontSize: 13, fontWeight: 500, color: '#555555' }}>{value}</p>
                   </div>
                 ))}
               </div>
               <button onClick={proceed}
-                style={{ width: '100%', padding: 14, borderRadius: 10, background: openChecklist ? '#eab308' : '#fcb52f', color: openChecklist ? '#f0f2f9' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
+                style={{ width: '100%', padding: 14, borderRadius: 10, background: openChecklist ? '#eab308' : '#f86924', color: openChecklist ? '#ebeff2' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
                 {openChecklist ? '⚠ REGISTRAR CHEGADA →' : '🚗 INICIAR SAÍDA →'}
               </button>
               <button onClick={() => { setVehicle(null); setOpenChecklist(null); setError('') }}
-                style={{ width: '100%', marginTop: 8, padding: 8, background: 'none', border: 'none', color: '#64748b', fontSize: 12, cursor: 'pointer' }}>
+                style={{ width: '100%', marginTop: 8, padding: 8, background: 'none', border: 'none', color: '#8d949a', fontSize: 12, cursor: 'pointer' }}>
                 Escolher outro veículo
               </button>
             </div>
@@ -249,11 +249,11 @@ export default function ScanPage() {
           {/* Mode tabs */}
           <div className="flex gap-2 mb-4">
             <button onClick={() => handleModeChange('list')}
-              style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: mode === 'list' ? '#fcb52f' : '#ffffff', border: `1px solid ${mode === 'list' ? '#fcb52f' : '#dde2f0'}`, color: mode === 'list' ? 'white' : '#6b7280' }}>
+              style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: mode === 'list' ? '#f86924' : '#ffffff', border: `1px solid ${mode === 'list' ? '#f86924' : '#dddddd'}`, color: mode === 'list' ? 'white' : '#6b7280' }}>
               📋 Lista
             </button>
             <button onClick={() => { handleModeChange('scan'); startScanner() }}
-              style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: mode === 'scan' ? '#fcb52f' : '#ffffff', border: `1px solid ${mode === 'scan' ? '#fcb52f' : '#dde2f0'}`, color: mode === 'scan' ? 'white' : '#6b7280' }}>
+              style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: mode === 'scan' ? '#f86924' : '#ffffff', border: `1px solid ${mode === 'scan' ? '#f86924' : '#dddddd'}`, color: mode === 'scan' ? 'white' : '#6b7280' }}>
               📷 QR Code
             </button>
           </div>
@@ -261,7 +261,7 @@ export default function ScanPage() {
           {error && (
             <div className="mb-3 px-4 py-3 rounded-xl animate-fade-up" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)' }}>
               <p style={{ color: '#eab308', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>⚠ Viagem em aberto</p>
-              <p style={{ color: '#64748b', fontSize: 13, lineHeight: 1.5 }}>{error}</p>
+              <p style={{ color: '#8d949a', fontSize: 13, lineHeight: 1.5 }}>{error}</p>
               <button
                 onClick={async () => {
                   const supabase = createClient()
@@ -281,7 +281,7 @@ export default function ScanPage() {
                     router.push('/check/odometer')
                   }
                 }}
-                style={{ marginTop: 10, padding: '8px 14px', borderRadius: 8, background: '#eab308', color: '#f0f2f9', fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+                style={{ marginTop: 10, padding: '8px 14px', borderRadius: 8, background: '#eab308', color: '#ebeff2', fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer' }}>
                 Ir para registrar chegada →
               </button>
             </div>
@@ -296,9 +296,9 @@ export default function ScanPage() {
                   placeholder="Buscar por placa..."
                   value={search}
                   onChange={e => setSearch(e.target.value.toUpperCase())}
-                  style={{ width: '100%', padding: '10px 14px 10px 36px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
-                  onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                  onBlur={e => e.target.style.borderColor = '#dde2f0'}
+                  style={{ width: '100%', padding: '10px 14px 10px 36px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
+                  onFocus={e => e.target.style.borderColor = '#f86924'}
+                  onBlur={e => e.target.style.borderColor = '#dddddd'}
                 />
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
                   <circle cx="11" cy="11" r="8" stroke="#6b7280" strokeWidth="1.5"/>
@@ -307,14 +307,14 @@ export default function ScanPage() {
               </div>
               {loadingVehicles ? (
                 <div className="flex justify-center py-10">
-                  <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
+                  <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
                 </div>
               ) : (() => {
                 const filtered = vehicles.filter(v =>
                   v.plate.includes(search) || v.model.toUpperCase().includes(search)
                 )
                 return filtered.length === 0 ? (
-                  <p style={{ color: '#64748b', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
+                  <p style={{ color: '#8d949a', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
                     {search ? `Nenhum veículo com "${search}"` : 'Nenhum veículo disponível'}
                   </p>
                 ) : (
@@ -323,13 +323,13 @@ export default function ScanPage() {
                       <button key={v.id} onClick={() => confirmVehicle(v)} disabled={loadingVehicle}
                         style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: loadingVehicle ? 0.6 : 1 }}>
                         <div>
-                          <p style={{ fontSize: 17, fontWeight: 700, color: '#0f1535', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{v.plate}</p>
-                          <p style={{ fontSize: 12, color: '#64748b' }}>{v.model} · {v.year}</p>
+                          <p style={{ fontSize: 17, fontWeight: 700, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{v.plate}</p>
+                          <p style={{ fontSize: 12, color: '#8d949a' }}>{v.model} · {v.year}</p>
                         </div>
                         {loadingVehicle ? (
-                          <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
+                          <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
                         ) : (
-                          <span style={{ color: '#fcb52f', fontSize: 20 }}>›</span>
+                          <span style={{ color: '#f86924', fontSize: 20 }}>›</span>
                         )}
                       </button>
                     ))}
@@ -342,7 +342,7 @@ export default function ScanPage() {
           {/* SCAN MODE */}
           {mode === 'scan' && (
             <div className="flex-1 flex flex-col">
-              <p style={{ color: '#64748b', fontSize: 13, marginBottom: 12 }}>
+              <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 12 }}>
                 Aponte a câmera para o QR Code fixado no veículo
               </p>
               <div className="rounded-2xl overflow-hidden relative" style={{ background: '#ffffff', height: 300 }}>
@@ -351,19 +351,19 @@ export default function ScanPage() {
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="relative w-52 h-52">
                       {['top-0 left-0 border-t-2 border-l-2 rounded-tl-lg','top-0 right-0 border-t-2 border-r-2 rounded-tr-lg','bottom-0 left-0 border-b-2 border-l-2 rounded-bl-lg','bottom-0 right-0 border-b-2 border-r-2 rounded-br-lg'].map((cls, i) => (
-                        <div key={i} className={`absolute w-7 h-7 ${cls}`} style={{ borderColor: '#fcb52f' }} />
+                        <div key={i} className={`absolute w-7 h-7 ${cls}`} style={{ borderColor: '#f86924' }} />
                       ))}
                     </div>
                   </div>
                 )}
                 {!scannerActive && !error && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
+                    <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
                   </div>
                 )}
               </div>
               {loadingVehicle && (
-                <p className="mt-3 animate-fade-up" style={{ color: '#fcb52f', fontSize: 13, textAlign: 'center' }}>
+                <p className="mt-3 animate-fade-up" style={{ color: '#f86924', fontSize: 13, textAlign: 'center' }}>
                   Identificando veículo...
                 </p>
               )}

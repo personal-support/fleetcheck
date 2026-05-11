@@ -68,32 +68,32 @@ export default function VehicleDeepLinkPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#f0f2f9' }}>
+    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#ebeff2' }}>
       <div className="text-center animate-fade-up">
         {status === 'loading' ? (
           <>
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{ background: '#fcb52f' }}>
+              style={{ background: '#f86924' }}>
               <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
                 <path d="M4 8h24M4 8v16a2 2 0 002 2h20a2 2 0 002-2V8M4 8l4-4h16l4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <circle cx="10" cy="20" r="2" fill="white"/>
                 <circle cx="22" cy="20" r="2" fill="white"/>
               </svg>
             </div>
-            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#0f1535', marginBottom: 12 }}>
-              FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
+            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#555555', marginBottom: 12 }}>
+              FLEET<span style={{ color: '#f86924' }}>CHECK</span>
             </h1>
             <div className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin"
-                style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
-              <p style={{ color: '#64748b', fontSize: 14 }}>{message}</p>
+                style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
+              <p style={{ color: '#8d949a', fontSize: 14 }}>{message}</p>
             </div>
           </>
         ) : (
           <>
             <p style={{ color: '#ef4444', fontSize: 15, marginBottom: 16 }}>Veículo não encontrado ou inativo.</p>
             <button onClick={() => router.replace('/check/scan')}
-              style={{ padding: '12px 24px', borderRadius: 10, background: '#fcb52f', color: 'white', fontWeight: 700, fontSize: 14, border: 'none', cursor: 'pointer' }}>
+              style={{ padding: '12px 24px', borderRadius: 10, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 14, border: 'none', cursor: 'pointer' }}>
               Ir para lista de veículos
             </button>
           </>

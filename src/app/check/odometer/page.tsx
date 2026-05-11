@@ -148,16 +148,16 @@ export default function OdometerPage() {
   const cssZoom = zoomSupported ? 1 : zoom
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#f0f2f9' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
       {/* Header */}
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-2 mb-3">
-          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 0 }}>
+          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', padding: 0 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <p style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             {vehicle.plate} · {isArrival ? 'Chegada' : 'Saída'} · Hodômetro
           </p>
         </div>
@@ -169,8 +169,8 @@ export default function OdometerPage() {
         {/* CAMERA */}
         {step === 'camera' && (
           <div className="flex-1 flex flex-col animate-fade-up">
-            <p style={{ color: '#64748b', fontSize: 13, marginBottom: 10 }}>
-              Enquadre o display do hodômetro · KM anterior: <strong style={{ color: '#0f1535' }}>{lastKm ? lastKm.toLocaleString('pt-BR') : '—'}</strong>
+            <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 10 }}>
+              Enquadre o display do hodômetro · KM anterior: <strong style={{ color: '#555555' }}>{lastKm ? lastKm.toLocaleString('pt-BR') : '—'}</strong>
             </p>
 
             {/* Video container */}
@@ -193,11 +193,11 @@ export default function OdometerPage() {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div style={{
                   width: 260, height: 90,
-                  border: '2px solid rgba(252,181,47,0.7)',
+                  border: '2px solid rgba(248,105,36,0.7)',
                   borderRadius: 10,
                   boxShadow: '0 0 0 2000px rgba(0,0,0,0.25)',
                 }}>
-                  <div style={{ position: 'absolute', top: -18, left: '50%', transform: 'translateX(-50%)', background: 'rgba(252,181,47,0.85)', borderRadius: 4, padding: '2px 8px' }}>
+                  <div style={{ position: 'absolute', top: -18, left: '50%', transform: 'translateX(-50%)', background: 'rgba(248,105,36,0.85)', borderRadius: 4, padding: '2px 8px' }}>
                     <p style={{ fontSize: 10, color: 'white', whiteSpace: 'nowrap' }}>Alinhe o display aqui</p>
                   </div>
                 </div>
@@ -206,7 +206,7 @@ export default function OdometerPage() {
               {/* Zoom indicator */}
               {zoom > 1 && (
                 <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '3px 8px' }}>
-                  <p style={{ fontSize: 12, color: '#fcb52f', fontWeight: 700 }}>{zoom.toFixed(1)}×</p>
+                  <p style={{ fontSize: 12, color: '#f86924', fontWeight: 700 }}>{zoom.toFixed(1)}×</p>
                 </div>
               )}
             </div>
@@ -215,7 +215,7 @@ export default function OdometerPage() {
 
             {/* Zoom slider */}
             <div className="mt-3 flex items-center gap-3">
-              <span style={{ fontSize: 11, color: '#64748b', minWidth: 20 }}>1×</span>
+              <span style={{ fontSize: 11, color: '#8d949a', minWidth: 20 }}>1×</span>
               <input
                 type="range"
                 min={1}
@@ -223,9 +223,9 @@ export default function OdometerPage() {
                 step={0.1}
                 value={zoom}
                 onChange={e => applyZoom(parseFloat(e.target.value))}
-                style={{ flex: 1, accentColor: '#fcb52f' }}
+                style={{ flex: 1, accentColor: '#f86924' }}
               />
-              <span style={{ fontSize: 11, color: '#64748b', minWidth: 28 }}>
+              <span style={{ fontSize: 11, color: '#8d949a', minWidth: 28 }}>
                 {maxZoom > 1 ? `${Math.round(maxZoom)}×` : '5×'}
               </span>
             </div>
@@ -234,11 +234,11 @@ export default function OdometerPage() {
 
             <div className="flex gap-3 mt-4">
               <button onClick={capture}
-                style={{ flex: 1, padding: 16, borderRadius: 12, background: '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
+                style={{ flex: 1, padding: 16, borderRadius: 12, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
                 📸 Fotografar
               </button>
               <button onClick={() => { stopCamera(); setCorrecting(true); setStep('confirm') }}
-                style={{ padding: '16px 14px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', color: '#64748b', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                style={{ padding: '16px 14px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', color: '#8d949a', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                 Digitar KM
               </button>
             </div>
@@ -254,8 +254,8 @@ export default function OdometerPage() {
             )}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-                style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
-              <p style={{ color: '#0f1535', fontSize: 15 }}>Lendo hodômetro com IA...</p>
+                style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
+              <p style={{ color: '#555555', fontSize: 15 }}>Lendo hodômetro com IA...</p>
             </div>
           </div>
         )}
@@ -263,7 +263,7 @@ export default function OdometerPage() {
         {/* CONFIRM */}
         {step === 'confirm' && (
           <div className="flex-1 flex flex-col animate-fade-up gap-4">
-            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#0f1535' }}>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#555555' }}>
               {kmAuto && !correcting ? 'CONFIRMAR KM' : 'INFORME O KM'}
             </h2>
 
@@ -280,7 +280,7 @@ export default function OdometerPage() {
                 </svg>
                 <div>
                   <p style={{ fontSize: 10, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>IA leu automaticamente</p>
-                  <p style={{ fontSize: 28, fontWeight: 700, color: '#0f1535', fontFamily: "'Barlow Condensed', sans-serif" }}>
+                  <p style={{ fontSize: 28, fontWeight: 700, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif" }}>
                     {kmAuto.toLocaleString('pt-BR')} km
                   </p>
                 </div>
@@ -289,7 +289,7 @@ export default function OdometerPage() {
 
             {(correcting || !kmAuto) && (
               <div>
-                <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+                <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
                   {kmAuto ? 'Corrigir KM' : 'KM atual'}
                 </label>
                 <input
@@ -299,9 +299,9 @@ export default function OdometerPage() {
                   onChange={e => setKmInput(e.target.value)}
                   placeholder={lastKm ? `Último: ${lastKm.toLocaleString('pt-BR')}` : 'Ex: 110846'}
                   autoFocus
-                  style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#0f1535', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
-                  onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                  onBlur={e => e.target.style.borderColor = '#dde2f0'}
+                  style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#555555', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
+                  onFocus={e => e.target.style.borderColor = '#f86924'}
+                  onBlur={e => e.target.style.borderColor = '#dddddd'}
                 />
               </div>
             )}
@@ -310,20 +310,20 @@ export default function OdometerPage() {
 
             <div className="flex flex-col gap-2 mt-auto">
               <button onClick={confirm}
-                style={{ width: '100%', padding: 14, borderRadius: 10, background: '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
+                style={{ width: '100%', padding: 14, borderRadius: 10, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
                 CONFIRMAR E CONTINUAR →
               </button>
 
               {kmAuto && !correcting && (
                 <button onClick={() => { setCorrecting(true); setKmInput(String(kmAuto)) }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#64748b', fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: 10, background: 'none', border: 'none', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
                   Leitura incorreta? Corrigir
                 </button>
               )}
 
               {(correcting || !kmAuto) && photoUrl && (
                 <button onClick={() => { setStep('camera'); setPhotoUrl(''); setPhotoBlob(null); setCorrecting(false); setKmAuto(null); setKmInput(''); startCamera() }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#64748b', fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: 10, background: 'none', border: 'none', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
                   ← Tirar foto novamente
                 </button>
               )}

@@ -2,18 +2,19 @@ export function ConsuldataFooter() {
   return (
     <footer style={{
       width: '100%',
-      padding: '10px 20px',
+      padding: '12px 20px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderTop: '1px solid #dde2f0',
+      borderTop: '1px solid #dddddd',
       background: '#ffffff',
       marginTop: 'auto',
+      flexShrink: 0,
     }}>
-      <span style={{ fontSize: 10, color: '#a0a8c0', letterSpacing: '0.03em' }}>
+      <span style={{ fontSize: 11, color: '#8d949a', fontFamily: "'Open Sans', sans-serif" }}>
         © Todos os Direitos Reservados a Consuldata
       </span>
-      <span style={{ fontSize: 10, color: '#a0a8c0', letterSpacing: '0.03em' }}>
+      <span style={{ fontSize: 11, color: '#8d949a', fontFamily: "'Open Sans', sans-serif" }}>
         Desenvolvido por Jucimar Lopes
       </span>
     </footer>

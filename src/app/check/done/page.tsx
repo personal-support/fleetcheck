@@ -22,26 +22,26 @@ function DoneContent() {
   }, [router])
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#f0f2f9' }}>
+    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#ebeff2' }}>
       <div className="text-center animate-fade-up max-w-sm w-full">
         <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-          style={{ background: offline ? 'rgba(234,179,8,0.12)' : isArrival ? 'rgba(34,197,94,0.12)' : 'rgba(252,181,47,0.12)', border: `2px solid ${offline ? '#eab308' : isArrival ? '#22c55e' : '#fcb52f'}` }}>
+          style={{ background: offline ? 'rgba(234,179,8,0.12)' : isArrival ? 'rgba(34,197,94,0.12)' : 'rgba(248,105,36,0.12)', border: `2px solid ${offline ? '#eab308' : isArrival ? '#22c55e' : '#f86924'}` }}>
           {offline ? (
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2v10M12 16v2" stroke="#eab308" strokeWidth="2" strokeLinecap="round"/></svg>
           ) : isArrival ? (
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           ) : (
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-              <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="#fcb52f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="#f86924" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           )}
         </div>
 
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 30, fontWeight: 800, color: '#0f1535', marginBottom: 8 }}>
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 30, fontWeight: 800, color: '#555555', marginBottom: 8 }}>
           {offline ? 'SALVO OFFLINE' : isArrival ? 'CHEGADA REGISTRADA' : 'SAÍDA REGISTRADA'}
         </h1>
 
-        <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
+        <p style={{ color: '#8d949a', fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
           {offline
             ? 'Sem conexão no momento. Os dados foram salvos localmente e serão enviados automaticamente quando a internet estiver disponível.'
             : isArrival
@@ -50,14 +50,14 @@ function DoneContent() {
         </p>
 
         {!isArrival && !offline && (
-          <div className="mb-6 px-4 py-3 rounded-xl text-left" style={{ background: 'rgba(13,27,142,0.04)', border: '1px solid rgba(13,27,142,0.08)' }}>
-            <p style={{ color: '#fcb52f', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Lembrete</p>
-            <p style={{ color: '#64748b', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
+          <div className="mb-6 px-4 py-3 rounded-xl text-left" style={{ background: 'rgba(33,39,113,0.04)', border: '1px solid rgba(33,39,113,0.08)' }}>
+            <p style={{ color: '#f86924', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Lembrete</p>
+            <p style={{ color: '#8d949a', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
           </div>
         )}
 
         <button onClick={() => router.replace('/check/scan')}
-          style={{ width: '100%', padding: 14, borderRadius: 10, background: isArrival ? '#22c55e' : '#fcb52f', color: isArrival ? '#f0f2f9' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
+          style={{ width: '100%', padding: 14, borderRadius: 10, background: isArrival ? '#22c55e' : '#f86924', color: isArrival ? '#ebeff2' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
           {isArrival ? '✓ CONCLUÍDO' : 'OK, ENTENDIDO'}
         </button>
       </div>

@@ -61,16 +61,16 @@ function QRCanvas({ vehicleId, plate }: { vehicleId: string; plate: string }) {
 
   return (
     <div className="flex flex-col items-center gap-3 p-4 rounded-xl"
-      style={{ background: '#f0f2f9', border: '1px solid #1a2040' }}>
+      style={{ background: '#ebeff2', border: '1px solid #1a2040' }}>
       <canvas ref={canvasRef} style={{ borderRadius: 8, display: 'block' }} />
-      <p style={{ fontSize: 13, fontWeight: 700, color: '#0f1535', letterSpacing: 2, fontFamily: "'Barlow Condensed', sans-serif" }}>{plate}</p>
+      <p style={{ fontSize: 13, fontWeight: 700, color: '#555555', letterSpacing: 2, fontFamily: "'Barlow Condensed', sans-serif" }}>{plate}</p>
       <div className="flex gap-2 w-full">
         <button onClick={download}
-          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#ffffff', border: '1px solid #1a2040', color: '#0f1535', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
+          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#ffffff', border: '1px solid #1a2040', color: '#555555', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
           ⬇ Baixar PNG
         </button>
         <button onClick={print}
-          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#fcb52f', border: 'none', color: 'white', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
+          style={{ flex: 1, padding: '8px 0', borderRadius: 8, background: '#f86924', border: 'none', color: 'white', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
           🖨 Imprimir
         </button>
       </div>
@@ -120,19 +120,19 @@ export default function AdminVehiclesPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#f0f2f9' }}>
+    <main className="min-h-screen" style={{ background: '#ebeff2' }}>
       {/* Header */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1a2040' }}>
-        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}>
+        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#0f1535', flex: 1 }}>
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#555555', flex: 1 }}>
           VEÍCULOS
         </h1>
         <button onClick={() => { setAdding(!adding); setError('') }}
-          style={{ padding: '7px 14px', borderRadius: 8, background: adding ? '#ffffff' : '#fcb52f', color: adding ? '#6b7280' : 'white', fontSize: 12, fontWeight: 600, border: adding ? '1px solid #1a2040' : 'none', cursor: 'pointer' }}>
+          style={{ padding: '7px 14px', borderRadius: 8, background: adding ? '#ffffff' : '#f86924', color: adding ? '#6b7280' : 'white', fontSize: 12, fontWeight: 600, border: adding ? '1px solid #1a2040' : 'none', cursor: 'pointer' }}>
           {adding ? 'Cancelar' : '+ Adicionar'}
         </button>
       </div>
@@ -140,7 +140,7 @@ export default function AdminVehiclesPage() {
       {/* Add form */}
       {adding && (
         <div className="mx-5 mt-4 p-4 rounded-xl animate-fade-up" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f1535', marginBottom: 12 }}>Novo veículo</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 600, color: '#555555', marginBottom: 12 }}>Novo veículo</h3>
           <div className="flex flex-col gap-3">
             {[
               { key: 'plate', label: 'Placa', placeholder: 'ABC1234' },
@@ -148,17 +148,17 @@ export default function AdminVehiclesPage() {
               { key: 'year', label: 'Ano', placeholder: '2020' },
             ].map(({ key, label, placeholder }) => (
               <div key={key}>
-                <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{label}</label>
+                <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{label}</label>
                 <input type={key === 'year' ? 'number' : 'text'} placeholder={placeholder}
                   value={form[key as keyof typeof form]}
                   onChange={e => setForm(prev => ({ ...prev, [key]: e.target.value }))}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
-                  onFocus={e => e.target.style.borderColor = '#fcb52f'} onBlur={e => e.target.style.borderColor = '#dde2f0'} />
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
+                  onFocus={e => e.target.style.borderColor = '#f86924'} onBlur={e => e.target.style.borderColor = '#dddddd'} />
               </div>
             ))}
             {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
             <button onClick={addVehicle} disabled={saving}
-              style={{ padding: 11, borderRadius: 8, background: saving ? '#0D1B8E' : '#fcb52f', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
+              style={{ padding: 11, borderRadius: 8, background: saving ? '#212771' : '#f86924', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
               {saving ? 'Salvando...' : 'Salvar veículo'}
             </button>
           </div>
@@ -176,7 +176,7 @@ export default function AdminVehiclesPage() {
               return v ? <QRCanvas vehicleId={v.id} plate={v.plate} /> : null
             })()}
             <button onClick={() => setShowQR(null)}
-              style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#64748b', fontSize: 13, cursor: 'pointer' }}>
+              style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
               Fechar
             </button>
           </div>
@@ -188,27 +188,27 @@ export default function AdminVehiclesPage() {
         {loading && (
           <div className="flex justify-center py-10">
             <div className="w-7 h-7 rounded-full border-2 border-t-transparent animate-spin"
-              style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
+              style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
           </div>
         )}
         {!loading && vehicles.length === 0 && (
-          <p style={{ color: '#64748b', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo cadastrado</p>
+          <p style={{ color: '#8d949a', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo cadastrado</p>
         )}
         {vehicles.map(v => (
           <div key={v.id} className="p-4 rounded-xl" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
             <div className="flex items-start justify-between">
               <div>
-                <p style={{ fontSize: 19, fontWeight: 800, color: '#0f1535', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>
+                <p style={{ fontSize: 19, fontWeight: 800, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>
                   {v.plate}
                 </p>
-                <p style={{ fontSize: 13, color: '#64748b' }}>{v.model}{v.year ? ` · ${v.year}` : ''}</p>
-                <p style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>
+                <p style={{ fontSize: 13, color: '#8d949a' }}>{v.model}{v.year ? ` · ${v.year}` : ''}</p>
+                <p style={{ fontSize: 12, color: '#8d949a', marginTop: 4 }}>
                   KM: {v.last_km ? v.last_km.toLocaleString('pt-BR') : '—'} ·
                   Check: {v.last_check_at ? new Date(v.last_check_at).toLocaleDateString('pt-BR') : 'Nunca'}
                 </p>
               </div>
               <button onClick={() => setShowQR(v.id)}
-                style={{ padding: '8px 14px', borderRadius: 8, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                style={{ padding: '8px 14px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                   <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
                   <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
