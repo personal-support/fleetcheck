@@ -108,13 +108,43 @@ export default function ScanPage() {
 
   async function confirmVehicle(v: Vehicle) {
     setVehicle(v)
+    setError('')
     try {
       const supabase = createClient()
-      const { data } = await supabase
-        .from('checklists').select('id')
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) return
+
+      // 1. Checklist aberto neste veículo?
+      const { data: vehicleOpen } = await supabase
+        .from('checklists').select('id, vehicle_id')
         .eq('vehicle_id', v.id).eq('status', 'open')
         .order('created_at', { ascending: false }).limit(1).single()
-      setOpenChecklist(data ? { id: data.id } : null)
+
+      if (vehicleOpen) {
+        setOpenChecklist({ id: vehicleOpen.id })
+        return
+      }
+
+      // 2. Motorista tem checklist aberto em outro veículo?
+      const { data: driverOpen } = await supabase
+        .from('checklists')
+        .select('id, vehicle_id, vehicles(plate, model)')
+        .eq('user_id', authUser.id)
+        .eq('status', 'open')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()
+
+      if (driverOpen) {
+        const other = driverOpen.vehicles as { plate: string; model: string } | null
+        setVehicle(null)
+        setError(
+          `Você tem uma viagem em aberto no veículo ${other?.plate ?? 'outro veículo'} (${other?.model ?? ''}). Finalize-a antes de iniciar uma nova.`
+        )
+        return
+      }
+
+      setOpenChecklist(null)
     } catch { setOpenChecklist(null) }
   }
 
@@ -218,8 +248,30 @@ export default function ScanPage() {
           </div>
 
           {error && (
-            <div className="mb-3 px-3 py-2 rounded-lg" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
-              <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>
+            <div className="mb-3 px-4 py-3 rounded-xl animate-fade-up" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)' }}>
+              <p style={{ color: '#eab308', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>⚠ Viagem em aberto</p>
+              <p style={{ color: '#6b7280', fontSize: 13, lineHeight: 1.5 }}>{error}</p>
+              <button
+                onClick={async () => {
+                  const supabase = createClient()
+                  const { data: { user: authUser } } = await supabase.auth.getUser()
+                  if (!authUser) return
+                  const { data } = await supabase
+                    .from('checklists')
+                    .select('id, vehicle_id, vehicles(plate, model, year, last_km, last_check_at, last_location_lat, last_location_lng, active, company_id, vehicle_type, created_at)')
+                    .eq('user_id', authUser.id).eq('status', 'open')
+                    .order('created_at', { ascending: false }).limit(1).single()
+                  if (data) {
+                    const veh = data.vehicles as Vehicle
+                    sessionStorage.setItem('fc_vehicle', JSON.stringify({ ...veh, id: data.vehicle_id }))
+                    sessionStorage.setItem('fc_checklist_id', data.id)
+                    sessionStorage.setItem('fc_phase', 'arrival')
+                    router.push('/check/odometer')
+                  }
+                }}
+                style={{ marginTop: 10, padding: '8px 14px', borderRadius: 8, background: '#eab308', color: '#0a0c0f', fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+                Ir para registrar chegada →
+              </button>
             </div>
           )}
 
