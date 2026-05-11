@@ -4,172 +4,241 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
-
-interface Invite {
+interface Driver {
   id: string
+  name: string
   email: string
-  role: string
-  used_at: string | null
+  cpf: string | null
+  birth_date: string | null
+  generated_password: string | null
+  active: boolean
   created_at: string
+}
+
+function formatCPF(value: string) {
+  const d = value.replace(/\D/g, '').slice(0, 11)
+  return d.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4')
+}
+
+function generatePassword(cpf: string, birthDate: string): string {
+  const digits = cpf.replace(/\D/g, '')
+  if (digits.length !== 11) return ''
+  const date = new Date(birthDate + 'T12:00:00')
+  if (isNaN(date.getTime())) return ''
+  const dd = String(date.getDate()).padStart(2, '0')
+  const cpfGroup2 = digits.slice(3, 6)
+  const yearLast2 = String(date.getFullYear()).slice(-2)
+  const yearReversed = yearLast2.split('').reverse().join('')
+  return `${dd}${cpfGroup2}${yearReversed}`
 }
 
 export default function AdminDriversPage() {
   const router = useRouter()
-  const [invites, setInvites] = useState<Invite[]>([])
+  const [drivers, setDrivers] = useState<Driver[]>([])
   const [loading, setLoading] = useState(true)
-  const [email, setEmail] = useState('')
+  const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const [copiedId, setCopiedId] = useState('')
   const [error, setError] = useState('')
+  const [form, setForm] = useState({ email: '', name: '', cpf: '', birth_date: '' })
 
-  useEffect(() => { loadInvites() }, [])
+  useEffect(() => { loadDrivers() }, [])
 
-  async function loadInvites() {
+  async function loadDrivers() {
     const supabase = createClient()
     const { data } = await supabase
-      .from('user_invites')
-      .select('*')
-      .eq('company_id', CONSULDATA_COMPANY_ID)
-      .order('created_at', { ascending: false })
-    if (data) setInvites(data as Invite[])
+      .from('users')
+      .select('id, name, email, cpf, birth_date, generated_password, active, created_at')
+      .eq('role', 'driver')
+      .order('name')
+    if (data) setDrivers(data as Driver[])
     setLoading(false)
   }
 
-  async function addInvite() {
-    const trimmed = email.trim().toLowerCase()
-    if (!trimmed || !trimmed.includes('@')) {
-      setError('E-mail inválido.')
-      return
-    }
-    setSaving(true)
+  async function registerDriver() {
     setError('')
+    if (!form.email.endsWith('@consuldata.com.br')) { setError('E-mail deve ser @consuldata.com.br'); return }
+    if (form.name.trim().split(' ').length < 2) { setError('Nome completo obrigatório'); return }
+    if (form.cpf.replace(/\D/g, '').length !== 11) { setError('CPF inválido'); return }
+    if (!form.birth_date) { setError('Data de nascimento obrigatória'); return }
 
-    const supabase = createClient()
-    const { error: err } = await supabase.from('user_invites').insert({
-      company_id: CONSULDATA_COMPANY_ID,
-      email: trimmed,
-      role: 'driver',
+    const password = generatePassword(form.cpf, form.birth_date)
+    if (!password) { setError('Não foi possível gerar a senha'); return }
+
+    setSaving(true)
+    const res = await fetch('/api/register-driver', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email.toLowerCase(), name: form.name.trim(), cpf: form.cpf.replace(/\D/g, ''), birth_date: form.birth_date, password }),
     })
+    const data = await res.json()
+    if (!res.ok) { setError(data.error || 'Erro ao cadastrar'); setSaving(false); return }
 
-    if (err) {
-      setError(err.code === '23505' ? 'E-mail já cadastrado.' : 'Erro ao adicionar.')
-    } else {
-      setEmail('')
-      loadInvites()
-    }
+    setNewPassword(password)
     setSaving(false)
+    setForm({ email: '', name: '', cpf: '', birth_date: '' })
+    loadDrivers()
   }
 
-  async function removeInvite(id: string) {
-    const supabase = createClient()
-    await supabase.from('user_invites').delete().eq('id', id)
-    setInvites(prev => prev.filter(i => i.id !== id))
+  function copyText(text: string, id: string) {
+    navigator.clipboard.writeText(text)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(''), 2000)
   }
+
+  function resetForm() { setShowForm(false); setNewPassword(''); setError('') }
 
   return (
     <main className="min-h-screen" style={{ background: '#0a0c0f' }}>
+      {/* Header */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1e2229' }}>
-        <button onClick={() => router.back()}
-          style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer' }}>
+        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#e8eaf0' }}>
-          MOTORISTAS
-        </h1>
-      </div>
-
-      {/* Explicação */}
-      <div className="mx-5 mt-4 p-4 rounded-xl" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
-        <p style={{ fontSize: 13, color: '#e8eaf0', lineHeight: 1.6 }}>
-          Cadastre o e-mail do motorista aqui. Na primeira vez que ele fizer login em{' '}
-          <span style={{ color: '#f97316' }}>fleetcheck.vercel.app</span>, o acesso é liberado automaticamente.
-          Funciona com Gmail ou e-mail @consuldata.com.br.
-        </p>
-      </div>
-
-      {/* Add form */}
-      <div className="mx-5 mt-4 p-4 rounded-xl" style={{ background: '#111318', border: '1px solid #1e2229' }}>
-        <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-          Adicionar motorista
-        </label>
-        <div className="flex gap-2">
-          <input
-            type="email"
-            placeholder="motorista@gmail.com ou nome@consuldata.com.br"
-            value={email}
-            onChange={e => { setEmail(e.target.value); setError('') }}
-            onKeyDown={e => e.key === 'Enter' && addInvite()}
-            style={{
-              flex: 1, padding: '10px 14px', borderRadius: 8,
-              background: '#0a0c0f', border: '1px solid #1e2229',
-              color: '#e8eaf0', fontSize: 14, outline: 'none',
-            }}
-            onFocus={e => e.target.style.borderColor = '#f97316'}
-            onBlur={e => e.target.style.borderColor = '#1e2229'}
-          />
-          <button
-            onClick={addInvite}
-            disabled={saving}
-            style={{
-              padding: '10px 18px', borderRadius: 8,
-              background: saving ? '#7c3d12' : '#f97316',
-              color: 'white', fontWeight: 600, fontSize: 13,
-              border: 'none', cursor: saving ? 'not-allowed' : 'pointer',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {saving ? '...' : '+ Adicionar'}
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#e8eaf0', flex: 1 }}>MOTORISTAS</h1>
+        {!showForm && (
+          <button onClick={() => setShowForm(true)}
+            style={{ padding: '7px 14px', borderRadius: 8, background: '#f97316', color: 'white', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer' }}>
+            + Cadastrar
           </button>
-        </div>
-        {error && <p style={{ color: '#ef4444', fontSize: 12, marginTop: 6 }}>{error}</p>}
+        )}
       </div>
 
-      {/* List */}
-      <div className="px-5 pt-4 pb-8 flex flex-col gap-2">
-        <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
-          {invites.length} cadastrado{invites.length !== 1 ? 's' : ''}
+      {/* Info banner */}
+      {!showForm && (
+        <div className="mx-5 mt-4 p-4 rounded-xl" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
+          <p style={{ fontSize: 13, color: '#e8eaf0', lineHeight: 1.6 }}>
+            Motoristas se cadastram em{' '}
+            <span style={{ color: '#f97316', fontWeight: 600 }}>fleetcheck.vercel.app/register</span>{' '}
+            usando e-mail <span style={{ color: '#f97316' }}>@consuldata.com.br</span>, CPF e data de nascimento.
+            O sistema gera a senha automaticamente.
+          </p>
+          <p style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>
+            Se o motorista tiver dificuldade, use o botão <strong style={{ color: '#e8eaf0' }}>Cadastrar</strong> acima para fazer o cadastro por ele e anotar a senha gerada.
+          </p>
+        </div>
+      )}
+
+      {/* NEW PASSWORD CONFIRMATION */}
+      {newPassword && (
+        <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#111318', border: '2px solid rgba(34,197,94,0.4)' }}>
+          <p style={{ fontSize: 12, color: '#22c55e', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>✓ Motorista cadastrado</p>
+          <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 12 }}>Anote a senha e entregue ao motorista:</p>
+          <div className="p-4 rounded-xl text-center mb-3" style={{ background: '#0a0c0f', border: '1px solid rgba(249,115,22,0.3)' }}>
+            <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Senha gerada</p>
+            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 38, fontWeight: 800, color: '#f97316', letterSpacing: 4 }}>{newPassword}</p>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => copyText(newPassword, 'new')}
+              style={{ flex: 1, padding: 10, borderRadius: 8, background: copiedId === 'new' ? 'rgba(34,197,94,0.1)' : '#1e2229', border: `1px solid ${copiedId === 'new' ? '#22c55e' : '#2a2f38'}`, color: copiedId === 'new' ? '#22c55e' : '#e8eaf0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+              {copiedId === 'new' ? '✓ Copiado' : '📋 Copiar senha'}
+            </button>
+            <button onClick={resetForm}
+              style={{ padding: '10px 14px', borderRadius: 8, background: 'none', border: '1px solid #1e2229', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* REGISTER FORM */}
+      {showForm && !newPassword && (
+        <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+          <div className="flex items-center justify-between mb-4">
+            <h3 style={{ fontSize: 15, fontWeight: 600, color: '#e8eaf0' }}>Cadastrar motorista</h3>
+            <button onClick={resetForm} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: 18 }}>×</button>
+          </div>
+          <div className="flex flex-col gap-3">
+            {[
+              { key: 'email', label: 'E-mail (@consuldata.com.br)', placeholder: 'nome@consuldata.com.br', type: 'email' },
+              { key: 'name', label: 'Nome completo', placeholder: 'João da Silva', type: 'text' },
+            ].map(({ key, label, placeholder, type }) => (
+              <div key={key}>
+                <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>{label}</label>
+                <input type={type} placeholder={placeholder} value={form[key as keyof typeof form]}
+                  onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                  onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+              </div>
+            ))}
+            <div>
+              <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>CPF</label>
+              <input type="text" inputMode="numeric" placeholder="000.000.000-00" value={form.cpf} maxLength={14}
+                onChange={e => setForm(p => ({ ...p, cpf: formatCPF(e.target.value) }))}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 15, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
+                onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Data de nascimento</label>
+              <input type="date" value={form.birth_date} onChange={e => setForm(p => ({ ...p, birth_date: e.target.value }))}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#0a0c0f', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
+                onFocus={e => e.target.style.borderColor = '#f97316'} onBlur={e => e.target.style.borderColor = '#1e2229'} />
+            </div>
+            {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
+            <div className="flex gap-2 mt-1">
+              <button onClick={registerDriver} disabled={saving}
+                style={{ flex: 1, padding: 11, borderRadius: 8, background: saving ? '#7c3d12' : '#f97316', color: 'white', fontWeight: 600, fontSize: 13, border: 'none', cursor: saving ? 'not-allowed' : 'pointer' }}>
+                {saving ? 'Cadastrando...' : 'Cadastrar e gerar senha'}
+              </button>
+              <button onClick={resetForm}
+                style={{ padding: '11px 14px', borderRadius: 8, background: 'none', border: '1px solid #1e2229', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DRIVERS LIST */}
+      <div className="px-5 pt-5 pb-8 flex flex-col gap-3">
+        <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          {drivers.length} motorista{drivers.length !== 1 ? 's' : ''} cadastrado{drivers.length !== 1 ? 's' : ''}
         </p>
 
         {loading && (
           <div className="flex justify-center py-8">
-            <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin"
-              style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+            <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
           </div>
         )}
 
-        {invites.map(inv => (
-          <div key={inv.id} className="flex items-center justify-between p-3 rounded-xl"
-            style={{ background: '#111318', border: '1px solid #1e2229' }}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ background: inv.used_at ? 'rgba(34,197,94,0.12)' : 'rgba(249,115,22,0.12)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="8" r="4" stroke={inv.used_at ? '#22c55e' : '#f97316'} strokeWidth="1.5"/>
-                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke={inv.used_at ? '#22c55e' : '#f97316'} strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
+        {!loading && drivers.length === 0 && (
+          <p style={{ color: '#6b7280', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
+            Nenhum motorista cadastrado ainda.
+          </p>
+        )}
+
+        {drivers.map(d => (
+          <div key={d.id} className="p-4 rounded-xl" style={{ background: '#111318', border: '1px solid #1e2229' }}>
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(249,115,22,0.12)' }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#f97316' }}>
+                    {d.name.split(' ').map((n: string) => n[0]).slice(0, 2).join('')}
+                  </span>
+                </div>
+                <div>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: '#e8eaf0' }}>{d.name}</p>
+                  <p style={{ fontSize: 12, color: '#6b7280' }}>{d.email}</p>
+                </div>
               </div>
-              <div>
-                <p style={{ fontSize: 13, color: '#e8eaf0', fontWeight: 500 }}>{inv.email}</p>
-                <p style={{ fontSize: 11, color: '#6b7280' }}>
-                  {inv.role === 'admin' ? 'Admin' : 'Motorista'} ·{' '}
-                  {inv.used_at
-                    ? `Acessou em ${new Date(inv.used_at).toLocaleDateString('pt-BR')}`
-                    : 'Aguardando primeiro acesso'}
-                </p>
-              </div>
+              {d.generated_password && (
+                <button onClick={() => copyText(d.generated_password!, d.id)}
+                  title="Copiar senha"
+                  style={{ flexShrink: 0, padding: '5px 10px', borderRadius: 6, background: copiedId === d.id ? 'rgba(34,197,94,0.1)' : '#0a0c0f', border: `1px solid ${copiedId === d.id ? '#22c55e' : '#1e2229'}`, color: copiedId === d.id ? '#22c55e' : '#6b7280', fontSize: 11, cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 1 }}>
+                  {copiedId === d.id ? '✓' : d.generated_password}
+                </button>
+              )}
             </div>
-            {inv.role !== 'admin' && (
-              <button
-                onClick={() => removeInvite(inv.id)}
-                style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', padding: 4 }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </button>
-            )}
+            <div className="flex gap-2 mt-3" style={{ borderTop: '1px solid #1e2229', paddingTop: 10 }}>
+              {d.cpf && <span style={{ fontSize: 11, color: '#6b7280' }}>CPF: {d.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</span>}
+              <span style={{ fontSize: 11, color: '#6b7280', marginLeft: 'auto' }}>
+                Desde {new Date(d.created_at).toLocaleDateString('pt-BR')}
+              </span>
+            </div>
           </div>
         ))}
       </div>
