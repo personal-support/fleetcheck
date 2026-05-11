@@ -42,10 +42,16 @@ export default function AdminPage() {
             FLEET<span style={{ color: '#f97316' }}>CHECK</span>
             <span style={{ fontSize: 14, fontWeight: 400, color: '#6b7280', marginLeft: 8 }}>Admin</span>
           </h1>
+          <div className="flex gap-2">
+          <button onClick={() => router.push('/admin/drivers')}
+            style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
+            Motoristas
+          </button>
           <button onClick={() => router.push('/admin/vehicles')}
             style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
             Veículos
           </button>
+        </div>
         </div>
       </div>
 
