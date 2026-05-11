@@ -262,7 +262,8 @@ export default function ScanPage() {
                     .eq('user_id', authUser.id).eq('status', 'open')
                     .order('created_at', { ascending: false }).limit(1).single()
                   if (data) {
-                    const veh = data.vehicles as Vehicle
+                    const rawVeh = Array.isArray(data.vehicles) ? data.vehicles[0] : data.vehicles
+                    const veh = rawVeh as unknown as Vehicle
                     sessionStorage.setItem('fc_vehicle', JSON.stringify({ ...veh, id: data.vehicle_id }))
                     sessionStorage.setItem('fc_checklist_id', data.id)
                     sessionStorage.setItem('fc_phase', 'arrival')
