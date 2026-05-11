@@ -234,7 +234,7 @@ export default function OdometerPage() {
 
             <div className="flex gap-3 mt-4">
               <button onClick={capture}
-                style={{ flex: 1, padding: 16, borderRadius: 12, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
+                style={{ flex: 1, padding: 16, borderRadius: 12, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 17, border: 'none', cursor: 'pointer' }}>
                 📸 Fotografar
               </button>
               <button onClick={() => { stopCamera(); setCorrecting(true); setStep('confirm') }}

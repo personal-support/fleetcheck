@@ -162,11 +162,11 @@ export default function ChecklistItemsPage() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 24px' }}>
         {!showNok ? (
           <div className="animate-fade-up" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, textAlign: 'center' }}>
-            <div style={{ fontSize: 56, marginBottom: 8, lineHeight: 1 }}>{currentItem.icon}</div>
-            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 32, fontWeight: 800, color: 'var(--cd-navy)', letterSpacing: '-0.5px' }}>
+            <div style={{ fontSize: 64, marginBottom: 8, lineHeight: 1 }}>{currentItem.icon}</div>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 36, fontWeight: 800, color: 'var(--cd-navy)', letterSpacing: '-0.5px' }}>
               {currentItem.label.toUpperCase()}
             </h2>
-            <p style={{ fontSize: 15, color: 'var(--cd-subtext)', lineHeight: 1.5, maxWidth: 300 }}>{currentItem.description}</p>
+            <p style={{ fontSize: 17, color: 'var(--cd-subtext)', lineHeight: 1.5, maxWidth: 320 }}>{currentItem.description}</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, width: '100%', maxWidth: 380, marginTop: 24 }}>
               <button onClick={() => setShowNok(true)} style={{ padding: '22px 0', borderRadius: 'var(--radius-md)', background: 'var(--cd-red-dim)', border: '2px solid var(--cd-red)', color: 'var(--cd-red)', fontSize: 15, fontWeight: 700, cursor: 'pointer', minHeight: 80, fontFamily: "'Open Sans', sans-serif" }}>
                 ⚠ PROBLEMA

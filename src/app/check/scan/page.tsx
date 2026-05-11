@@ -190,7 +190,7 @@ export default function ScanPage() {
                 {/* Card action */}
                 <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <button onClick={proceed} className="btn-primary"
-                    style={{ background: openChecklist ? 'var(--cd-warn)' : 'var(--cd-orange)', letterSpacing: '0.04em' }}>
+                    style={{ background: openChecklist ? 'var(--cd-warn)' : 'var(--cd-orange)', letterSpacing: '0.04em', fontSize: 16, minHeight: 56 }}>
                     {openChecklist ? '⚠️  REGISTRAR CHEGADA' : '🚗  INICIAR CHECKLIST DE SAÍDA'}
                   </button>
                   <button onClick={() => { setVehicle(null); setOpenChecklist(null); setError('') }} className="btn-secondary">
@@ -259,7 +259,7 @@ export default function ScanPage() {
                     <circle cx="11" cy="11" r="8" stroke="var(--cd-subtext)" strokeWidth="1.5"/>
                     <path d="M21 21l-4.35-4.35" stroke="var(--cd-subtext)" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
-                  <input className="cd-input" type="text" placeholder="Buscar por placa ou modelo..."
+                  <input className="cd-input" type="text" placeholder="Buscar por placa..."
                     value={search} onChange={e => setSearch(e.target.value)}
                     style={{ paddingLeft: 38 }} />
                 </div>
@@ -277,19 +277,19 @@ export default function ScanPage() {
                     <button key={v.id} onClick={() => !loadingVehicle && confirmVehicle(v)}
                       disabled={loadingVehicle}
                       className="cd-card"
-                      style={{ width: '100%', padding: '14px 16px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--cd-border)', opacity: loadingVehicle ? 0.6 : 1, transition: 'box-shadow 0.15s, border-color 0.15s', background: 'var(--cd-surface)' }}
+                      style={{ width: '100%', padding: '18px 16px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--cd-border)', opacity: loadingVehicle ? 0.6 : 1, transition: 'box-shadow 0.15s, border-color 0.15s', background: 'var(--cd-surface)' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--cd-orange)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--shadow-md)' }}
                       onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--cd-border)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--shadow-sm)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--cd-navy-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <div style={{ width: 48, height: 48, borderRadius: 10, background: 'var(--cd-navy-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                             <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="var(--cd-navy)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                             <circle cx="7.5" cy="15.5" r="1" fill="var(--cd-navy)"/><circle cx="16.5" cy="15.5" r="1" fill="var(--cd-navy)"/>
                           </svg>
                         </div>
                         <div>
-                          <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 17, fontWeight: 700, color: 'var(--cd-navy)', letterSpacing: 0.5 }}>{v.plate}</p>
-                          <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginTop: 1 }}>{v.model} · {v.year}</p>
+                          <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 20, fontWeight: 700, color: 'var(--cd-navy)', letterSpacing: 0.5 }}>{v.plate}</p>
+                          <p style={{ fontSize: 14, color: 'var(--cd-subtext)', marginTop: 2 }}>{v.model} · {v.year}</p>
                         </div>
                       </div>
                       {loadingVehicle
