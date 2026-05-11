@@ -46,30 +46,32 @@ export default function AdminPage() {
 
       {/* Header */}
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
-              style={{ height: 26, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
-            <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.2)' }} />
-            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 18, fontWeight: 800, color: '#fff', letterSpacing: '0.5px' }}>
-              FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
-              <span style={{ fontSize: 12, fontWeight: 400, color: 'rgba(255,255,255,0.5)', marginLeft: 6 }}>Admin</span>
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {[
-              { label: 'Checklist', action: () => router.push('/check/scan') },
-              { label: 'Motoristas', action: () => router.push('/admin/drivers') },
-              { label: 'Veículos', action: () => router.push('/admin/vehicles') },
-            ].map(({ label, action }) => (
-              <button key={label} onClick={action}
-                style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'rgba(255,255,255,0.85)', fontSize: 11, fontWeight: 700, padding: '5px 10px', borderRadius: 6, cursor: 'pointer', letterSpacing: '0.03em' }}>
-                {label}
-              </button>
-            ))}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, gap: 12 }}>
+          {/* Logo */}
+          <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
+            style={{ height: 38, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain', flexShrink: 0 }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+          {/* App name center */}
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', flex: 1, textAlign: 'center' }}>
+            FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
+            <span style={{ fontSize: 11, fontWeight: 400, color: 'rgba(255,255,255,0.45)', marginLeft: 6 }}>Admin</span>
+          </span>
+          {/* User + logout */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {[
+                { label: 'Checklist', action: () => router.push('/check/scan') },
+                { label: 'Motoristas', action: () => router.push('/admin/drivers') },
+                { label: 'Veículos', action: () => router.push('/admin/vehicles') },
+              ].map(({ label, action }) => (
+                <button key={label} onClick={action}
+                  style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'rgba(255,255,255,0.85)', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.03em' }}>
+                  {label}
+                </button>
+              ))}
+            </div>
             <button onClick={async () => { await createClient().auth.signOut(); router.replace('/login') }}
-              style={{ background: 'rgba(248,105,36,0.2)', border: '1px solid rgba(248,105,36,0.4)', color: 'var(--cd-orange)', fontSize: 11, fontWeight: 700, padding: '5px 10px', borderRadius: 6, cursor: 'pointer' }}>
+              style={{ background: 'rgba(248,105,36,0.2)', border: '1px solid rgba(248,105,36,0.4)', color: 'var(--cd-orange)', fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.04em', alignSelf: 'flex-end' }}>
               SAIR
             </button>
           </div>

@@ -117,20 +117,20 @@ export default function ScanPage() {
 
       {/* Header */}
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
-              style={{ height: 26, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
-            <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.2)' }} />
-            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 18, fontWeight: 800, color: '#fff', letterSpacing: '0.5px' }}>
-              FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {userName && <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>Olá, {userName}</span>}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, gap: 12 }}>
+          {/* Logo */}
+          <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
+            style={{ height: 38, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain', flexShrink: 0 }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+          {/* App name center */}
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', flex: 1, textAlign: 'center' }}>
+            FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
+          </span>
+          {/* User + logout */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+            {userName && <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', fontWeight: 700, whiteSpace: 'nowrap' }}>{userName}</span>}
             <button onClick={async () => { await createClient().auth.signOut(); router.replace('/login') }}
-              style={{ background: 'rgba(255,255,255,0.12)', border: 'none', color: '#fff', fontSize: 11, fontWeight: 700, padding: '5px 10px', borderRadius: 6, cursor: 'pointer', letterSpacing: '0.04em' }}>
+              style={{ background: 'rgba(248,105,36,0.2)', border: '1px solid rgba(248,105,36,0.4)', color: 'var(--cd-orange)', fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>
               SAIR
             </button>
           </div>
