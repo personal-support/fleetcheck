@@ -21,29 +21,26 @@ export async function POST(request: NextRequest) {
             },
             {
               type: 'text',
-              text: `Você é um especialista em leitura de hodômetros de veículos brasileiros.
+              text: `Analise esta foto do painel de um veículo e encontre o valor do hodômetro total.
 
-Sua tarefa: encontrar e retornar APENAS o valor do HODÔMETRO TOTAL (quilometragem total acumulada do veículo).
+O hodômetro total é o número que representa a quilometragem acumulada total do veículo desde que saiu de fábrica.
 
-REGRAS OBRIGATÓRIAS:
-1. O hodômetro total tem geralmente 5 ou 6 dígitos (ex: 110846, 162984, 146528)
-2. Costuma aparecer com o sufixo "km" ou "KM" próximo ao número
-3. Pode aparecer com rótulos como "ODO", "KM TOTAL", ou simplesmente "km"
+Como identificar o hodômetro total visualmente:
+- É um número de 5 ou 6 dígitos (entre 10000 e 999999)
+- Está acompanhado da palavra "km" ou "KM" logo após ou abaixo
+- Fica em um display digital (LCD ou LED) — pode ser vermelho, laranja, azul ou branco
+- Geralmente fica na parte inferior ou central do painel de instrumentos
 
-NÃO LEIA (ignore completamente):
-- Velocidade atual: número grande no centro do painel (ex: 0, 60, 120)
-- Hodômetro parcial/viagem: número pequeno com 3-4 dígitos (ex: 1324, 0.0, 45.2)
-- Hora/relógio: formato HH:MM (ex: 13:30, 0:00)
-- Temperatura: número pequeno com °C
-- RPM: números no tacômetro
+O que NÃO é o hodômetro — ignore completamente:
+- O número grande no centro (é a velocidade atual, geralmente 0 quando parado)
+- Números curtos de 3-4 dígitos com casas decimais (ex: 134.5 — é o hodômetro parcial/trip)
+- Formato HH:MM como 13:30 ou 0:00 (é o relógio)
+- Números pequenos no mostrador circular (são RPM ou temperatura)
 
-PADRÃO COMUM nos painéis brasileiros:
-- Display vermelho (VW/Gol): hodômetro fica no display digital central, última linha, formato "XXXXXKM"
-- Display laranja circular (Fiat Uno/Argo): hodômetro fica na parte inferior do display redondo, com sufixo "km"  
-- Display azul digital (Chevrolet Onix): hodômetro fica à direita do display, abaixo do parcial, com sufixo "km"
+Se houver mais de um número com "km", escolha o de MAIS dígitos — esse é o total.
 
-Responda APENAS com o número inteiro do hodômetro total, sem pontos, vírgulas, espaços, letras ou qualquer outro caractere.
-Se não conseguir identificar com certeza, responda: 0`,
+Responda SOMENTE com os dígitos do hodômetro total, sem nenhum outro caractere.
+Se não conseguir ler com segurança, responda apenas: 0`,
             },
           ],
         },
@@ -52,7 +49,6 @@ Se não conseguir identificar com certeza, responda: 0`,
 
     const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '0'
     const km = parseInt(text.replace(/\D/g, '')) || 0
-
     return NextResponse.json({ km })
   } catch (err) {
     console.error('OCR error:', err)
