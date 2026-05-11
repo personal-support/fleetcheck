@@ -1,20 +1,17 @@
 'use client'
 
-import { ConsuldataFooter } from '@/components/ConsuldataFooter'
-
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
 import type { Vehicle } from '@/types'
 
 export default function ScanPage() {
   const router = useRouter()
   const scannerRef = useRef<HTMLDivElement>(null)
   const html5QrRef = useRef<{ stop: () => Promise<void> } | null>(null)
-
   const [mode, setMode] = useState<'list' | 'scan'>('list')
   const [search, setSearch] = useState('')
-  const [scannerActive, setScannerActive] = useState(false)
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [loadingVehicles, setLoadingVehicles] = useState(true)
   const [loadingVehicle, setLoadingVehicle] = useState(false)
@@ -22,12 +19,9 @@ export default function ScanPage() {
   const [openChecklist, setOpenChecklist] = useState<{ id: string } | null>(null)
   const [error, setError] = useState('')
   const [userName, setUserName] = useState('')
+  const [scannerActive, setScannerActive] = useState(false)
 
-  useEffect(() => {
-    loadUser()
-    loadVehicles()
-    return () => { stopScanner() }
-  }, [])
+  useEffect(() => { loadUser(); loadVehicles(); return () => stopScanner() }, [])
 
   async function loadUser() {
     try {
@@ -35,12 +29,7 @@ export default function ScanPage() {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       if (!authUser) { router.replace('/login'); return }
       const { data } = await supabase.from('users').select('name, role').eq('id', authUser.id).single()
-      if (data) {
-        setUserName(data.name.split(' ')[0])
-        if (data.role === 'admin') {
-          // Admin can access scan but also has admin panel
-        }
-      }
+      if (data) setUserName(data.name.split(' ')[0])
     } catch { router.replace('/login') }
   }
 
@@ -49,26 +38,19 @@ export default function ScanPage() {
       const supabase = createClient()
       const { data } = await supabase.from('vehicles').select('*').eq('active', true).order('plate')
       if (data) setVehicles(data as Vehicle[])
-    } catch { /* ignore */ }
+    } catch { }
     setLoadingVehicles(false)
   }
 
   async function stopScanner() {
-    try {
-      if (html5QrRef.current) {
-        await html5QrRef.current.stop()
-        html5QrRef.current = null
-      }
-    } catch { /* ignore */ }
+    try { if (html5QrRef.current) { await html5QrRef.current.stop(); html5QrRef.current = null } } catch { }
     setScannerActive(false)
   }
 
   async function startScanner() {
-    setError('')
-    setScannerActive(true)
+    setError(''); setScannerActive(true)
     try {
       const { Html5Qrcode } = await import('html5-qrcode')
-      // Wait for DOM to be ready
       await new Promise(r => setTimeout(r, 100))
       if (!document.getElementById('qr-reader')) { setScannerActive(false); return }
       const scanner = new Html5Qrcode('qr-reader')
@@ -76,77 +58,40 @@ export default function ScanPage() {
       await scanner.start(
         { facingMode: 'environment' },
         { fps: 10, qrbox: { width: 220, height: 220 } },
-        async (decoded: string) => {
-          await stopScanner()
-          await selectVehicleById(decoded.trim())
-        },
+        async (decoded: string) => { await stopScanner(); await selectVehicleById(decoded.trim()) },
         () => {}
       )
-    } catch (err) {
-      setScannerActive(false)
-      setError('Câmera não disponível. Use a lista abaixo.')
-      setMode('list')
-    }
-  }
-
-  async function handleModeChange(newMode: 'list' | 'scan') {
-    if (newMode === 'list') {
-      await stopScanner()
-    }
-    setMode(newMode)
-    setError('')
+    } catch { setScannerActive(false); setError('Câmera não disponível. Use a lista de veículos.'); setMode('list') }
   }
 
   async function selectVehicleById(vehicleId: string) {
-    setLoadingVehicle(true)
-    setError('')
+    setLoadingVehicle(true); setError('')
     try {
       const supabase = createClient()
       const { data } = await supabase.from('vehicles').select('*').eq('id', vehicleId).eq('active', true).single()
-      if (!data) { setError('Veículo não encontrado. Use a lista.'); setLoadingVehicle(false); return }
+      if (!data) { setError('Veículo não encontrado.'); setLoadingVehicle(false); return }
       await confirmVehicle(data as Vehicle)
     } catch { setError('Erro ao buscar veículo.') }
     setLoadingVehicle(false)
   }
 
   async function confirmVehicle(v: Vehicle) {
-    setVehicle(v)
-    setError('')
+    setVehicle(v); setError('')
     try {
       const supabase = createClient()
       const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) return
-
-      // 1. Checklist aberto neste veículo?
-      const { data: vehicleOpen } = await supabase
-        .from('checklists').select('id, vehicle_id')
-        .eq('vehicle_id', v.id).eq('status', 'open')
-        .order('created_at', { ascending: false }).limit(1).single()
-
-      if (vehicleOpen) {
-        setOpenChecklist({ id: vehicleOpen.id })
-        return
+      const { data: vehicleOpen } = await supabase.from('checklists').select('id').eq('vehicle_id', v.id).eq('status', 'open').limit(1).single()
+      if (vehicleOpen) { setOpenChecklist({ id: vehicleOpen.id }); return }
+      if (authUser) {
+        const { data: driverOpen } = await supabase.from('checklists')
+          .select('id, vehicle_id, vehicles(plate, model)').eq('user_id', authUser.id).eq('status', 'open').limit(1).single()
+        if (driverOpen) {
+          const other = (Array.isArray(driverOpen.vehicles) ? driverOpen.vehicles[0] : driverOpen.vehicles) as { plate: string; model: string } | null
+          setVehicle(null)
+          setError(`Você tem uma viagem em aberto no veículo ${other?.plate ?? '—'} (${other?.model ?? ''}). Finalize-a antes de iniciar uma nova.`)
+          return
+        }
       }
-
-      // 2. Motorista tem checklist aberto em outro veículo?
-      const { data: driverOpen } = await supabase
-        .from('checklists')
-        .select('id, vehicle_id, vehicles(plate, model)')
-        .eq('user_id', authUser.id)
-        .eq('status', 'open')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single()
-
-      if (driverOpen) {
-        const other = (Array.isArray(driverOpen.vehicles) ? driverOpen.vehicles[0] : driverOpen.vehicles) as { plate: string; model: string } | null
-        setVehicle(null)
-        setError(
-          `Você tem uma viagem em aberto no veículo ${other?.plate ?? 'outro veículo'} (${other?.model ?? ''}). Finalize-a antes de iniciar uma nova.`
-        )
-        return
-      }
-
       setOpenChecklist(null)
     } catch { setOpenChecklist(null) }
   }
@@ -165,212 +110,230 @@ export default function ScanPage() {
     }
   }
 
-  const logout = async () => {
-    await createClient().auth.signOut()
-    router.replace('/login')
-  }
+  const filtered = vehicles.filter(v => v.plate.includes(search.toUpperCase()) || v.model.toUpperCase().includes(search.toUpperCase()))
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-bg)' }}>
+
       {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-5 pb-3">
-        <div className="flex items-center gap-3">
-          <img
-            src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
-            alt="Consuldata"
-            style={{ height: 32, width: 'auto', objectFit: 'contain' }}
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-          />
-          <div>
-            <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 18, fontWeight: 800, color: '#555555', lineHeight: 1 }}>
-              FLEET<span style={{ color: '#212771' }}>CHECK</span>
-            </p>
-            {userName && <p style={{ color: '#8d949a', fontSize: 11 }}>Olá, {userName}</p>}
+      <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
+              style={{ height: 26, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+            <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.2)' }} />
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 18, fontWeight: 800, color: '#fff', letterSpacing: '0.5px' }}>
+              FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {userName && <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>Olá, {userName}</span>}
+            <button onClick={async () => { await createClient().auth.signOut(); router.replace('/login') }}
+              style={{ background: 'rgba(255,255,255,0.12)', border: 'none', color: '#fff', fontSize: 11, fontWeight: 700, padding: '5px 10px', borderRadius: 6, cursor: 'pointer', letterSpacing: '0.04em' }}>
+              SAIR
+            </button>
           </div>
         </div>
-        <button onClick={logout} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', fontSize: 12 }}>
-          Sair
-        </button>
-      </div>
+      </header>
 
-      {/* Vehicle confirmed */}
-      {vehicle ? (
-        <div className="flex-1 flex flex-col items-center justify-center px-5 pb-6">
-          <div className="animate-fade-up w-full max-w-sm">
-            {openChecklist ? (
-              <div className="mb-4 px-4 py-3 rounded-xl" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.25)' }}>
-                <p style={{ color: '#eab308', fontSize: 13, fontWeight: 600 }}>⚠ Viagem em aberto</p>
-                <p style={{ color: '#8d949a', fontSize: 12, marginTop: 2 }}>Este veículo tem uma saída sem chegada registrada. Finalize a viagem atual.</p>
-              </div>
-            ) : (
-              <div className="mb-4 px-4 py-3 rounded-xl" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
-                <p style={{ color: '#22c55e', fontSize: 13, fontWeight: 600 }}>✓ Veículo disponível</p>
-                <p style={{ color: '#8d949a', fontSize: 12, marginTop: 2 }}>Nenhuma viagem em aberto.</p>
-              </div>
-            )}
-            <div className="rounded-2xl p-5" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(248,105,36,0.12)' }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="#f86924" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="7.5" cy="15.5" r="1" fill="#f86924"/>
-                    <circle cx="16.5" cy="15.5" r="1" fill="#f86924"/>
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ fontSize: 20, fontWeight: 800, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{vehicle.plate}</p>
-                  <p style={{ fontSize: 13, color: '#8d949a' }}>{vehicle.model} · {vehicle.year}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                {[
-                  { label: 'KM anterior', value: vehicle.last_km ? `${vehicle.last_km.toLocaleString('pt-BR')} km` : '—' },
-                  { label: 'Último check', value: vehicle.last_check_at ? new Date(vehicle.last_check_at).toLocaleDateString('pt-BR') : 'Nunca' },
-                ].map(({ label, value }) => (
-                  <div key={label} className="p-3 rounded-xl" style={{ background: '#ebeff2' }}>
-                    <p style={{ fontSize: 10, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{label}</p>
-                    <p style={{ fontSize: 13, fontWeight: 500, color: '#555555' }}>{value}</p>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+        {/* Vehicle confirmed */}
+        {vehicle ? (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px 20px' }}>
+            <div className="animate-fade-up" style={{ width: '100%', maxWidth: 420 }}>
+
+              {/* Status banner */}
+              {openChecklist ? (
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '14px 16px', background: 'var(--cd-warn-dim)', border: '1px solid var(--cd-warn)', borderRadius: 'var(--radius-md)', marginBottom: 16 }}>
+                  <span style={{ fontSize: 18 }}>⚠️</span>
+                  <div>
+                    <p style={{ fontWeight: 700, color: 'var(--cd-warn)', fontSize: 13, marginBottom: 2 }}>Viagem em aberto</p>
+                    <p style={{ fontSize: 12, color: 'var(--cd-text)' }}>Este veículo tem uma saída sem chegada registrada.</p>
                   </div>
-                ))}
+                </div>
+              ) : (
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '12px 16px', background: 'var(--cd-green-dim)', border: '1px solid var(--cd-green)', borderRadius: 'var(--radius-md)', marginBottom: 16 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="var(--cd-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <p style={{ fontSize: 13, color: 'var(--cd-green)', fontWeight: 700 }}>Veículo disponível — sem viagem em aberto</p>
+                </div>
+              )}
+
+              {/* Vehicle card */}
+              <div className="cd-card" style={{ overflow: 'hidden' }}>
+                {/* Card header */}
+                <div style={{ background: 'var(--cd-navy)', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: 1, lineHeight: 1 }}>{vehicle.plate}</p>
+                    <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>{vehicle.model} · {vehicle.year}</p>
+                  </div>
+                  <div style={{ width: 44, height: 44, borderRadius: 10, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                      <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <circle cx="7.5" cy="15.5" r="1" fill="white"/><circle cx="16.5" cy="15.5" r="1" fill="white"/>
+                    </svg>
+                  </div>
+                </div>
+                {/* Card body */}
+                <div style={{ padding: '16px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  {[
+                    { label: 'KM registrado', value: vehicle.last_km ? `${vehicle.last_km.toLocaleString('pt-BR')} km` : '—' },
+                    { label: 'Último check', value: vehicle.last_check_at ? new Date(vehicle.last_check_at).toLocaleDateString('pt-BR') : 'Nunca' },
+                  ].map(({ label, value }) => (
+                    <div key={label} style={{ padding: '10px 12px', background: 'var(--cd-bg)', borderRadius: 'var(--radius-sm)' }}>
+                      <p style={{ fontSize: 10, color: 'var(--cd-subtext)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{label}</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--cd-text)' }}>{value}</p>
+                    </div>
+                  ))}
+                </div>
+                {/* Card action */}
+                <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <button onClick={proceed} className="btn-primary"
+                    style={{ background: openChecklist ? 'var(--cd-warn)' : 'var(--cd-orange)', letterSpacing: '0.04em' }}>
+                    {openChecklist ? '⚠️  REGISTRAR CHEGADA' : '🚗  INICIAR CHECKLIST DE SAÍDA'}
+                  </button>
+                  <button onClick={() => { setVehicle(null); setOpenChecklist(null); setError('') }} className="btn-secondary">
+                    Escolher outro veículo
+                  </button>
+                </div>
               </div>
-              <button onClick={proceed}
-                style={{ width: '100%', padding: 14, borderRadius: 10, background: openChecklist ? '#eab308' : '#f86924', color: openChecklist ? '#ebeff2' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
-                {openChecklist ? '⚠ REGISTRAR CHEGADA →' : '🚗 INICIAR SAÍDA →'}
-              </button>
-              <button onClick={() => { setVehicle(null); setOpenChecklist(null); setError('') }}
-                style={{ width: '100%', marginTop: 8, padding: 8, background: 'none', border: 'none', color: '#8d949a', fontSize: 12, cursor: 'pointer' }}>
-                Escolher outro veículo
-              </button>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col px-5 pb-6">
-          {/* Mode tabs */}
-          <div className="flex gap-2 mb-4">
-            <button onClick={() => handleModeChange('list')}
-              style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: mode === 'list' ? '#f86924' : '#ffffff', border: `1px solid ${mode === 'list' ? '#f86924' : '#dddddd'}`, color: mode === 'list' ? 'white' : '#6b7280' }}>
-              📋 Lista
-            </button>
-            <button onClick={() => { handleModeChange('scan'); startScanner() }}
-              style={{ padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: mode === 'scan' ? '#f86924' : '#ffffff', border: `1px solid ${mode === 'scan' ? '#f86924' : '#dddddd'}`, color: mode === 'scan' ? 'white' : '#6b7280' }}>
-              📷 QR Code
-            </button>
-          </div>
+        ) : (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px' }}>
 
-          {error && (
-            <div className="mb-3 px-4 py-3 rounded-xl animate-fade-up" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)' }}>
-              <p style={{ color: '#eab308', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>⚠ Viagem em aberto</p>
-              <p style={{ color: '#8d949a', fontSize: 13, lineHeight: 1.5 }}>{error}</p>
-              <button
-                onClick={async () => {
+            {/* Mode tabs */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+              {([
+                { key: 'list', label: '📋  Lista' },
+                { key: 'scan', label: '📷  QR Code' },
+              ] as const).map(({ key, label }) => (
+                <button key={key}
+                  onClick={() => { if (key === 'scan') { setMode('scan'); startScanner() } else { stopScanner(); setMode('list') } }}
+                  style={{
+                    padding: '8px 18px', borderRadius: 'var(--radius-sm)', fontSize: 13, fontWeight: 700,
+                    cursor: 'pointer', transition: 'all 0.15s',
+                    background: mode === key ? 'var(--cd-navy)' : 'var(--cd-surface)',
+                    color: mode === key ? '#fff' : 'var(--cd-subtext)',
+                    border: `1px solid ${mode === key ? 'var(--cd-navy)' : 'var(--cd-border)'}`,
+                  }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div style={{ padding: '12px 16px', background: 'var(--cd-warn-dim)', border: '1px solid var(--cd-warn)', borderRadius: 'var(--radius-md)', marginBottom: 16 }}>
+                <p style={{ fontSize: 13, color: 'var(--cd-text)', fontWeight: 700, marginBottom: 4 }}>⚠️ Viagem em aberto</p>
+                <p style={{ fontSize: 13, color: 'var(--cd-text)' }}>{error}</p>
+                <button onClick={async () => {
                   const supabase = createClient()
                   const { data: { user: authUser } } = await supabase.auth.getUser()
                   if (!authUser) return
-                  const { data } = await supabase
-                    .from('checklists')
+                  const { data } = await supabase.from('checklists')
                     .select('id, vehicle_id, vehicles(plate, model, year, last_km, last_check_at, last_location_lat, last_location_lng, active, company_id, vehicle_type, created_at)')
-                    .eq('user_id', authUser.id).eq('status', 'open')
-                    .order('created_at', { ascending: false }).limit(1).single()
+                    .eq('user_id', authUser.id).eq('status', 'open').order('created_at', { ascending: false }).limit(1).single()
                   if (data) {
-                    const rawVeh = Array.isArray(data.vehicles) ? data.vehicles[0] : data.vehicles
-                    const veh = rawVeh as unknown as Vehicle
+                    const veh = data.vehicles as Vehicle
                     sessionStorage.setItem('fc_vehicle', JSON.stringify({ ...veh, id: data.vehicle_id }))
                     sessionStorage.setItem('fc_checklist_id', data.id)
                     sessionStorage.setItem('fc_phase', 'arrival')
                     router.push('/check/odometer')
                   }
                 }}
-                style={{ marginTop: 10, padding: '8px 14px', borderRadius: 8, background: '#eab308', color: '#ebeff2', fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer' }}>
-                Ir para registrar chegada →
-              </button>
-            </div>
-          )}
-
-          {/* LIST MODE */}
-          {mode === 'list' && (
-            <div>
-              <div className="relative mb-3">
-                <input
-                  type="text"
-                  placeholder="Buscar por placa..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value.toUpperCase())}
-                  style={{ width: '100%', padding: '10px 14px 10px 36px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
-                  onFocus={e => e.target.style.borderColor = '#f86924'}
-                  onBlur={e => e.target.style.borderColor = '#dddddd'}
-                />
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                  <circle cx="11" cy="11" r="8" stroke="#6b7280" strokeWidth="1.5"/>
-                  <path d="M21 21l-4.35-4.35" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
+                  style={{ marginTop: 8, padding: '6px 14px', background: 'var(--cd-warn)', color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+                  Ir para registrar chegada →
+                </button>
               </div>
-              {loadingVehicles ? (
-                <div className="flex justify-center py-10">
-                  <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
+            )}
+
+            {/* LIST */}
+            {mode === 'list' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {/* Search */}
+                <div style={{ position: 'relative' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                    <circle cx="11" cy="11" r="8" stroke="var(--cd-subtext)" strokeWidth="1.5"/>
+                    <path d="M21 21l-4.35-4.35" stroke="var(--cd-subtext)" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  <input className="cd-input" type="text" placeholder="Buscar por placa ou modelo..."
+                    value={search} onChange={e => setSearch(e.target.value)}
+                    style={{ paddingLeft: 38 }} />
                 </div>
-              ) : (() => {
-                const filtered = vehicles.filter(v =>
-                  v.plate.includes(search) || v.model.toUpperCase().includes(search)
-                )
-                return filtered.length === 0 ? (
-                  <p style={{ color: '#8d949a', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
+
+                {loadingVehicles ? (
+                  <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                    <div className="spin" style={{ width: 28, height: 28, borderRadius: '50%', border: '2.5px solid var(--cd-border)', borderTopColor: 'var(--cd-orange)', margin: '0 auto' }} />
+                  </div>
+                ) : filtered.length === 0 ? (
+                  <p style={{ textAlign: 'center', color: 'var(--cd-subtext)', padding: '40px 0', fontSize: 13 }}>
                     {search ? `Nenhum veículo com "${search}"` : 'Nenhum veículo disponível'}
                   </p>
                 ) : (
-                  <div className="flex flex-col gap-2">
-                    {filtered.map(v => (
-                      <button key={v.id} onClick={() => confirmVehicle(v)} disabled={loadingVehicle}
-                        style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: loadingVehicle ? 0.6 : 1 }}>
-                        <div>
-                          <p style={{ fontSize: 17, fontWeight: 700, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{v.plate}</p>
-                          <p style={{ fontSize: 12, color: '#8d949a' }}>{v.model} · {v.year}</p>
+                  filtered.map(v => (
+                    <button key={v.id} onClick={() => !loadingVehicle && confirmVehicle(v)}
+                      disabled={loadingVehicle}
+                      className="cd-card"
+                      style={{ width: '100%', padding: '14px 16px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--cd-border)', opacity: loadingVehicle ? 0.6 : 1, transition: 'box-shadow 0.15s, border-color 0.15s', background: 'var(--cd-surface)' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--cd-orange)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--shadow-md)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--cd-border)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--shadow-sm)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--cd-navy-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 12l1-5h16l1 5M3 12v5a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-5M3 12h18" stroke="var(--cd-navy)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            <circle cx="7.5" cy="15.5" r="1" fill="var(--cd-navy)"/><circle cx="16.5" cy="15.5" r="1" fill="var(--cd-navy)"/>
+                          </svg>
                         </div>
-                        {loadingVehicle ? (
-                          <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
-                        ) : (
-                          <span style={{ color: '#f86924', fontSize: 20 }}>›</span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )
-              })()}
-            </div>
-          )}
-
-          {/* SCAN MODE */}
-          {mode === 'scan' && (
-            <div className="flex-1 flex flex-col">
-              <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 12 }}>
-                Aponte a câmera para o QR Code fixado no veículo
-              </p>
-              <div className="rounded-2xl overflow-hidden relative" style={{ background: '#ffffff', height: 300 }}>
-                <div id="qr-reader" ref={scannerRef} style={{ width: '100%', height: '100%' }} />
-                {scannerActive && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="relative w-52 h-52">
-                      {['top-0 left-0 border-t-2 border-l-2 rounded-tl-lg','top-0 right-0 border-t-2 border-r-2 rounded-tr-lg','bottom-0 left-0 border-b-2 border-l-2 rounded-bl-lg','bottom-0 right-0 border-b-2 border-r-2 rounded-br-lg'].map((cls, i) => (
-                        <div key={i} className={`absolute w-7 h-7 ${cls}`} style={{ borderColor: '#f86924' }} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {!scannerActive && !error && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
-                  </div>
+                        <div>
+                          <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 17, fontWeight: 700, color: 'var(--cd-navy)', letterSpacing: 0.5 }}>{v.plate}</p>
+                          <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginTop: 1 }}>{v.model} · {v.year}</p>
+                        </div>
+                      </div>
+                      {loadingVehicle
+                        ? <div className="spin" style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid var(--cd-border)', borderTopColor: 'var(--cd-orange)', flexShrink: 0 }} />
+                        : <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--cd-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      }
+                    </button>
+                  ))
                 )}
               </div>
-              {loadingVehicle && (
-                <p className="mt-3 animate-fade-up" style={{ color: '#f86924', fontSize: 13, textAlign: 'center' }}>
-                  Identificando veículo...
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+            )}
+
+            {/* SCAN */}
+            {mode === 'scan' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <p style={{ fontSize: 13, color: 'var(--cd-subtext)' }}>Aponte para o QR Code fixado no veículo</p>
+                <div className="cd-card" style={{ overflow: 'hidden', position: 'relative', height: 300 }}>
+                  <div id="qr-reader" ref={scannerRef} style={{ width: '100%', height: '100%' }} />
+                  {scannerActive && (
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+                      <div style={{ position: 'relative', width: 200, height: 200 }}>
+                        {[
+                          { top: 0, left: 0, borderTop: '3px solid var(--cd-orange)', borderLeft: '3px solid var(--cd-orange)', borderRadius: '4px 0 0 0' },
+                          { top: 0, right: 0, borderTop: '3px solid var(--cd-orange)', borderRight: '3px solid var(--cd-orange)', borderRadius: '0 4px 0 0' },
+                          { bottom: 0, left: 0, borderBottom: '3px solid var(--cd-orange)', borderLeft: '3px solid var(--cd-orange)', borderRadius: '0 0 0 4px' },
+                          { bottom: 0, right: 0, borderBottom: '3px solid var(--cd-orange)', borderRight: '3px solid var(--cd-orange)', borderRadius: '0 0 4px 0' },
+                        ].map((s, i) => (
+                          <div key={i} style={{ position: 'absolute', width: 28, height: 28, ...s }} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {!scannerActive && (
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cd-bg)' }}>
+                      <div className="spin" style={{ width: 28, height: 28, borderRadius: '50%', border: '2.5px solid var(--cd-border)', borderTopColor: 'var(--cd-orange)' }} />
+                    </div>
+                  )}
+                </div>
+                {loadingVehicle && <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--cd-orange)', fontWeight: 700 }}>Identificando veículo...</p>}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
       <ConsuldataFooter />
     </main>
   )

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { ConsuldataFooter } from '@/components/ConsuldataFooter'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
 
 type Mode = 'driver' | 'admin'
 
@@ -23,17 +23,14 @@ export default function LoginPage() {
       setError('Use seu e-mail @consuldata.com.br para entrar.')
       return
     }
-    setLoading(true)
-    setError('')
+    setLoading(true); setError('')
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password: password.trim(),
-    })
-    if (error) {
-      setError('E-mail ou senha incorretos.')
-    } else {
-      const redirect = sessionStorage.getItem('fc_redirect'); sessionStorage.removeItem('fc_redirect'); router.replace(redirect ?? '/')
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password: password.trim() })
+    if (error) { setError('E-mail ou senha incorretos.') }
+    else {
+      const redirect = sessionStorage.getItem('fc_redirect')
+      sessionStorage.removeItem('fc_redirect')
+      router.replace(redirect ?? '/')
     }
     setLoading(false)
   }
@@ -41,156 +38,134 @@ export default function LoginPage() {
   async function handleAdminLogin(e: React.FormEvent) {
     e.preventDefault()
     if (!email.trim()) return
-    setLoading(true)
-    setError('')
+    setLoading(true); setError('')
     const supabase = createClient()
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     })
-    if (error) {
-      setError('Erro ao enviar link. Tente novamente.')
-    } else {
-      setSent(true)
-    }
+    if (error) setError('Erro ao enviar link. Tente novamente.')
+    else setSent(true)
     setLoading(false)
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ background: '#ebeff2', minHeight: '100vh' }}>
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-bg)' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 20px 20px' }}>
 
-      {/* Logo */}
-      <div className="mb-8 text-center animate-fade-up">
-        <img 
-          src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
-          alt="Consuldata"
-          style={{ height: 52, width: 'auto', marginBottom: 8, objectFit: 'contain' }}
-          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-        />
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 36, fontWeight: 800, letterSpacing: '-0.5px', color: '#555555' }}>
-          FLEET<span style={{ color: '#212771' }}>CHECK</span>
-        </h1>
-        <p style={{ color: '#8d949a', fontSize: 14, marginTop: 4 }}>Consuldata Teleprocessamento</p>
-      </div>
+        {/* Logo + Product name */}
+        <div className="animate-fade-up" style={{ textAlign: 'center', marginBottom: 32 }}>
+          <img
+            src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
+            alt="Consuldata"
+            style={{ height: 48, width: 'auto', marginBottom: 16, objectFit: 'contain' }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+          />
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 6 }}>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: 'var(--cd-navy)', letterSpacing: '-0.5px' }}>FLEET</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: 'var(--cd-orange)', letterSpacing: '-0.5px' }}>CHECK</span>
+          </div>
+          <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginTop: 4 }}>Gestão de frota · Consuldata Teleprocessamento</p>
+        </div>
 
-      {/* Toggle */}
-      <div className="flex rounded-xl p-1 mb-6 w-full max-w-sm animate-fade-up"
-        style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
-        {(['driver', 'admin'] as Mode[]).map(m => (
-          <button key={m} onClick={() => { setMode(m); setError(''); setSent(false) }}
-            style={{
-              flex: 1, padding: '9px 0', borderRadius: 9, fontSize: 13, fontWeight: 600,
-              border: 'none', cursor: 'pointer', transition: 'all 0.2s',
-              background: mode === m ? '#f86924' : 'transparent',
-              color: mode === m ? 'white' : '#6b7280',
-            }}>
-            {m === 'driver' ? '🚗 Motorista' : '⚙️ Admin'}
-          </button>
-        ))}
-      </div>
+        {/* Card */}
+        <div className="cd-card animate-fade-up" style={{ width: '100%', maxWidth: 400, overflow: 'hidden', animationDelay: '0.08s' }}>
 
-      {/* Card */}
-      <div className="w-full max-w-sm animate-fade-up" style={{ animationDelay: '0.1s' }}>
-        <div className="rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
+          {/* Tabs */}
+          <div style={{ display: 'flex', borderBottom: '1px solid var(--cd-border)' }}>
+            {(['driver', 'admin'] as Mode[]).map(m => (
+              <button key={m} onClick={() => { setMode(m); setError(''); setSent(false) }}
+                style={{
+                  flex: 1, padding: '14px 0', fontSize: 13, fontWeight: 700,
+                  background: 'transparent', border: 'none', cursor: 'pointer',
+                  color: mode === m ? 'var(--cd-orange)' : 'var(--cd-subtext)',
+                  borderBottom: mode === m ? '2px solid var(--cd-orange)' : '2px solid transparent',
+                  marginBottom: -1, transition: 'all 0.15s',
+                  letterSpacing: '0.02em',
+                }}>
+                {m === 'driver' ? '🚗  Motorista' : '⚙️  Administrador'}
+              </button>
+            ))}
+          </div>
 
-          {/* DRIVER LOGIN */}
-          {mode === 'driver' && (
-            <>
-              <h2 style={{ fontSize: 16, fontWeight: 500, color: '#555555', marginBottom: 4 }}>
-                Entrar como motorista
-              </h2>
-              <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 20 }}>
-                Use seu e-mail @consuldata.com.br e a senha gerada no seu cadastro.
-              </p>
-              <form onSubmit={handleDriverLogin} className="flex flex-col gap-4">
+          <div style={{ padding: '28px 24px 24px' }}>
+
+            {/* DRIVER */}
+            {mode === 'driver' && (
+              <form onSubmit={handleDriverLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <p style={{ fontSize: 13, color: 'var(--cd-subtext)', marginBottom: 4, lineHeight: 1.6 }}>
+                  Use seu e-mail corporativo e a senha gerada no seu cadastro.
+                </p>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#8d949a', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    E-mail
-                  </label>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                    placeholder="seu.nome@consuldata.com.br" required
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
-                    onFocus={e => e.target.style.borderColor = '#f86924'}
-                    onBlur={e => e.target.style.borderColor = '#dddddd'} />
+                  <label className="cd-label">E-mail</label>
+                  <input className="cd-input" type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    placeholder="seu.nome@consuldata.com.br" required />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#8d949a', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Senha
-                  </label>
-                  <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                    placeholder="Sua senha gerada no cadastro" required
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
-                    onFocus={e => e.target.style.borderColor = '#f86924'}
-                    onBlur={e => e.target.style.borderColor = '#dddddd'} />
+                  <label className="cd-label">Senha</label>
+                  <input className="cd-input" type="password" value={password} onChange={e => setPassword(e.target.value)}
+                    placeholder="Sua senha de acesso" required />
                 </div>
-                {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
-                <button type="submit" disabled={loading}
-                  style={{ width: '100%', padding: 14, borderRadius: 10, background: loading ? '#212771' : '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48 }}>
-                  {loading ? 'Entrando...' : 'ENTRAR'}
+                {error && (
+                  <div style={{ padding: '10px 14px', background: 'var(--cd-red-dim)', border: '1px solid var(--cd-red)', borderRadius: 'var(--radius-sm)' }}>
+                    <p style={{ fontSize: 13, color: 'var(--cd-red)' }}>{error}</p>
+                  </div>
+                )}
+                <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: 4 }}>
+                  {loading ? 'Entrando...' : 'Entrar'}
                 </button>
+                <div style={{ textAlign: 'center' }}>
+                  <button type="button" onClick={() => router.push('/register')}
+                    style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
+                    Primeiro acesso? Gerar minha senha
+                  </button>
+                </div>
               </form>
-              <div style={{ textAlign: 'center', marginTop: 16 }}>
-                <button onClick={() => router.push('/register')}
-                  style={{ background: 'none', border: 'none', color: '#f86924', fontSize: 13, cursor: 'pointer' }}>
-                  Primeiro acesso? Cadastre-se aqui
-                </button>
-              </div>
-            </>
-          )}
+            )}
 
-          {/* ADMIN LOGIN */}
-          {mode === 'admin' && !sent && (
-            <>
-              <h2 style={{ fontSize: 16, fontWeight: 500, color: '#555555', marginBottom: 4 }}>
-                Acesso administrativo
-              </h2>
-              <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 20 }}>
-                Enviaremos um link de acesso para o seu e-mail.
-              </p>
-              <form onSubmit={handleAdminLogin} className="flex flex-col gap-4">
+            {/* ADMIN */}
+            {mode === 'admin' && !sent && (
+              <form onSubmit={handleAdminLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <p style={{ fontSize: 13, color: 'var(--cd-subtext)', marginBottom: 4, lineHeight: 1.6 }}>
+                  Enviaremos um link de acesso seguro para o seu e-mail.
+                </p>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#8d949a', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    E-mail admin
-                  </label>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                    placeholder="admin@consuldata.com.br" required
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
-                    onFocus={e => e.target.style.borderColor = '#f86924'}
-                    onBlur={e => e.target.style.borderColor = '#dddddd'} />
+                  <label className="cd-label">E-mail administrador</label>
+                  <input className="cd-input" type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    placeholder="admin@consuldata.com.br" required />
                 </div>
-                {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
-                <button type="submit" disabled={loading}
-                  style={{ width: '100%', padding: 14, borderRadius: 10, background: loading ? '#212771' : '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48 }}>
+                {error && (
+                  <div style={{ padding: '10px 14px', background: 'var(--cd-red-dim)', border: '1px solid var(--cd-red)', borderRadius: 'var(--radius-sm)' }}>
+                    <p style={{ fontSize: 13, color: 'var(--cd-red)' }}>{error}</p>
+                  </div>
+                )}
+                <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: 4 }}>
                   {loading ? 'Enviando...' : 'Enviar link de acesso'}
                 </button>
               </form>
-            </>
-          )}
+            )}
 
-          {mode === 'admin' && sent && (
-            <div className="text-center py-4">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(34,197,94,0.1)' }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 13l4 4L19 7" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            {mode === 'admin' && sent && (
+              <div style={{ textAlign: 'center', padding: '8px 0' }}>
+                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--cd-green-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 13l4 4L19 7" stroke="var(--cd-green)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--cd-navy)', marginBottom: 8 }}>Link enviado!</p>
+                <p style={{ fontSize: 13, color: 'var(--cd-subtext)', lineHeight: 1.6 }}>
+                  Verifique <strong style={{ color: 'var(--cd-text)' }}>{email}</strong> e clique no link para acessar.
+                </p>
+                <button onClick={() => setSent(false)}
+                  style={{ marginTop: 16, background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
+                  Usar outro e-mail
+                </button>
               </div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: '#555555', marginBottom: 8 }}>Link enviado!</h3>
-              <p style={{ color: '#8d949a', fontSize: 13, lineHeight: 1.5 }}>
-                Verifique <strong style={{ color: '#555555' }}>{email}</strong> e clique no link para entrar.
-              </p>
-              <button onClick={() => setSent(false)}
-                style={{ marginTop: 16, color: '#f86924', fontSize: 13, background: 'none', border: 'none', cursor: 'pointer' }}>
-                Usar outro e-mail
-              </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-
-      <p style={{ color: '#b6bcc2', fontSize: 11, marginTop: 32 }}>
-        FleetCheck © J.Lopes Personal Support
-      </p>
+      <ConsuldataFooter />
     </main>
   )
 }
