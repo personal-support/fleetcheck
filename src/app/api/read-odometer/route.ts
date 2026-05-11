@@ -40,6 +40,8 @@ O que NÃO é o hodômetro — ignore completamente:
 Se houver mais de um número com "km", escolha o de MAIS dígitos — esse é o total.
 
 Responda SOMENTE com os dígitos do hodômetro total, sem nenhum outro caractere.
+Atenção especial ao dígito 8: em displays LCD/LED com fundo vermelho ou laranja, o segmento central do "8" pode aparecer apagado e ser confundido com "0". Se o dígito parece um "0" mas o contexto numérico sugere que seria estranhamente redondo ou simétrico para um hodômetro real, considere que pode ser "8".
+
 Se não conseguir ler com segurança, responda apenas: 0`,
             },
           ],

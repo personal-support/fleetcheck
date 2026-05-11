@@ -175,7 +175,7 @@ export default function OdometerPage() {
 
             {/* Video container */}
             <div className="rounded-2xl overflow-hidden relative flex-1"
-              style={{ background: '#111318', minHeight: 300 }}>
+              style={{ background: '#111318', height: 'min(52vh, 320px)', maxHeight: 320 }}>
               <video
                 ref={videoRef}
                 autoPlay playsInline muted
@@ -183,7 +183,7 @@ export default function OdometerPage() {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  minHeight: 300,
+                  minHeight: 0,
                   transform: zoomSupported ? 'none' : `scale(${cssZoom})`,
                   transformOrigin: 'center center',
                   transition: 'transform 0.1s',
