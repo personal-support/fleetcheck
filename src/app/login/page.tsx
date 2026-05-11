@@ -32,7 +32,7 @@ export default function LoginPage() {
     if (error) {
       setError('E-mail ou senha incorretos.')
     } else {
-      router.replace('/')
+      const redirect = sessionStorage.getItem('fc_redirect'); sessionStorage.removeItem('fc_redirect'); router.replace(redirect ?? '/')
     }
     setLoading(false)
   }

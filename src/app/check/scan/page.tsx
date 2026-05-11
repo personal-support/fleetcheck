@@ -11,6 +11,7 @@ export default function ScanPage() {
   const html5QrRef = useRef<{ stop: () => Promise<void> } | null>(null)
 
   const [mode, setMode] = useState<'list' | 'scan'>('list')
+  const [search, setSearch] = useState('')
   const [scannerActive, setScannerActive] = useState(false)
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [loadingVehicles, setLoadingVehicles] = useState(true)
@@ -279,33 +280,52 @@ export default function ScanPage() {
           {/* LIST MODE */}
           {mode === 'list' && (
             <div>
-              <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 12 }}>
-                Toque no veículo que você vai utilizar
-              </p>
+              <div className="relative mb-3">
+                <input
+                  type="text"
+                  placeholder="Buscar por placa..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value.toUpperCase())}
+                  style={{ width: '100%', padding: '10px 14px 10px 36px', borderRadius: 10, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                  onFocus={e => e.target.style.borderColor = '#f97316'}
+                  onBlur={e => e.target.style.borderColor = '#1e2229'}
+                />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                  <circle cx="11" cy="11" r="8" stroke="#6b7280" strokeWidth="1.5"/>
+                  <path d="M21 21l-4.35-4.35" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
               {loadingVehicles ? (
                 <div className="flex justify-center py-10">
                   <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
                 </div>
-              ) : vehicles.length === 0 ? (
-                <p style={{ color: '#6b7280', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo disponível</p>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  {vehicles.map(v => (
-                    <button key={v.id} onClick={() => confirmVehicle(v)} disabled={loadingVehicle}
-                      style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: '#111318', border: '1px solid #1e2229', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: loadingVehicle ? 0.6 : 1 }}>
-                      <div>
-                        <p style={{ fontSize: 17, fontWeight: 700, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{v.plate}</p>
-                        <p style={{ fontSize: 12, color: '#6b7280' }}>{v.model} · {v.year}</p>
-                      </div>
-                      {loadingVehicle ? (
-                        <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
-                      ) : (
-                        <span style={{ color: '#f97316', fontSize: 20 }}>›</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+              ) : (() => {
+                const filtered = vehicles.filter(v =>
+                  v.plate.includes(search) || v.model.toUpperCase().includes(search)
+                )
+                return filtered.length === 0 ? (
+                  <p style={{ color: '#6b7280', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
+                    {search ? `Nenhum veículo com "${search}"` : 'Nenhum veículo disponível'}
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    {filtered.map(v => (
+                      <button key={v.id} onClick={() => confirmVehicle(v)} disabled={loadingVehicle}
+                        style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: '#111318', border: '1px solid #1e2229', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: loadingVehicle ? 0.6 : 1 }}>
+                        <div>
+                          <p style={{ fontSize: 17, fontWeight: 700, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>{v.plate}</p>
+                          <p style={{ fontSize: 12, color: '#6b7280' }}>{v.model} · {v.year}</p>
+                        </div>
+                        {loadingVehicle ? (
+                          <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#f97316', borderTopColor: 'transparent' }} />
+                        ) : (
+                          <span style={{ color: '#f97316', fontSize: 20 }}>›</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )
+              })()}
             </div>
           )}
 
