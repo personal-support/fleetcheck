@@ -5,6 +5,11 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { Checklist } from '@/types'
 
+async function logout(router: ReturnType<typeof useRouter>) {
+  await createClient().auth.signOut()
+  router.replace('/login')
+}
+
 export default function AdminPage() {
   const router = useRouter()
   const [checklists, setChecklists] = useState<Checklist[]>([])
@@ -43,6 +48,10 @@ export default function AdminPage() {
             <span style={{ fontSize: 14, fontWeight: 400, color: '#6b7280', marginLeft: 8 }}>Admin</span>
           </h1>
           <div className="flex gap-2">
+          <button onClick={() => router.push('/check/scan')}
+            style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#6b7280', fontSize: 12, cursor: 'pointer' }}>
+            Fazer checklist
+          </button>
           <button onClick={() => router.push('/admin/drivers')}
             style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
             Motoristas
@@ -50,6 +59,10 @@ export default function AdminPage() {
           <button onClick={() => router.push('/admin/vehicles')}
             style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
             Veículos
+          </button>
+          <button onClick={() => logout(router)}
+            style={{ padding: '6px 12px', borderRadius: 8, background: '#111318', border: '1px solid #1e2229', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
+            Sair
           </button>
         </div>
         </div>
