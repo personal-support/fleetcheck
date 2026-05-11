@@ -9,11 +9,22 @@ export default function HomePage() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
-        router.replace('/check/scan')
-      } else {
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session) {
         router.replace('/login')
+        return
+      }
+      // Check role and redirect accordingly
+      const { data: user } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', data.session.user.id)
+        .single()
+
+      if (user?.role === 'admin') {
+        router.replace('/admin')
+      } else {
+        router.replace('/check/scan')
       }
     })
   }, [router])
