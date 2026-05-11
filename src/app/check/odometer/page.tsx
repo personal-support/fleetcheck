@@ -148,16 +148,16 @@ export default function OdometerPage() {
   const cssZoom = zoomSupported ? 1 : zoom
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: '#070a14' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#f0f2f9' }}>
       {/* Header */}
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-2 mb-3">
-          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', padding: 0 }}>
+          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: 0 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             {vehicle.plate} · {isArrival ? 'Chegada' : 'Saída'} · Hodômetro
           </p>
         </div>
@@ -169,13 +169,13 @@ export default function OdometerPage() {
         {/* CAMERA */}
         {step === 'camera' && (
           <div className="flex-1 flex flex-col animate-fade-up">
-            <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 10 }}>
-              Enquadre o display do hodômetro · KM anterior: <strong style={{ color: '#e8eaf0' }}>{lastKm ? lastKm.toLocaleString('pt-BR') : '—'}</strong>
+            <p style={{ color: '#64748b', fontSize: 13, marginBottom: 10 }}>
+              Enquadre o display do hodômetro · KM anterior: <strong style={{ color: '#0f1535' }}>{lastKm ? lastKm.toLocaleString('pt-BR') : '—'}</strong>
             </p>
 
             {/* Video container */}
             <div className="rounded-2xl overflow-hidden relative flex-1"
-              style={{ background: '#0d1124', height: 'min(52vh, 320px)', maxHeight: 320 }}>
+              style={{ background: '#ffffff', height: 'min(52vh, 320px)', maxHeight: 320 }}>
               <video
                 ref={videoRef}
                 autoPlay playsInline muted
@@ -215,7 +215,7 @@ export default function OdometerPage() {
 
             {/* Zoom slider */}
             <div className="mt-3 flex items-center gap-3">
-              <span style={{ fontSize: 11, color: '#6b7280', minWidth: 20 }}>1×</span>
+              <span style={{ fontSize: 11, color: '#64748b', minWidth: 20 }}>1×</span>
               <input
                 type="range"
                 min={1}
@@ -225,7 +225,7 @@ export default function OdometerPage() {
                 onChange={e => applyZoom(parseFloat(e.target.value))}
                 style={{ flex: 1, accentColor: '#fcb52f' }}
               />
-              <span style={{ fontSize: 11, color: '#6b7280', minWidth: 28 }}>
+              <span style={{ fontSize: 11, color: '#64748b', minWidth: 28 }}>
                 {maxZoom > 1 ? `${Math.round(maxZoom)}×` : '5×'}
               </span>
             </div>
@@ -238,7 +238,7 @@ export default function OdometerPage() {
                 📸 Fotografar
               </button>
               <button onClick={() => { stopCamera(); setCorrecting(true); setStep('confirm') }}
-                style={{ padding: '16px 14px', borderRadius: 12, background: '#0d1124', border: '1px solid #1a2040', color: '#6b7280', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                style={{ padding: '16px 14px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', color: '#64748b', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                 Digitar KM
               </button>
             </div>
@@ -255,7 +255,7 @@ export default function OdometerPage() {
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
                 style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
-              <p style={{ color: '#e8eaf0', fontSize: 15 }}>Lendo hodômetro com IA...</p>
+              <p style={{ color: '#0f1535', fontSize: 15 }}>Lendo hodômetro com IA...</p>
             </div>
           </div>
         )}
@@ -263,7 +263,7 @@ export default function OdometerPage() {
         {/* CONFIRM */}
         {step === 'confirm' && (
           <div className="flex-1 flex flex-col animate-fade-up gap-4">
-            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0' }}>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#0f1535' }}>
               {kmAuto && !correcting ? 'CONFIRMAR KM' : 'INFORME O KM'}
             </h2>
 
@@ -280,7 +280,7 @@ export default function OdometerPage() {
                 </svg>
                 <div>
                   <p style={{ fontSize: 10, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>IA leu automaticamente</p>
-                  <p style={{ fontSize: 28, fontWeight: 700, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif" }}>
+                  <p style={{ fontSize: 28, fontWeight: 700, color: '#0f1535', fontFamily: "'Barlow Condensed', sans-serif" }}>
                     {kmAuto.toLocaleString('pt-BR')} km
                   </p>
                 </div>
@@ -289,7 +289,7 @@ export default function OdometerPage() {
 
             {(correcting || !kmAuto) && (
               <div>
-                <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+                <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
                   {kmAuto ? 'Corrigir KM' : 'KM atual'}
                 </label>
                 <input
@@ -299,9 +299,9 @@ export default function OdometerPage() {
                   onChange={e => setKmInput(e.target.value)}
                   placeholder={lastKm ? `Último: ${lastKm.toLocaleString('pt-BR')}` : 'Ex: 110846'}
                   autoFocus
-                  style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
+                  style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#0f1535', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
                   onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                  onBlur={e => e.target.style.borderColor = '#1a2040'}
+                  onBlur={e => e.target.style.borderColor = '#dde2f0'}
                 />
               </div>
             )}
@@ -316,14 +316,14 @@ export default function OdometerPage() {
 
               {kmAuto && !correcting && (
                 <button onClick={() => { setCorrecting(true); setKmInput(String(kmAuto)) }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: 10, background: 'none', border: 'none', color: '#64748b', fontSize: 13, cursor: 'pointer' }}>
                   Leitura incorreta? Corrigir
                 </button>
               )}
 
               {(correcting || !kmAuto) && photoUrl && (
                 <button onClick={() => { setStep('camera'); setPhotoUrl(''); setPhotoBlob(null); setCorrecting(false); setKmAuto(null); setKmInput(''); startCamera() }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: 10, background: 'none', border: 'none', color: '#64748b', fontSize: 13, cursor: 'pointer' }}>
                   ← Tirar foto novamente
                 </button>
               )}

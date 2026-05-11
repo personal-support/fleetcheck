@@ -1,22 +1,9 @@
 @import "tailwindcss";
 
-/* Consuldata Brand Variables */
-:root {
-  --cd-navy: #0D1B8E;
-  --cd-gold: #fcb52f;
-  --cd-gold-dim: rgba(252,181,47,0.12);
-  --cd-bg: #070a14;
-  --cd-surface: #0d1124;
-  --cd-border: #1a2040;
-  --cd-muted: #252d50;
-  --cd-text: #e8eaf0;
-  --cd-subtext: #6b7280;
-}
-
 html, body {
-  background-color: var(--cd-bg);
-  color: var(--cd-text);
-  font-family: 'Roboto', 'DM Sans', 'Segoe UI', sans-serif;
+  background-color: #f0f2f9;
+  color: #0f1535;
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
 }
@@ -30,7 +17,7 @@ button, a { touch-action: manipulation; }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--cd-muted); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #c5ccdf; border-radius: 2px; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -38,13 +25,20 @@ button, a { touch-action: manipulation; }
 }
 
 @keyframes pulse-ring {
-  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(252,181,47,0.4); }
-  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(252,181,47,0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(252,181,47,0); }
+  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13,27,142,0.3); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(13,27,142,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13,27,142,0); }
 }
 
 .animate-fade-up { animation: fadeUp 0.35s ease forwards; }
 .animate-pulse-ring { animation: pulse-ring 2s infinite; }
 
-.step-bar { height: 3px; background: var(--cd-muted); border-radius: 2px; overflow: hidden; }
-.step-bar-fill { height: 100%; background: var(--cd-gold); border-radius: 2px; transition: width 0.4s ease; }
+.step-bar { height: 4px; background: #dde2f0; border-radius: 2px; overflow: hidden; }
+.step-bar-fill { height: 100%; background: #0D1B8E; border-radius: 2px; transition: width 0.4s ease; }
+
+.card {
+  background: #ffffff;
+  border: 1px solid #dde2f0;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(13,27,142,0.06);
+}

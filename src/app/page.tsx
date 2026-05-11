@@ -30,7 +30,7 @@ export default function HomePage() {
   }, [router])
 
   return (
-    <main className="min-h-screen flex items-center justify-center" style={{ background: '#070a14' }}>
+    <main className="min-h-screen flex items-center justify-center" style={{ background: '#f0f2f9' }}>
       <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
         style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
     </main>

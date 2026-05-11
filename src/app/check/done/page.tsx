@@ -22,7 +22,7 @@ function DoneContent() {
   }, [router])
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#070a14' }}>
+    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#f0f2f9' }}>
       <div className="text-center animate-fade-up max-w-sm w-full">
         <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
           style={{ background: offline ? 'rgba(234,179,8,0.12)' : isArrival ? 'rgba(34,197,94,0.12)' : 'rgba(252,181,47,0.12)', border: `2px solid ${offline ? '#eab308' : isArrival ? '#22c55e' : '#fcb52f'}` }}>
@@ -37,11 +37,11 @@ function DoneContent() {
           )}
         </div>
 
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 30, fontWeight: 800, color: '#e8eaf0', marginBottom: 8 }}>
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 30, fontWeight: 800, color: '#0f1535', marginBottom: 8 }}>
           {offline ? 'SALVO OFFLINE' : isArrival ? 'CHEGADA REGISTRADA' : 'SAÍDA REGISTRADA'}
         </h1>
 
-        <p style={{ color: '#6b7280', fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
+        <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
           {offline
             ? 'Sem conexão no momento. Os dados foram salvos localmente e serão enviados automaticamente quando a internet estiver disponível.'
             : isArrival
@@ -50,14 +50,14 @@ function DoneContent() {
         </p>
 
         {!isArrival && !offline && (
-          <div className="mb-6 px-4 py-3 rounded-xl text-left" style={{ background: 'rgba(252,181,47,0.06)', border: '1px solid rgba(252,181,47,0.15)' }}>
+          <div className="mb-6 px-4 py-3 rounded-xl text-left" style={{ background: 'rgba(13,27,142,0.04)', border: '1px solid rgba(13,27,142,0.08)' }}>
             <p style={{ color: '#fcb52f', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Lembrete</p>
-            <p style={{ color: '#6b7280', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
+            <p style={{ color: '#64748b', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
           </div>
         )}
 
         <button onClick={() => router.replace('/check/scan')}
-          style={{ width: '100%', padding: 14, borderRadius: 10, background: isArrival ? '#22c55e' : '#fcb52f', color: isArrival ? '#070a14' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
+          style={{ width: '100%', padding: 14, borderRadius: 10, background: isArrival ? '#22c55e' : '#fcb52f', color: isArrival ? '#f0f2f9' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
           {isArrival ? '✓ CONCLUÍDO' : 'OK, ENTENDIDO'}
         </button>
       </div>

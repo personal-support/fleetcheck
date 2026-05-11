@@ -68,7 +68,7 @@ export default function VehicleDeepLinkPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#070a14' }}>
+    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#f0f2f9' }}>
       <div className="text-center animate-fade-up">
         {status === 'loading' ? (
           <>
@@ -80,13 +80,13 @@ export default function VehicleDeepLinkPage() {
                 <circle cx="22" cy="20" r="2" fill="white"/>
               </svg>
             </div>
-            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0', marginBottom: 12 }}>
+            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#0f1535', marginBottom: 12 }}>
               FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
             </h1>
             <div className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin"
                 style={{ borderColor: '#fcb52f', borderTopColor: 'transparent' }} />
-              <p style={{ color: '#6b7280', fontSize: 14 }}>{message}</p>
+              <p style={{ color: '#64748b', fontSize: 14 }}>{message}</p>
             </div>
           </>
         ) : (

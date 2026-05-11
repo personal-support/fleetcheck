@@ -69,29 +69,37 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#070a14' }}>
+    <main className="min-h-screen" style={{ background: '#f0f2f9' }}>
       {/* Header */}
       <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid #1a2040' }}>
         <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
-          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#e8eaf0' }}>
-            FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
-            <span style={{ fontSize: 14, fontWeight: 400, color: '#6b7280', marginLeft: 8 }}>Admin</span>
-          </h1>
+          <div className="flex items-center gap-3">
+            <img
+              src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
+              alt="Consuldata"
+              style={{ height: 30, width: 'auto', objectFit: 'contain' }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+            />
+            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#0f1535' }}>
+              FLEET<span style={{ color: '#0D1B8E' }}>CHECK</span>
+              <span style={{ fontSize: 13, fontWeight: 400, color: '#64748b', marginLeft: 6 }}>Admin</span>
+            </h1>
+          </div>
           <div className="flex gap-2 flex-wrap">
             <button onClick={() => router.push('/check/scan')}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#6b7280', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#ffffff', border: '1px solid #1a2040', color: '#64748b', fontSize: 12, cursor: 'pointer' }}>
               Checklist
             </button>
             <button onClick={() => router.push('/admin/drivers')}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#ffffff', border: '1px solid #1a2040', color: '#0f1535', fontSize: 12, cursor: 'pointer' }}>
               Motoristas
             </button>
             <button onClick={() => router.push('/admin/vehicles')}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#ffffff', border: '1px solid #1a2040', color: '#0f1535', fontSize: 12, cursor: 'pointer' }}>
               Veículos
             </button>
             <button onClick={handleLogout}
-              style={{ padding: '6px 12px', borderRadius: 8, background: '#0d1124', border: '1px solid #1a2040', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '6px 12px', borderRadius: 8, background: '#ffffff', border: '1px solid #1a2040', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
               Sair
             </button>
           </div>
@@ -101,14 +109,14 @@ export default function AdminPage() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-2 px-5 py-4">
         {[
-          { label: 'Total', value: checklists.length, color: '#e8eaf0' },
+          { label: 'Total', value: checklists.length, color: '#0f1535' },
           { label: 'Em aberto', value: openCount, color: '#eab308' },
           { label: 'Pendências', value: nokCount, color: '#ef4444' },
           { label: 'Hoje', value: todayCount, color: '#22c55e' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="p-3 rounded-xl text-center" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
+          <div key={label} className="p-3 rounded-xl text-center" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
             <p style={{ fontSize: 22, fontWeight: 800, color, fontFamily: "'Barlow Condensed', sans-serif" }}>{value}</p>
-            <p style={{ fontSize: 9, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
+            <p style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
           </div>
         ))}
       </div>
@@ -121,7 +129,7 @@ export default function AdminPage() {
           { key: 'nok',  label: '🔴 Com pendência' },
         ] as const).map(({ key, label }) => (
           <button key={key} onClick={() => setFilter(key)}
-            style={{ padding: '6px 14px', borderRadius: 8, fontSize: 12, cursor: 'pointer', background: filter === key ? '#fcb52f' : '#0d1124', border: `1px solid ${filter === key ? '#fcb52f' : '#1a2040'}`, color: filter === key ? 'white' : '#6b7280' }}>
+            style={{ padding: '6px 14px', borderRadius: 8, fontSize: 12, cursor: 'pointer', background: filter === key ? '#fcb52f' : '#ffffff', border: `1px solid ${filter === key ? '#fcb52f' : '#dde2f0'}`, color: filter === key ? 'white' : '#6b7280' }}>
             {label}
           </button>
         ))}
@@ -135,7 +143,7 @@ export default function AdminPage() {
       ) : (
         <div className="px-5 pb-8 flex flex-col gap-3">
           {filtered.length === 0 && (
-            <p style={{ color: '#6b7280', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum registro encontrado</p>
+            <p style={{ color: '#64748b', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum registro encontrado</p>
           )}
           {filtered.map((c) => {
             const nok = hasNok(c)
@@ -147,17 +155,17 @@ export default function AdminPage() {
 
             return (
               <div key={c.id} className="p-4 rounded-xl"
-                style={{ background: '#0d1124', border: `1px solid ${isOpen ? 'rgba(234,179,8,0.3)' : nok ? 'rgba(239,68,68,0.3)' : '#1a2040'}` }}>
+                style={{ background: '#ffffff', border: `1px solid ${isOpen ? 'rgba(234,179,8,0.3)' : nok ? 'rgba(239,68,68,0.3)' : '#dde2f0'}` }}>
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <p style={{ fontSize: 16, fontWeight: 700, color: '#e8eaf0', fontFamily: "'Barlow Condensed', sans-serif" }}>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: '#0f1535', fontFamily: "'Barlow Condensed', sans-serif" }}>
                       {c.vehicle?.plate ?? '—'} · {c.vehicle?.model ?? '—'}
                     </p>
-                    <p style={{ fontSize: 12, color: '#6b7280' }}>{c.user?.name ?? c.user?.email ?? '—'}</p>
+                    <p style={{ fontSize: 12, color: '#64748b' }}>{c.user?.name ?? c.user?.email ?? '—'}</p>
                   </div>
                   <div className="text-right">
-                    <p style={{ fontSize: 12, color: '#6b7280' }}>{date.toLocaleDateString('pt-BR')}</p>
-                    <p style={{ fontSize: 11, color: '#6b7280' }}>{date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
+                    <p style={{ fontSize: 12, color: '#64748b' }}>{date.toLocaleDateString('pt-BR')}</p>
+                    <p style={{ fontSize: 11, color: '#64748b' }}>{date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
                 </div>
 
@@ -175,7 +183,7 @@ export default function AdminPage() {
 
                   {/* KM */}
                   {km && (
-                    <span style={{ fontSize: 11, color: '#6b7280' }}>
+                    <span style={{ fontSize: 11, color: '#64748b' }}>
                       {km.toLocaleString('pt-BR')} km
                       {c.arrival_km_final ? ` → ${c.arrival_km_final.toLocaleString('pt-BR')} km` : ''}
                     </span>

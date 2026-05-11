@@ -129,7 +129,7 @@ export default function RegisterPage() {
   // SUCCESS SCREEN
   if (generatedPassword) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#070a14' }}>
+      <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#f0f2f9' }}>
         <div className="w-full max-w-sm animate-fade-up">
           <div className="text-center mb-6">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
@@ -138,23 +138,23 @@ export default function RegisterPage() {
                 <path d="M5 13l4 4L19 7" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#e8eaf0' }}>
+            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#0f1535' }}>
               CADASTRO REALIZADO
             </h1>
-            <p style={{ color: '#6b7280', fontSize: 13, marginTop: 4 }}>
+            <p style={{ color: '#64748b', fontSize: 13, marginTop: 4 }}>
               Bem-vindo(a), {form.name.split(' ')[0]}!
             </p>
           </div>
 
-          <div className="rounded-2xl p-6" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
-            <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 16, lineHeight: 1.6 }}>
+          <div className="rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
+            <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16, lineHeight: 1.6 }}>
               Sua senha de acesso foi gerada. <strong style={{ color: '#fcb52f' }}>Anote agora</strong> — você vai precisar dela toda vez que entrar.
             </p>
 
             {/* Password display */}
             <div className="rounded-xl p-5 text-center mb-4"
-              style={{ background: '#070a14', border: '2px solid rgba(252,181,47,0.4)' }}>
-              <p style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+              style={{ background: '#f0f2f9', border: '2px solid rgba(252,181,47,0.4)' }}>
+              <p style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
                 Sua senha
               </p>
               <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 42, fontWeight: 800, color: '#fcb52f', letterSpacing: 4 }}>
@@ -165,8 +165,8 @@ export default function RegisterPage() {
             <button onClick={copyPassword}
               style={{
                 width: '100%', padding: 12, borderRadius: 10, marginBottom: 12,
-                background: copied ? 'rgba(34,197,94,0.1)' : '#1a2040',
-                border: `1px solid ${copied ? '#22c55e' : '#252d50'}`,
+                background: copied ? 'rgba(34,197,94,0.1)' : '#dde2f0',
+                border: `1px solid ${copied ? '#22c55e' : '#c5ccdf'}`,
                 color: copied ? '#22c55e' : '#e8eaf0', fontSize: 13,
                 fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
               }}>
@@ -174,11 +174,11 @@ export default function RegisterPage() {
             </button>
 
             {/* Login info summary */}
-            <div className="p-4 rounded-xl" style={{ background: 'rgba(252,181,47,0.06)', border: '1px solid rgba(252,181,47,0.15)' }}>
-              <p style={{ fontSize: 12, color: '#e8eaf0', lineHeight: 1.7 }}>
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(13,27,142,0.04)', border: '1px solid rgba(13,27,142,0.08)' }}>
+              <p style={{ fontSize: 12, color: '#0f1535', lineHeight: 1.7 }}>
                 <strong style={{ color: '#fcb52f' }}>E-mail:</strong> {form.email}<br />
                 <strong style={{ color: '#fcb52f' }}>Senha:</strong> {generatedPassword}<br />
-                <strong style={{ color: '#6b7280', fontSize: 11 }}>Guarde estas informações.</strong>
+                <strong style={{ color: '#64748b', fontSize: 11 }}>Guarde estas informações.</strong>
               </p>
             </div>
 
@@ -200,72 +200,72 @@ export default function RegisterPage() {
 
   // REGISTER FORM
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#070a14' }}>
+    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#f0f2f9' }}>
       <div className="w-full max-w-sm animate-fade-up">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#e8eaf0' }}>
+          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#0f1535' }}>
             FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
           </h1>
-          <p style={{ color: '#6b7280', fontSize: 13, marginTop: 2 }}>Primeiro acesso — Motorista</p>
+          <p style={{ color: '#64748b', fontSize: 13, marginTop: 2 }}>Primeiro acesso — Motorista</p>
         </div>
 
-        <div className="rounded-2xl p-6" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
-          <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
+        <div className="rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
+          <p style={{ color: '#64748b', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
             Preencha seus dados. Sua senha será gerada automaticamente.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 E-mail Consuldata
               </label>
               <input type="email" value={form.email}
                 onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
                 placeholder="seu.nome@consuldata.com.br" required
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
                 onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                onBlur={e => e.target.style.borderColor = '#dde2f0'} />
             </div>
 
             {/* Name */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 Nome completo
               </label>
               <input type="text" value={form.name}
                 onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="João da Silva" required
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
                 onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                onBlur={e => e.target.style.borderColor = '#dde2f0'} />
             </div>
 
             {/* CPF */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 CPF
               </label>
               <input type="text" inputMode="numeric" value={form.cpf}
                 onChange={e => handleCPF(e.target.value)}
                 placeholder="000.000.000-00" required maxLength={14}
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 16, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 16, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
                 onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                onBlur={e => e.target.style.borderColor = '#dde2f0'} />
             </div>
 
             {/* Birth date */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 Data de nascimento
               </label>
               <input type="date" value={form.birth_date}
                 onChange={e => setForm(prev => ({ ...prev, birth_date: e.target.value }))}
                 required max={new Date().toISOString().split('T')[0]}
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
+                style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
                 onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                onBlur={e => e.target.style.borderColor = '#dde2f0'} />
             </div>
 
             {error && (
@@ -277,7 +277,7 @@ export default function RegisterPage() {
             <button type="submit" disabled={loading}
               style={{
                 width: '100%', padding: 14, borderRadius: 10, marginTop: 4,
-                background: loading ? '#7a5c0a' : '#fcb52f',
+                background: loading ? '#0D1B8E' : '#fcb52f',
                 color: 'white', fontWeight: 700, fontSize: 15,
                 border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48,
               }}>
@@ -287,7 +287,7 @@ export default function RegisterPage() {
 
           <div style={{ textAlign: 'center', marginTop: 16 }}>
             <button onClick={() => router.push('/login')}
-              style={{ background: 'none', border: 'none', color: '#6b7280', fontSize: 13, cursor: 'pointer' }}>
+              style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 13, cursor: 'pointer' }}>
               Já tenho cadastro → Entrar
             </button>
           </div>

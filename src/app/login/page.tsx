@@ -58,27 +58,25 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ background: '#070a14' }}>
+      style={{ background: '#f0f2f9', minHeight: '100vh' }}>
 
       {/* Logo */}
       <div className="mb-8 text-center animate-fade-up">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
-          style={{ background: '#fcb52f' }}>
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M4 8h24M4 8v16a2 2 0 002 2h20a2 2 0 002-2V8M4 8l4-4h16l4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <circle cx="10" cy="20" r="2" fill="white"/>
-            <circle cx="22" cy="20" r="2" fill="white"/>
-          </svg>
-        </div>
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 36, fontWeight: 800, letterSpacing: '-0.5px', color: '#e8eaf0' }}>
-          FLEET<span style={{ color: '#fcb52f' }}>CHECK</span>
+        <img 
+          src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
+          alt="Consuldata"
+          style={{ height: 52, width: 'auto', marginBottom: 8, objectFit: 'contain' }}
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+        />
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 36, fontWeight: 800, letterSpacing: '-0.5px', color: '#0f1535' }}>
+          FLEET<span style={{ color: '#0D1B8E' }}>CHECK</span>
         </h1>
-        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 4 }}>Consuldata Teleprocessamento</p>
+        <p style={{ color: '#64748b', fontSize: 14, marginTop: 4 }}>Consuldata Teleprocessamento</p>
       </div>
 
       {/* Toggle */}
       <div className="flex rounded-xl p-1 mb-6 w-full max-w-sm animate-fade-up"
-        style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
+        style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
         {(['driver', 'admin'] as Mode[]).map(m => (
           <button key={m} onClick={() => { setMode(m); setError(''); setSent(false) }}
             style={{
@@ -94,41 +92,41 @@ export default function LoginPage() {
 
       {/* Card */}
       <div className="w-full max-w-sm animate-fade-up" style={{ animationDelay: '0.1s' }}>
-        <div className="rounded-2xl p-6" style={{ background: '#0d1124', border: '1px solid #1a2040' }}>
+        <div className="rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
 
           {/* DRIVER LOGIN */}
           {mode === 'driver' && (
             <>
-              <h2 style={{ fontSize: 16, fontWeight: 500, color: '#e8eaf0', marginBottom: 4 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0f1535', marginBottom: 4 }}>
                 Entrar como motorista
               </h2>
-              <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 20 }}>
+              <p style={{ color: '#64748b', fontSize: 13, marginBottom: 20 }}>
                 Use seu e-mail @consuldata.com.br e a senha gerada no seu cadastro.
               </p>
               <form onSubmit={handleDriverLogin} className="flex flex-col gap-4">
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#6b7280', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     E-mail
                   </label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="seu.nome@consuldata.com.br" required
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
                     onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                    onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                    onBlur={e => e.target.style.borderColor = '#dde2f0'} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#6b7280', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Senha
                   </label>
                   <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                     placeholder="Sua senha gerada no cadastro" required
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
                     onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                    onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                    onBlur={e => e.target.style.borderColor = '#dde2f0'} />
                 </div>
                 {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
                 <button type="submit" disabled={loading}
-                  style={{ width: '100%', padding: 14, borderRadius: 10, background: loading ? '#7a5c0a' : '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48 }}>
+                  style={{ width: '100%', padding: 14, borderRadius: 10, background: loading ? '#0D1B8E' : '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48 }}>
                   {loading ? 'Entrando...' : 'ENTRAR'}
                 </button>
               </form>
@@ -144,26 +142,26 @@ export default function LoginPage() {
           {/* ADMIN LOGIN */}
           {mode === 'admin' && !sent && (
             <>
-              <h2 style={{ fontSize: 16, fontWeight: 500, color: '#e8eaf0', marginBottom: 4 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0f1535', marginBottom: 4 }}>
                 Acesso administrativo
               </h2>
-              <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 20 }}>
+              <p style={{ color: '#64748b', fontSize: 13, marginBottom: 20 }}>
                 Enviaremos um link de acesso para o seu e-mail.
               </p>
               <form onSubmit={handleAdminLogin} className="flex flex-col gap-4">
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#6b7280', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     E-mail admin
                   </label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="admin@consuldata.com.br" required
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#070a14', border: '1px solid #1a2040', color: '#e8eaf0', fontSize: 14, outline: 'none' }}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#f0f2f9', border: '1px solid #1a2040', color: '#0f1535', fontSize: 14, outline: 'none' }}
                     onFocus={e => e.target.style.borderColor = '#fcb52f'}
-                    onBlur={e => e.target.style.borderColor = '#1a2040'} />
+                    onBlur={e => e.target.style.borderColor = '#dde2f0'} />
                 </div>
                 {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
                 <button type="submit" disabled={loading}
-                  style={{ width: '100%', padding: 14, borderRadius: 10, background: loading ? '#7a5c0a' : '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48 }}>
+                  style={{ width: '100%', padding: 14, borderRadius: 10, background: loading ? '#0D1B8E' : '#fcb52f', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', minHeight: 48 }}>
                   {loading ? 'Enviando...' : 'Enviar link de acesso'}
                 </button>
               </form>
@@ -177,9 +175,9 @@ export default function LoginPage() {
                   <path d="M5 13l4 4L19 7" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: '#e8eaf0', marginBottom: 8 }}>Link enviado!</h3>
-              <p style={{ color: '#6b7280', fontSize: 13, lineHeight: 1.5 }}>
-                Verifique <strong style={{ color: '#e8eaf0' }}>{email}</strong> e clique no link para entrar.
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: '#0f1535', marginBottom: 8 }}>Link enviado!</h3>
+              <p style={{ color: '#64748b', fontSize: 13, lineHeight: 1.5 }}>
+                Verifique <strong style={{ color: '#0f1535' }}>{email}</strong> e clique no link para entrar.
               </p>
               <button onClick={() => setSent(false)}
                 style={{ marginTop: 16, color: '#fcb52f', fontSize: 13, background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -190,7 +188,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <p style={{ color: '#252d50', fontSize: 11, marginTop: 32 }}>
+      <p style={{ color: '#c5ccdf', fontSize: 11, marginTop: 32 }}>
         FleetCheck © J.Lopes Personal Support
       </p>
     </main>

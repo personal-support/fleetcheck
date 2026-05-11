@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#070a14',
+  themeColor: '#f0f2f9',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-screen" style={{ fontFamily: "'Roboto', sans-serif", background: '#070a14' }}>
+      <body className="min-h-screen" style={{ fontFamily: "'Roboto', sans-serif", background: '#f0f2f9' }}>
         {children}
       </body>
     </html>
