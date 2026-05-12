@@ -119,7 +119,7 @@ export default function OdometerPage() {
         const res = await fetch('/api/read-odometer', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: b64 }),
+          body: JSON.stringify({ image: b64, vehicleModel: vehicle?.model ?? '' }),
         })
         const data = await res.json()
         if (data.km > 0) {
