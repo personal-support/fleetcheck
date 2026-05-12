@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BackButton } from '@/components/BackButton'
@@ -235,6 +237,8 @@ export default function AdminVehiclesPage() {
       </div>
 
       <BackButton href='/admin' label='Voltar para o painel' />
+
+      <ConsuldataFooter />
     </main>
   )
 }
