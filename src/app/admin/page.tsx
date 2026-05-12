@@ -49,7 +49,7 @@ export default function AdminPage() {
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, position: 'relative' }}>
           {/* Logo */}
-          <img src="/LOGO_CONSULDATA.jpg" alt="Consuldata" style={{ height: 36, width: 'auto', objectFit: 'contain' }} />{/* App name center */}
+          <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 36, width: 'auto', objectFit: 'contain' }} />{/* App name center */}
           <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
             <span style={{ fontSize: 11, fontWeight: 400, color: 'rgba(255,255,255,0.45)', marginLeft: 6 }}>Admin</span>
