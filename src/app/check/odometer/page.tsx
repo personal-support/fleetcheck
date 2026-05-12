@@ -30,9 +30,36 @@ export default function OdometerPage() {
   const vehicle: Vehicle | null = typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('fc_vehicle') ?? 'null') : null
 
   useEffect(() => {
-    startCamera()
+    fetchLastKm()
     return () => stopCamera()
   }, [])
+
+  async function fetchLastKm() {
+    if (!vehicle) { startCamera(); return }
+    try {
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+      const { data } = await supabase
+        .from('checklists')
+        .select('arrival_km_final, departure_km_final')
+        .eq('vehicle_id', vehicle.id)
+        .eq('status', 'closed')
+        .order('closed_at', { ascending: false })
+        .limit(1)
+        .single()
+      const dbKm = data?.arrival_km_final ?? data?.departure_km_final ?? 0
+      if (dbKm > 0) {
+        setLastKmFromDb(dbKm)
+        setKmInput(String(dbKm))
+        setCorrecting(true)
+        setStep('confirm')
+      } else {
+        startCamera()
+      }
+    } catch {
+      startCamera()
+    }
+  }
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach(t => t.stop())
@@ -328,6 +355,14 @@ export default function OdometerPage() {
               </div>
             )}
 
+            {/* Pre-filled indicator */}
+            {correcting && !kmAuto && !photoUrl && lastKmFromDb > 0 && (
+              <div style={{ padding: '10px 14px', background: 'var(--cd-navy-dim)', border: '1px solid rgba(33,39,113,0.2)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--cd-navy)" strokeWidth="1.5"/><path d="M12 8v4M12 16h.01" stroke="var(--cd-navy)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                <p style={{ fontSize: 13, color: 'var(--cd-navy)' }}>KM do último registro. Confirme ou corrija se necessário.</p>
+              </div>
+            )}
+
             {(correcting || !kmAuto) && (
               <div>
                 <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
@@ -362,12 +397,10 @@ export default function OdometerPage() {
                 </button>
               )}
 
-              {(correcting || !kmAuto) && photoUrl && (
-                <button onClick={() => { setStep('camera'); setPhotoUrl(''); setPhotoBlob(null); setCorrecting(false); setKmAuto(null); setKmInput(''); startCamera() }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
-                  ← Tirar foto novamente
-                </button>
-              )}
+              <button onClick={() => { setStep('camera'); setPhotoUrl(''); setPhotoBlob(null); setCorrecting(false); setKmAuto(null); setKmInput(''); startCamera() }}
+                style={{ padding: 10, background: 'none', border: 'none', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
+                📷 {photoUrl ? 'Tirar foto novamente' : 'Fotografar hodômetro'}
+              </button>
             </div>
           </div>
         )}
