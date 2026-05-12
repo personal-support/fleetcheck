@@ -258,7 +258,7 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                   <Pie data={statusPie} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value"
-                    label={({name,percent})=>`${name} ${(percent*100).toFixed(0)}%`} labelLine={false} style={{fontSize:11}}>
+                    label={({name,percent})=>`${name} ${((percent??0)*100).toFixed(0)}%`} labelLine={false} style={{fontSize:11}}>
                     {statusPie.map((d,i)=><Cell key={i} fill={d.color}/>)}
                   </Pie>
                   <Tooltip contentStyle={ttStyle}/>
