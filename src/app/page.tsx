@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -33,6 +35,8 @@ export default function HomePage() {
     <main className="min-h-screen flex items-center justify-center" style={{ background: '#ebeff2' }}>
       <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
         style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
+
+      <ConsuldataFooter />
     </main>
   )
 }

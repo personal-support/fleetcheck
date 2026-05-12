@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Vehicle } from '@/types'
@@ -406,7 +408,8 @@ export default function OdometerPage() {
         )}
       </div>
 
-      <BackButton href='/check/selecionar' label="← Voltar para lista de veículos" />
+      <ConsuldataFooter />
+      <BackButton href='/check/selecionar' label="Voltar para lista de veículos" />
     </main>
   )
 }

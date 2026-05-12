@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
@@ -61,6 +63,8 @@ function DoneContent() {
           {isArrival ? '✓ CONCLUÍDO' : 'OK, ENTENDIDO'}
         </button>
       </div>
+
+      <ConsuldataFooter />
     </main>
   )
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -231,7 +233,8 @@ export default function ChecklistItemsPage() {
         )}
       </div>
 
-      <BackButton href='/check/selecionar' label="← Cancelar e voltar" />
+      <ConsuldataFooter />
+      <BackButton href='/check/selecionar' label="Cancelar e voltar" />
     </main>
   )
 }

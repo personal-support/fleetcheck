@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataFooter } from '@/components/ConsuldataFooter'
+
 import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -305,7 +307,8 @@ export default function ArrivalPage() {
         </button>
       </div>
 
-      <BackButton href='/check/selecionar' label="← Cancelar chegada" />
+      <ConsuldataFooter />
+      <BackButton href='/check/selecionar' label="Cancelar chegada" />
     </main>
   )
 }

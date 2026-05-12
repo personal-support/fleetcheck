@@ -234,7 +234,7 @@ export default function AdminVehiclesPage() {
         ))}
       </div>
 
-      <BackButton href='/admin' label='← Voltar para o painel' />
+      <BackButton href='/admin' label='Voltar para o painel' />
     </main>
   )
 }

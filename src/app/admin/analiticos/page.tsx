@@ -345,7 +345,7 @@ export default function AnalyticsPage() {
         </div>
       )}
       <ConsuldataFooter/>
-      <BackButton href="/admin" label="← Voltar para o painel"/>
+      <BackButton href="/admin" label="Voltar para o painel"/>
     </main>
   )
 }
