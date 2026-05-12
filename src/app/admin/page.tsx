@@ -60,7 +60,8 @@ export default function AdminPage() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
             <div style={{ display: 'flex', gap: 4 }}>
               {[
-                { label: 'Checklist', action: () => router.push('/check/scan') },
+                { label: '📊 Analytics', action: () => router.push('/admin/analytics') },
+            { label: 'Checklist', action: () => router.push('/check/scan') },
                 { label: 'Motoristas', action: () => router.push('/admin/drivers') },
                 { label: 'Veículos', action: () => router.push('/admin/vehicles') },
               ].map(({ label, action }) => (
