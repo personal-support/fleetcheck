@@ -30,7 +30,7 @@ export default function ChecklistItemsPage() {
   const latAuto = typeof window !== 'undefined' ? parseFloat(sessionStorage.getItem('fc_lat_auto') ?? '0') || null : null
   const lngAuto = typeof window !== 'undefined' ? parseFloat(sessionStorage.getItem('fc_lng_auto') ?? '0') || null : null
 
-  useEffect(() => { if (!vehicle) { router.replace('/check/scan'); return }; loadTemplate() }, [])
+  useEffect(() => { if (!vehicle) { router.replace('/check/selecionar'); return }; loadTemplate() }, [])
 
   async function loadTemplate() {
     const supabase = createClient()
@@ -231,7 +231,7 @@ export default function ChecklistItemsPage() {
         )}
       </div>
 
-      <BackButton href='/check/scan' label="← Cancelar e voltar" />
+      <BackButton href='/check/selecionar' label="← Cancelar e voltar" />
     </main>
   )
 }

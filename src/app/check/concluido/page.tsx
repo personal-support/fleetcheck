@@ -15,7 +15,7 @@ function DoneContent() {
     // Se acessado pelo historico do browser (botao voltar), redireciona para scan
     const justCompleted = sessionStorage.getItem('fc_just_completed')
     if (!justCompleted) {
-      router.replace('/check/scan')
+      router.replace('/check/selecionar')
       return
     }
     sessionStorage.removeItem('fc_just_completed')
@@ -56,7 +56,7 @@ function DoneContent() {
           </div>
         )}
 
-        <button onClick={() => router.replace('/check/scan')}
+        <button onClick={() => router.replace('/check/selecionar')}
           style={{ width: '100%', padding: 14, borderRadius: 10, background: isArrival ? '#22c55e' : '#f86924', color: isArrival ? '#ebeff2' : 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif" }}>
           {isArrival ? '✓ CONCLUÍDO' : 'OK, ENTENDIDO'}
         </button>

@@ -24,7 +24,7 @@ export default function HomePage() {
       if (user?.role === 'admin') {
         router.replace('/admin')
       } else {
-        router.replace('/check/scan')
+        router.replace('/check/selecionar')
       }
     })
   }, [router])

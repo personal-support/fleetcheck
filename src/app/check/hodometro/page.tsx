@@ -192,10 +192,10 @@ export default function OdometerPage() {
       () => {}
     )
     if (photoBlob) sessionStorage.setItem('fc_km_photo', URL.createObjectURL(photoBlob))
-    router.push(phase === 'departure' ? '/check/items' : '/check/arrival')
+    router.push(phase === 'departure' ? '/check/itens' : '/check/chegada')
   }
 
-  if (!vehicle) { router.replace('/check/scan'); return null }
+  if (!vehicle) { router.replace('/check/selecionar'); return null }
 
   const isArrival = phase === 'arrival'
   const lastKm = vehicle.last_km
@@ -406,7 +406,7 @@ export default function OdometerPage() {
         )}
       </div>
 
-      <BackButton href='/check/scan' label="← Voltar para lista de veículos" />
+      <BackButton href='/check/selecionar' label="← Voltar para lista de veículos" />
     </main>
   )
 }

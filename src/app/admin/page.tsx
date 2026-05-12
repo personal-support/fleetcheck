@@ -58,10 +58,10 @@ export default function AdminPage() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
             <div style={{ display: 'flex', gap: 4 }}>
               {[
-                { label: '📊 Analytics', action: () => router.push('/admin/analytics') },
-            { label: 'Checklist', action: () => router.push('/check/scan') },
-                { label: 'Motoristas', action: () => router.push('/admin/drivers') },
-                { label: 'Veículos', action: () => router.push('/admin/vehicles') },
+                { label: '📊 Analytics', action: () => router.push('/admin/analiticos') },
+            { label: 'Checklist', action: () => router.push('/check/selecionar') },
+                { label: 'Motoristas', action: () => router.push('/admin/motoristas') },
+                { label: 'Veículos', action: () => router.push('/admin/veiculos') },
               ].map(({ label, action }) => (
                 <button key={label} onClick={action}
                   style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'rgba(255,255,255,0.85)', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.03em' }}>

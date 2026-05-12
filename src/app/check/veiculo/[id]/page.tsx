@@ -19,7 +19,7 @@ export default function VehicleDeepLinkPage() {
     // Check auth — redirect to login if needed
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
-      sessionStorage.setItem('fc_redirect', `/check/vehicle/${vehicleId}`)
+      sessionStorage.setItem('fc_redirect', `/check/veiculo/${vehicleId}`)
       router.replace('/login')
       return
     }
@@ -41,7 +41,7 @@ export default function VehicleDeepLinkPage() {
       sessionStorage.setItem('fc_vehicle', JSON.stringify(vehicle))
       sessionStorage.setItem('fc_checklist_id', vehicleOpen.id)
       sessionStorage.setItem('fc_phase', 'arrival')
-      router.replace('/check/odometer')
+      router.replace('/check/hodometro')
       return
     }
 
@@ -55,7 +55,7 @@ export default function VehicleDeepLinkPage() {
       if (driverOpen) {
         // Go to scan to show the warning with action button
         sessionStorage.setItem('fc_pending_vehicle', JSON.stringify(vehicle))
-        router.replace('/check/scan')
+        router.replace('/check/selecionar')
         return
       }
     }
@@ -64,7 +64,7 @@ export default function VehicleDeepLinkPage() {
     sessionStorage.setItem('fc_vehicle', JSON.stringify(vehicle))
     sessionStorage.removeItem('fc_checklist_id')
     sessionStorage.setItem('fc_phase', 'departure')
-    router.replace('/check/odometer')
+    router.replace('/check/hodometro')
   }
 
   return (
@@ -92,7 +92,7 @@ export default function VehicleDeepLinkPage() {
         ) : (
           <>
             <p style={{ color: '#ef4444', fontSize: 15, marginBottom: 16 }}>Veículo não encontrado ou inativo.</p>
-            <button onClick={() => router.replace('/check/scan')}
+            <button onClick={() => router.replace('/check/selecionar')}
               style={{ padding: '12px 24px', borderRadius: 10, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 14, border: 'none', cursor: 'pointer' }}>
               Ir para lista de veículos
             </button>

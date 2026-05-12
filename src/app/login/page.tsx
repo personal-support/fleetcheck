@@ -114,7 +114,7 @@ export default function LoginPage() {
                   {loading ? 'Entrando...' : 'Entrar'}
                 </button>
                 <div style={{ textAlign: 'center' }}>
-                  <button type="button" onClick={() => router.push('/register')}
+                  <button type="button" onClick={() => router.push('/cadastro')}
                     style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
                     Primeiro acesso? Gerar minha senha
                   </button>

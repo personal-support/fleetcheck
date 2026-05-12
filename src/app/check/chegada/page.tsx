@@ -33,7 +33,7 @@ export default function ArrivalPage() {
   const lngAuto = typeof window !== 'undefined' ? parseFloat(sessionStorage.getItem('fc_lng_auto') ?? '0') || null : null
 
   useEffect(() => {
-    if (!vehicle || !checklistId) { router.replace('/check/scan'); return }
+    if (!vehicle || !checklistId) { router.replace('/check/selecionar'); return }
     loadTemplate()
   }, [])
 
@@ -305,7 +305,7 @@ export default function ArrivalPage() {
         </button>
       </div>
 
-      <BackButton href='/check/scan' label="← Cancelar chegada" />
+      <BackButton href='/check/selecionar' label="← Cancelar chegada" />
     </main>
   )
 }

@@ -103,11 +103,11 @@ export default function ScanPage() {
     if (openChecklist) {
       sessionStorage.setItem('fc_checklist_id', openChecklist.id)
       sessionStorage.setItem('fc_phase', 'arrival')
-      router.push('/check/odometer')
+      router.push('/check/hodometro')
     } else {
       sessionStorage.removeItem('fc_checklist_id')
       sessionStorage.setItem('fc_phase', 'departure')
-      router.push('/check/odometer')
+      router.push('/check/hodometro')
     }
   }
 
@@ -238,7 +238,7 @@ export default function ScanPage() {
                     sessionStorage.setItem('fc_vehicle', JSON.stringify({ ...veh, id: data.vehicle_id }))
                     sessionStorage.setItem('fc_checklist_id', data.id)
                     sessionStorage.setItem('fc_phase', 'arrival')
-                    router.push('/check/odometer')
+                    router.push('/check/hodometro')
                   }
                 }}
                   style={{ marginTop: 8, padding: '6px 14px', background: 'var(--cd-warn)', color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>

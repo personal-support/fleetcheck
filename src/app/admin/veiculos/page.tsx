@@ -15,7 +15,7 @@ function QRCanvas({ vehicleId, plate }: { vehicleId: string; plate: string }) {
     async function generate() {
       if (!canvasRef.current) return
       const QRCode = (await import('qrcode')).default
-      const qrData = `https://fleetcheck.vercel.app/check/vehicle/${vehicleId}`
+      const qrData = `https://fleetcheck.vercel.app/check/veiculo/${vehicleId}`
       await QRCode.toCanvas(canvasRef.current, qrData, {
         width: 200,
         margin: 2,
