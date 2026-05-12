@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataLogo } from '@/components/ConsuldataLogo'
+
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -160,10 +162,7 @@ export default function AnalyticsPage() {
     <main style={{minHeight:'100vh',display:'flex',flexDirection:'column',background:'#ebeff2',paddingBottom:80}}>
       <header style={{background:'#212771',padding:'0 20px',position:'sticky',top:0,zIndex:40}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',height:56,position:'relative'}}>
-          <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
-            style={{height:32,filter:'brightness(0) invert(1)',objectFit:'contain'}}
-            onError={(e)=>{(e.target as HTMLImageElement).style.display='none'}}/>
-          <span style={{fontFamily:"'Barlow Condensed', sans-serif",fontSize:18,fontWeight:800,color:'#fff',position:'absolute',left:'50%',transform:'translateX(-50%)',whiteSpace:'nowrap'}}>
+          <ConsuldataLogo variant="dark" height={34} /><span style={{fontFamily:"'Barlow Condensed', sans-serif",fontSize:18,fontWeight:800,color:'#fff',position:'absolute',left:'50%',transform:'translateX(-50%)',whiteSpace:'nowrap'}}>
             FLEET<span style={{color:'#f86924'}}>CHECK</span>
             <span style={{fontSize:12,fontWeight:400,color:'rgba(255,255,255,0.5)',marginLeft:6}}>Analytics</span>
           </span>

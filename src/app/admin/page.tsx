@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataLogo } from '@/components/ConsuldataLogo'
+
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -48,10 +50,7 @@ export default function AdminPage() {
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, position: 'relative' }}>
           {/* Logo */}
-          <img src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png" alt="Consuldata"
-            style={{ height: 38, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain', flexShrink: 0 }}
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
-          {/* App name center */}
+          <ConsuldataLogo variant="dark" height={34} />{/* App name center */}
           <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
             <span style={{ fontSize: 11, fontWeight: 400, color: 'rgba(255,255,255,0.45)', marginLeft: 6 }}>Admin</span>

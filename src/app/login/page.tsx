@@ -1,5 +1,7 @@
 'use client'
 
+import { ConsuldataLogo } from '@/components/ConsuldataLogo'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -55,13 +57,7 @@ export default function LoginPage() {
       {/* Top bar */}
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
-          <img
-            src="https://www.consuldata.com.br/wp-content/uploads/2022/08/LOGO-SITE-1.png"
-            alt="Consuldata"
-            style={{ height: 36, width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-          />
-          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <ConsuldataLogo variant="dark" height={34} /><span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
           </span>
           <div style={{ width: 80 }} />
