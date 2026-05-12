@@ -11,42 +11,60 @@ export async function POST(request: NextRequest) {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 100,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: 'image/jpeg', data: image },
-            },
-            {
-              type: 'text',
-              text: `Analise esta foto do painel de um veículo e encontre o valor do hodômetro total.
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: image } },
+          {
+            type: 'text',
+            text: `Analise esta foto do painel de um veículo e encontre o valor do HODÔMETRO TOTAL.
 
-O hodômetro total é o número que representa a quilometragem acumulada total do veículo desde que saiu de fábrica.
+O hodômetro total representa a quilometragem acumulada total desde a fábrica.
 
-Como identificar o hodômetro total visualmente:
-- É um número de 5 ou 6 dígitos (entre 10000 e 999999)
-- Está acompanhado da palavra "km" ou "KM" logo após ou abaixo
-- Fica em um display digital (LCD ou LED) — pode ser vermelho, laranja, azul ou branco
-- Geralmente fica na parte inferior ou central do painel de instrumentos
+COMO IDENTIFICAR — o hodômetro total é sempre um número de 5 ou 6 dígitos próximo à palavra "km" ou "KM":
 
-O que NÃO é o hodômetro — ignore completamente:
-- O número grande no centro (é a velocidade atual, geralmente 0 quando parado)
-- Números curtos de 3-4 dígitos com casas decimais (ex: 134.5 — é o hodômetro parcial/trip)
-- Formato HH:MM como 13:30 ou 0:00 (é o relógio)
-- Números pequenos no mostrador circular (são RPM ou temperatura)
+TIPO 1 — Display LED/LCD vermelho (ex: VW Gol):
+- Número branco sobre fundo escuro vermelho
+- Formato compacto, última linha do display
+- Pode aparecer como "1 10846km" → leia como 110846
 
-Se houver mais de um número com "km", escolha o de MAIS dígitos — esse é o total.
+TIPO 2 — Display circular laranja (ex: Fiat Uno):
+- Tela redonda laranja/âmbar
+- Hodômetro na parte inferior do círculo
+- Pode terminar com "C" ou outro caractere decorativo — ignore
+- Exemplo: "162984C" → leia 162984
+
+TIPO 3 — Display digital azul (ex: Chevrolet Onix antigo):
+- Retângulo azul com dígitos brancos
+- O hodômetro fica à DIREITA do "0" central (velocidade)
+- Abaixo do parcial de viagem (número menor de 3-4 dígitos)
+- Exemplo: linha de cima "1324", linha de baixo "146528km" → leia 146528
+
+TIPO 4 — Display LCD colorido com texto (ex: Fiat Argo/Cronos):
+- Tela retangular colorida no centro do painel
+- Pode mostrar mensagens de texto acima (ex: "Acionar pedal embreagem")
+- O hodômetro fica na parte INFERIOR da tela, formato "XXXXXKM" ou "XXXXX km"
+- Pode ter zero à esquerda: "039878 km" → leia 39878
+- Ignore completamente qualquer texto de mensagem/aviso acima
+
+IGNORE COMPLETAMENTE:
+- O número grande no velocímetro (velocidade atual, ex: 0, 60, 80)
+- Hodômetro parcial/viagem (3-4 dígitos com decimais, ex: 134.5)
+- Relógio digital (formato HH:MM, ex: 14:09)
+- RPM (números no tacômetro à direita)
+- Temperatura, nível de combustível
+
+ATENÇÃO ESPECIAL AO DÍGITO 8:
+Em displays LED/LCD com fundo escuro, o segmento central do "8" pode aparecer apagado.
+Se um dígito parece "0" mas o contexto sugere "8", prefira "8".
+
+Se houver mais de um número com "km", escolha o de MAIS dígitos.
 
 Responda SOMENTE com os dígitos do hodômetro total, sem nenhum outro caractere.
-Atenção especial ao dígito 8: em displays LCD/LED com fundo vermelho ou laranja, o segmento central do "8" pode aparecer apagado e ser confundido com "0". Se o dígito parece um "0" mas o contexto numérico sugere que seria estranhamente redondo ou simétrico para um hodômetro real, considere que pode ser "8".
-
-Se não conseguir ler com segurança, responda apenas: 0`,
-            },
-          ],
-        },
-      ],
+Se não conseguir identificar com certeza, responda: 0`,
+          },
+        ],
+      }],
     })
 
     const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '0'

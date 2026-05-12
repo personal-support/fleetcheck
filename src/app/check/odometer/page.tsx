@@ -21,6 +21,8 @@ export default function OdometerPage() {
   const [zoom, setZoom] = useState(1)
   const [maxZoom, setMaxZoom] = useState(1)
   const [zoomSupported, setZoomSupported] = useState(false)
+  const [torchOn, setTorchOn] = useState(false)
+  const [torchSupported, setTorchSupported] = useState(false)
 
   const phase = typeof window !== 'undefined' ? sessionStorage.getItem('fc_phase') ?? 'departure' : 'departure'
   const vehicle: Vehicle | null = typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('fc_vehicle') ?? 'null') : null
@@ -52,11 +54,19 @@ export default function OdometerPage() {
       if (videoRef.current) videoRef.current.srcObject = stream
 
       // Check zoom support
-      const capabilities = track.getCapabilities() as MediaTrackCapabilities & { zoom?: { min: number; max: number; step: number } }
+      const capabilities = track.getCapabilities() as MediaTrackCapabilities & { zoom?: { min: number; max: number; step: number }; torch?: boolean }
       if (capabilities.zoom) {
         setZoomSupported(true)
         setMaxZoom(Math.min(capabilities.zoom.max, 8))
         setZoom(1)
+      }
+      // Auto-enable torch (flash) for better odometer reading
+      if (capabilities.torch) {
+        setTorchSupported(true)
+        try {
+          await (track.applyConstraints as Function)({ advanced: [{ torch: true }] })
+          setTorchOn(true)
+        } catch { /* torch not available */ }
       }
     } catch {
       setError('Câmera indisponível.')
@@ -67,9 +77,20 @@ export default function OdometerPage() {
     setZoom(value)
     if (trackRef.current && zoomSupported) {
       try {
-        await (trackRef.current.applyConstraints as Function)({ advanced: [{ zoom: value }] })
+        const constraints: Record<string, unknown> = { zoom: value }
+        if (torchOn) constraints.torch = true
+        await (trackRef.current.applyConstraints as Function)({ advanced: [constraints] })
       } catch { /* fallback to CSS */ }
     }
+  }
+
+  async function toggleTorch() {
+    if (!trackRef.current || !torchSupported) return
+    const next = !torchOn
+    try {
+      await (trackRef.current.applyConstraints as Function)({ advanced: [{ torch: next }] })
+      setTorchOn(next)
+    } catch { /* ignore */ }
   }
 
   const capture = useCallback(async () => {
@@ -231,6 +252,19 @@ export default function OdometerPage() {
             </div>
 
             {error && <p className="mt-2" style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
+
+            {/* Torch toggle */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+              <span style={{ fontSize: 13, color: 'var(--cd-subtext)' }}>
+                {torchSupported ? (torchOn ? '🔦 Flash ativo' : '🔦 Flash') : '💡 Use o flash do celular para melhor leitura'}
+              </span>
+              {torchSupported && (
+                <button onClick={toggleTorch}
+                  style={{ padding: '6px 14px', borderRadius: 8, background: torchOn ? 'var(--cd-orange)' : 'var(--cd-surface)', border: `1.5px solid ${torchOn ? 'var(--cd-orange)' : 'var(--cd-border)'}`, color: torchOn ? '#fff' : 'var(--cd-subtext)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: "'Open Sans', sans-serif" }}>
+                  {torchOn ? 'ON' : 'OFF'}
+                </button>
+              )}
+            </div>
 
             <div className="flex gap-3 mt-4">
               <button onClick={capture}
