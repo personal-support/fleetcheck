@@ -342,7 +342,7 @@ export default function OdometerPage() {
 
             {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
 
-            <div className="flex flex-col gap-2 mt-auto">
+            <div className="flex flex-col gap-2">
               <button onClick={confirm}
                 style={{ width: '100%', padding: 14, borderRadius: 10, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
                 CONFIRMAR E CONTINUAR →
