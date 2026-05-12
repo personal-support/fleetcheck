@@ -276,8 +276,8 @@ export default function AnalyticsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false}/>
                   <XAxis type="number" tick={{fontSize:11,fill:'#5e6673'}} tickFormatter={v=>`${v.toLocaleString('pt-BR')}`}/>
                   <YAxis type="category" dataKey="plate" width={72} tick={{fontSize:13,fontWeight:700,fill:'#212771',fontFamily:"'Barlow Condensed', sans-serif"}}/>
-                  <Tooltip formatter={(v:number)=>[`${v.toLocaleString('pt-BR')} km`,'KM rodado']} contentStyle={ttStyle}/>
-                  <Bar dataKey="km" fill="#f86924" radius={[0,4,4,0]} label={{position:'right',fontSize:11,fill:'#5e6673',formatter:(v:number)=>v>0?`${v.toLocaleString('pt-BR')} km`:''}}/>
+                  <Tooltip formatter={(v)=>[`${Number(v).toLocaleString('pt-BR')} km`,'KM rodado']} contentStyle={ttStyle}/>
+                  <Bar dataKey="km" fill="#f86924" radius={[0,4,4,0]} label={{position:'right',fontSize:11,fill:'#5e6673',formatter:(v:number)=>v>0?`${Number(v).toLocaleString('pt-BR')} km`:''}}/>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -292,7 +292,7 @@ export default function AnalyticsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false}/>
                   <XAxis type="number" tick={{fontSize:11,fill:'#5e6673'}} tickFormatter={v=>`${v.toLocaleString('pt-BR')}`}/>
                   <YAxis type="category" dataKey="name" width={80} tick={{fontSize:12,fill:'#555',fontFamily:"'Open Sans', sans-serif"}}/>
-                  <Tooltip formatter={(v:number)=>[`${v.toLocaleString('pt-BR')} km`,'KM rodado']} contentStyle={ttStyle}/>
+                  <Tooltip formatter={(v)=>[`${Number(v).toLocaleString('pt-BR')} km`,'KM rodado']} contentStyle={ttStyle}/>
                   <Bar dataKey="km" fill="#212771" radius={[0,4,4,0]}/>
                 </BarChart>
               </ResponsiveContainer>
