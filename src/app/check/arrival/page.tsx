@@ -75,6 +75,24 @@ export default function ArrivalPage() {
 
   async function finishArrival() {
     if (!vehicle || !checklistId) return
+
+    // Validate: arrival KM cannot be less than departure KM
+    if (km > 0) {
+      const supabase = createClient()
+      const { data: openChecklist } = await supabase
+        .from('checklists')
+        .select('departure_km_final')
+        .eq('id', checklistId)
+        .single()
+      const departureKm = openChecklist?.departure_km_final ?? 0
+      if (departureKm > 0 && km < departureKm) {
+        setError(
+          `KM de chegada (${km.toLocaleString('pt-BR')}) não pode ser inferior ao KM de saída (${departureKm.toLocaleString('pt-BR')} km). Verifique.`
+        )
+        return
+      }
+    }
+
     setSaving(true)
     setError('')
 

@@ -24,6 +24,7 @@ export default function OdometerPage() {
   const [zoomSupported, setZoomSupported] = useState(false)
   const [torchOn, setTorchOn] = useState(false)
   const [torchSupported, setTorchSupported] = useState(false)
+  const [lastKmFromDb, setLastKmFromDb] = useState<number>(0)
 
   const phase = typeof window !== 'undefined' ? sessionStorage.getItem('fc_phase') ?? 'departure' : 'departure'
   const vehicle: Vehicle | null = typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('fc_vehicle') ?? 'null') : null
@@ -142,8 +143,13 @@ export default function OdometerPage() {
   function confirm() {
     const km = parseInt(kmInput.replace(/\D/g, ''))
     if (!km || km < 1) { setError('Informe um KM válido.'); return }
-    if (phase === 'departure' && vehicle!.last_km > 0 && km < vehicle!.last_km) {
-      setError(`KM ${km.toLocaleString('pt-BR')} menor que o último registro (${vehicle!.last_km.toLocaleString('pt-BR')}). Verifique.`)
+    // Use DB last KM if available, fallback to vehicle.last_km
+    const referenceKm = lastKmFromDb > 0 ? lastKmFromDb : (vehicle?.last_km ?? 0)
+    if (referenceKm > 0 && km < referenceKm) {
+      setError(
+        `KM informado (${km.toLocaleString('pt-BR')}) é inferior ao último registro (${referenceKm.toLocaleString('pt-BR')} km). ` +
+        `O hodômetro não pode regredir. Verifique e informe o valor correto.`
+      )
       return
     }
     const wasManual = kmAuto !== null ? km !== kmAuto : true
