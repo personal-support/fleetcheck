@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Vehicle } from '@/types'
+import { BackButton } from '@/components/BackButton'
 
 export default function OdometerPage() {
   const router = useRouter()
@@ -365,6 +366,8 @@ export default function OdometerPage() {
           </div>
         )}
       </div>
+
+      <BackButton href='/check/scan' label="← Voltar para lista de veículos" />
     </main>
   )
 }

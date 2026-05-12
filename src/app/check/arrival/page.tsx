@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Vehicle, ChecklistTemplate, ChecklistTemplateItem, ChecklistItemResult } from '@/types'
+import { BackButton } from '@/components/BackButton'
 
 const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
 
@@ -285,6 +286,8 @@ export default function ArrivalPage() {
           {saving ? 'Registrando...' : '✓ CONFIRMAR CHEGADA'}
         </button>
       </div>
+
+      <BackButton href='/check/scan' label="← Cancelar chegada" />
     </main>
   )
 }

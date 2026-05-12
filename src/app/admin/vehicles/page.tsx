@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { BackButton } from '@/components/BackButton'
 import { createClient } from '@/lib/supabase/client'
 import type { Vehicle } from '@/types'
 
@@ -221,6 +222,8 @@ export default function AdminVehiclesPage() {
           </div>
         ))}
       </div>
+
+      <BackButton href='/admin' label='← Voltar para o painel' />
     </main>
   )
 }

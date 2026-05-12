@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { savePendingChecklist } from '@/lib/db'
 import type { Vehicle, ChecklistTemplate, ChecklistTemplateItem, ChecklistItemResult } from '@/types'
+import { BackButton } from '@/components/BackButton'
 
 const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
 
@@ -159,7 +160,7 @@ export default function ChecklistItemsPage() {
         </div>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 24px' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 88px' }}>
         {!showNok ? (
           <div className="animate-fade-up" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, textAlign: 'center' }}>
             <div style={{ fontSize: 64, marginBottom: 8, lineHeight: 1 }}>{currentItem.icon}</div>
@@ -229,6 +230,8 @@ export default function ChecklistItemsPage() {
           </div>
         )}
       </div>
+
+      <BackButton href='/check/scan' label="← Cancelar e voltar" />
     </main>
   )
 }

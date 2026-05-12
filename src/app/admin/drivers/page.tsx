@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { BackButton } from '@/components/BackButton'
 import { createClient } from '@/lib/supabase/client'
 
 interface Driver {
@@ -242,6 +243,8 @@ export default function AdminDriversPage() {
           </div>
         ))}
       </div>
+
+      <BackButton href='/admin' label='← Voltar para o painel' />
     </main>
   )
 }
