@@ -21,7 +21,7 @@ export default function ScanPage() {
   const [userName, setUserName] = useState('')
   const [scannerActive, setScannerActive] = useState(false)
 
-  useEffect(() => { loadUser(); loadVehicles(); return () => stopScanner() }, [])
+  useEffect(() => { loadUser(); loadVehicles(); return () => { stopScanner() } }, [])
 
   async function loadUser() {
     try {
