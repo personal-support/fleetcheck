@@ -141,20 +141,20 @@ export default function RegisterPage() {
             <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#555555' }}>
               CADASTRO REALIZADO
             </h1>
-            <p style={{ color: '#8d949a', fontSize: 13, marginTop: 4 }}>
+            <p style={{ color: '#5e6673', fontSize: 13, marginTop: 4 }}>
               Bem-vindo(a), {form.name.split(' ')[0]}!
             </p>
           </div>
 
           <div className="rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
-            <p style={{ fontSize: 13, color: '#8d949a', marginBottom: 16, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: '#5e6673', marginBottom: 16, lineHeight: 1.6 }}>
               Sua senha de acesso foi gerada. <strong style={{ color: '#f86924' }}>Anote agora</strong> — você vai precisar dela toda vez que entrar.
             </p>
 
             {/* Password display */}
             <div className="rounded-xl p-5 text-center mb-4"
               style={{ background: '#ebeff2', border: '2px solid rgba(248,105,36,0.4)' }}>
-              <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+              <p style={{ fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
                 Sua senha
               </p>
               <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 42, fontWeight: 800, color: '#f86924', letterSpacing: 4 }}>
@@ -178,7 +178,7 @@ export default function RegisterPage() {
               <p style={{ fontSize: 12, color: '#555555', lineHeight: 1.7 }}>
                 <strong style={{ color: '#f86924' }}>E-mail:</strong> {form.email}<br />
                 <strong style={{ color: '#f86924' }}>Senha:</strong> {generatedPassword}<br />
-                <strong style={{ color: '#8d949a', fontSize: 11 }}>Guarde estas informações.</strong>
+                <strong style={{ color: '#5e6673', fontSize: 11 }}>Guarde estas informações.</strong>
               </p>
             </div>
 
@@ -207,18 +207,18 @@ export default function RegisterPage() {
           <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#555555' }}>
             FLEET<span style={{ color: '#f86924' }}>CHECK</span>
           </h1>
-          <p style={{ color: '#8d949a', fontSize: 13, marginTop: 2 }}>Primeiro acesso — Motorista</p>
+          <p style={{ color: '#5e6673', fontSize: 13, marginTop: 2 }}>Primeiro acesso — Motorista</p>
         </div>
 
         <div className="rounded-2xl p-6" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
-          <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
+          <p style={{ color: '#5e6673', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
             Preencha seus dados. Sua senha será gerada automaticamente.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 E-mail Consuldata
               </label>
               <input type="email" value={form.email}
@@ -231,7 +231,7 @@ export default function RegisterPage() {
 
             {/* Name */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 Nome completo
               </label>
               <input type="text" value={form.name}
@@ -244,7 +244,7 @@ export default function RegisterPage() {
 
             {/* CPF */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 CPF
               </label>
               <input type="text" inputMode="numeric" value={form.cpf}
@@ -257,7 +257,7 @@ export default function RegisterPage() {
 
             {/* Birth date */}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
                 Data de nascimento
               </label>
               <input type="date" value={form.birth_date}
@@ -287,7 +287,7 @@ export default function RegisterPage() {
 
           <div style={{ textAlign: 'center', marginTop: 16 }}>
             <button onClick={() => router.push('/login')}
-              style={{ background: 'none', border: 'none', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
+              style={{ background: 'none', border: 'none', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
               Já tenho cadastro → Entrar
             </button>
           </div>

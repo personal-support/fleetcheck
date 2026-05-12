@@ -151,7 +151,7 @@ export default function ArrivalPage() {
     return (
       <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
         <div className="px-5 pt-6 pb-4">
-          <button onClick={() => setAddingOccurrence(false)} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', fontSize: 13, padding: 0 }}>← Cancelar</button>
+          <button onClick={() => setAddingOccurrence(false)} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer', fontSize: 13, padding: 0 }}>← Cancelar</button>
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 24, fontWeight: 800, color: '#ef4444', marginTop: 8 }}>
             {currentOccItem.icon} {currentOccItem.label} — OCORRÊNCIA
           </h2>
@@ -159,7 +159,7 @@ export default function ArrivalPage() {
         <div className="flex-1 flex flex-col px-5 gap-4">
           {nokFields.filter(f => f.type !== 'photo').map(field => (
             <div key={field.id}>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>{field.label}</label>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>{field.label}</label>
               {field.type === 'select' ? (
                 <div className="flex flex-wrap gap-2">
                   {field.options?.map(opt => (
@@ -178,10 +178,10 @@ export default function ArrivalPage() {
           ))}
           {photoField && (
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Foto (opcional)</label>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Foto (opcional)</label>
               <input ref={fileInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) { setPhotoBlob(f); setPhotoPreview(URL.createObjectURL(f)) } }} />
               {!photoPreview ? (
-                <button onClick={() => fileInputRef.current?.click()} style={{ width: '100%', padding: 16, borderRadius: 12, background: '#ffffff', border: '2px dashed #1a2040', color: '#8d949a', cursor: 'pointer', fontSize: 14 }}>📸 Tirar foto</button>
+                <button onClick={() => fileInputRef.current?.click()} style={{ width: '100%', padding: 16, borderRadius: 12, background: '#ffffff', border: '2px dashed #1a2040', color: '#5e6673', cursor: 'pointer', fontSize: 14 }}>📸 Tirar foto</button>
               ) : (
                 <div className="relative">
                   <img src={photoPreview} className="rounded-xl w-full object-cover" style={{ maxHeight: 160 }} />
@@ -204,10 +204,10 @@ export default function ArrivalPage() {
     <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
       <div className="px-5 pt-6 pb-4">
         <div className="flex items-center gap-2 mb-3">
-          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', padding: 0 }}>
+          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer', padding: 0 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
-          <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{vehicle.plate} · Registro de chegada</p>
+          <p style={{ fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{vehicle.plate} · Registro de chegada</p>
         </div>
         <div className="step-bar"><div className="step-bar-fill" style={{ width: '85%' }} /></div>
       </div>
@@ -217,15 +217,15 @@ export default function ArrivalPage() {
 
         {/* KM summary */}
         <div className="p-4 rounded-xl" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
-          <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>KM de chegada</p>
+          <p style={{ fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>KM de chegada</p>
           <div className="flex items-center justify-between">
             <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 28, fontWeight: 800, color: '#f86924' }}>
               {km.toLocaleString('pt-BR')} km
             </p>
             {kmWasManual && <span style={{ fontSize: 10, color: '#eab308', padding: '2px 8px', borderRadius: 12, background: 'rgba(234,179,8,0.1)' }}>digitado</span>}
-            {!kmWasManual && kmAuto > 0 && <span style={{ fontSize: 10, color: '#22c55e', padding: '2px 8px', borderRadius: 12, background: 'rgba(34,197,94,0.1)' }}>lido por IA</span>}
+            {!kmWasManual && kmAuto > 0 && <span style={{ fontSize: 12, fontWeight: 700, color: '#22c55e', padding: '2px 8px', borderRadius: 12, background: 'rgba(34,197,94,0.1)' }}>lido por IA</span>}
           </div>
-          <p style={{ fontSize: 12, color: '#8d949a', marginTop: 4 }}>
+          <p style={{ fontSize: 12, color: '#5e6673', marginTop: 4 }}>
             Data/hora: {new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })} (automático)
           </p>
         </div>
@@ -234,7 +234,7 @@ export default function ArrivalPage() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <p style={{ fontSize: 13, fontWeight: 600, color: '#555555' }}>Ocorrências na chegada</p>
-            <span style={{ fontSize: 11, color: '#8d949a' }}>Opcional</span>
+            <span style={{ fontSize: 11, color: '#5e6673' }}>Opcional</span>
           </div>
 
           {occurrences.length > 0 && (
@@ -247,23 +247,23 @@ export default function ArrivalPage() {
                     <div>
                       <p style={{ fontSize: 13, color: '#555555' }}>{item?.icon} {item?.label}</p>
                       {occ.nok_data && Object.values(occ.nok_data).filter(Boolean).length > 0 && (
-                        <p style={{ fontSize: 11, color: '#8d949a' }}>{Object.values(occ.nok_data).filter(Boolean).join(' · ')}</p>
+                        <p style={{ fontSize: 11, color: '#5e6673' }}>{Object.values(occ.nok_data).filter(Boolean).join(' · ')}</p>
                       )}
                     </div>
-                    <button onClick={() => removeOccurrence(idx)} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', fontSize: 18 }}>×</button>
+                    <button onClick={() => removeOccurrence(idx)} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer', fontSize: 18 }}>×</button>
                   </div>
                 )
               })}
             </div>
           )}
 
-          <p style={{ fontSize: 12, color: '#8d949a', marginBottom: 10 }}>Identificou algum problema durante ou após a viagem?</p>
+          <p style={{ fontSize: 12, color: '#5e6673', marginBottom: 10 }}>Identificou algum problema durante ou após a viagem?</p>
           <div className="grid grid-cols-1 gap-2">
             {items.map(item => (
               <button key={item.id} onClick={() => startAddOccurrence(item)}
                 style={{ padding: '12px 16px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10 }}>
                 <span style={{ fontSize: 18 }}>{item.icon}</span>
-                <span style={{ fontSize: 13, color: '#8d949a' }}>+ {item.label}</span>
+                <span style={{ fontSize: 13, color: '#5e6673' }}>+ {item.label}</span>
               </button>
             ))}
           </div>
@@ -271,7 +271,7 @@ export default function ArrivalPage() {
 
         {/* Notes */}
         <div>
-          <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Observações (opcional)</label>
+          <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Observações (opcional)</label>
           <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Alguma observação sobre a viagem..."
             rows={3}
             style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none', resize: 'none' }}

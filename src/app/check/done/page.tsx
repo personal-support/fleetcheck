@@ -41,7 +41,7 @@ function DoneContent() {
           {offline ? 'SALVO OFFLINE' : isArrival ? 'CHEGADA REGISTRADA' : 'SAÍDA REGISTRADA'}
         </h1>
 
-        <p style={{ color: '#8d949a', fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
+        <p style={{ color: '#5e6673', fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
           {offline
             ? 'Sem conexão no momento. Os dados foram salvos localmente e serão enviados automaticamente quando a internet estiver disponível.'
             : isArrival
@@ -52,7 +52,7 @@ function DoneContent() {
         {!isArrival && !offline && (
           <div className="mb-6 px-4 py-3 rounded-xl text-left" style={{ background: 'rgba(33,39,113,0.04)', border: '1px solid rgba(33,39,113,0.08)' }}>
             <p style={{ color: '#f86924', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Lembrete</p>
-            <p style={{ color: '#8d949a', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
+            <p style={{ color: '#5e6673', fontSize: 12, lineHeight: 1.5 }}>Ao chegar: abra o FleetCheck → selecione o veículo → registre a chegada.</p>
           </div>
         )}
 

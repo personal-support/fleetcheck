@@ -88,7 +88,7 @@ export default function AdminPage() {
         ].map(({ label, value, color, bg }) => (
           <div key={label} style={{ background: 'var(--cd-surface)', border: '1px solid var(--cd-border)', borderRadius: 'var(--radius-md)', padding: '14px 12px', textAlign: 'center', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 32, fontWeight: 800, color, lineHeight: 1 }}>{value}</div>
-            <div style={{ fontSize: 10, color: 'var(--cd-subtext)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4 }}>{label}</div>
+            <div style={{ fontSize: 12, color: 'var(--cd-subtext)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4 }}>{label}</div>
           </div>
         ))}
       </div>

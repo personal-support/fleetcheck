@@ -93,7 +93,7 @@ export default function AdminDriversPage() {
     <main className="min-h-screen" style={{ background: '#ebeff2' }}>
       {/* Header */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1a2040' }}>
-        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer' }}>
+        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -116,7 +116,7 @@ export default function AdminDriversPage() {
             usando e-mail <span style={{ color: '#f86924' }}>@consuldata.com.br</span>, CPF e data de nascimento.
             O sistema gera a senha automaticamente.
           </p>
-          <p style={{ fontSize: 12, color: '#8d949a', marginTop: 6 }}>
+          <p style={{ fontSize: 12, color: '#5e6673', marginTop: 6 }}>
             Se o motorista tiver dificuldade, use o botão <strong style={{ color: '#555555' }}>Cadastrar</strong> acima para fazer o cadastro por ele e anotar a senha gerada.
           </p>
         </div>
@@ -126,9 +126,9 @@ export default function AdminDriversPage() {
       {newPassword && (
         <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#ffffff', border: '2px solid rgba(34,197,94,0.4)' }}>
           <p style={{ fontSize: 12, color: '#22c55e', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>✓ Motorista cadastrado</p>
-          <p style={{ fontSize: 13, color: '#8d949a', marginBottom: 12 }}>Anote a senha e entregue ao motorista:</p>
+          <p style={{ fontSize: 13, color: '#5e6673', marginBottom: 12 }}>Anote a senha e entregue ao motorista:</p>
           <div className="p-4 rounded-xl text-center mb-3" style={{ background: '#ebeff2', border: '1px solid rgba(248,105,36,0.3)' }}>
-            <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Senha gerada</p>
+            <p style={{ fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Senha gerada</p>
             <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 38, fontWeight: 800, color: '#f86924', letterSpacing: 4 }}>{newPassword}</p>
           </div>
           <div className="flex gap-2">
@@ -137,7 +137,7 @@ export default function AdminDriversPage() {
               {copiedId === 'new' ? '✓ Copiado' : '📋 Copiar senha'}
             </button>
             <button onClick={resetForm}
-              style={{ padding: '10px 14px', borderRadius: 8, background: 'none', border: '1px solid #1a2040', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
+              style={{ padding: '10px 14px', borderRadius: 8, background: 'none', border: '1px solid #1a2040', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
               Fechar
             </button>
           </div>
@@ -149,7 +149,7 @@ export default function AdminDriversPage() {
         <div className="mx-5 mt-4 p-5 rounded-xl animate-fade-up" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
           <div className="flex items-center justify-between mb-4">
             <h3 style={{ fontSize: 15, fontWeight: 600, color: '#555555' }}>Cadastrar motorista</h3>
-            <button onClick={resetForm} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', fontSize: 18 }}>×</button>
+            <button onClick={resetForm} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer', fontSize: 18 }}>×</button>
           </div>
           <div className="flex flex-col gap-3">
             {[
@@ -157,7 +157,7 @@ export default function AdminDriversPage() {
               { key: 'name', label: 'Nome completo', placeholder: 'João da Silva', type: 'text' },
             ].map(({ key, label, placeholder, type }) => (
               <div key={key}>
-                <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>{label}</label>
+                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>{label}</label>
                 <input type={type} placeholder={placeholder} value={form[key as keyof typeof form]}
                   onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
                   style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
@@ -165,14 +165,14 @@ export default function AdminDriversPage() {
               </div>
             ))}
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>CPF</label>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>CPF</label>
               <input type="text" inputMode="numeric" placeholder="000.000.000-00" value={form.cpf} maxLength={14}
                 onChange={e => setForm(p => ({ ...p, cpf: formatCPF(e.target.value) }))}
                 style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 15, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: 2 }}
                 onFocus={e => e.target.style.borderColor = '#f86924'} onBlur={e => e.target.style.borderColor = '#dddddd'} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Data de nascimento</label>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Data de nascimento</label>
               <input type="date" value={form.birth_date} onChange={e => setForm(p => ({ ...p, birth_date: e.target.value }))}
                 style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none', colorScheme: 'dark' }}
                 onFocus={e => e.target.style.borderColor = '#f86924'} onBlur={e => e.target.style.borderColor = '#dddddd'} />
@@ -184,7 +184,7 @@ export default function AdminDriversPage() {
                 {saving ? 'Cadastrando...' : 'Cadastrar e gerar senha'}
               </button>
               <button onClick={resetForm}
-                style={{ padding: '11px 14px', borderRadius: 8, background: 'none', border: '1px solid #1a2040', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
+                style={{ padding: '11px 14px', borderRadius: 8, background: 'none', border: '1px solid #1a2040', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
                 Cancelar
               </button>
             </div>
@@ -194,7 +194,7 @@ export default function AdminDriversPage() {
 
       {/* DRIVERS LIST */}
       <div className="px-5 pt-5 pb-8 flex flex-col gap-3">
-        <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <p style={{ fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {drivers.length} motorista{drivers.length !== 1 ? 's' : ''} cadastrado{drivers.length !== 1 ? 's' : ''}
         </p>
 
@@ -205,7 +205,7 @@ export default function AdminDriversPage() {
         )}
 
         {!loading && drivers.length === 0 && (
-          <p style={{ color: '#8d949a', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
+          <p style={{ color: '#5e6673', fontSize: 14, textAlign: 'center', paddingTop: 32 }}>
             Nenhum motorista cadastrado ainda.
           </p>
         )}
@@ -222,7 +222,7 @@ export default function AdminDriversPage() {
                 </div>
                 <div>
                   <p style={{ fontSize: 14, fontWeight: 600, color: '#555555' }}>{d.name}</p>
-                  <p style={{ fontSize: 12, color: '#8d949a' }}>{d.email}</p>
+                  <p style={{ fontSize: 12, color: '#5e6673' }}>{d.email}</p>
                 </div>
               </div>
               {d.generated_password && (
@@ -234,8 +234,8 @@ export default function AdminDriversPage() {
               )}
             </div>
             <div className="flex gap-2 mt-3" style={{ borderTop: '1px solid #1a2040', paddingTop: 10 }}>
-              {d.cpf && <span style={{ fontSize: 11, color: '#8d949a' }}>CPF: {d.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</span>}
-              <span style={{ fontSize: 11, color: '#8d949a', marginLeft: 'auto' }}>
+              {d.cpf && <span style={{ fontSize: 11, color: '#5e6673' }}>CPF: {d.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</span>}
+              <span style={{ fontSize: 11, color: '#5e6673', marginLeft: 'auto' }}>
                 Desde {new Date(d.created_at).toLocaleDateString('pt-BR')}
               </span>
             </div>

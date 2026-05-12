@@ -173,12 +173,12 @@ export default function OdometerPage() {
       {/* Header */}
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center gap-2 mb-3">
-          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer', padding: 0 }}>
+          <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer', padding: 0 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <p style={{ fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             {vehicle.plate} · {isArrival ? 'Chegada' : 'Saída'} · Hodômetro
           </p>
         </div>
@@ -190,7 +190,7 @@ export default function OdometerPage() {
         {/* CAMERA */}
         {step === 'camera' && (
           <div className="flex-1 flex flex-col animate-fade-up">
-            <p style={{ color: '#8d949a', fontSize: 13, marginBottom: 10 }}>
+            <p style={{ color: '#5e6673', fontSize: 13, marginBottom: 10 }}>
               Enquadre o display do hodômetro · KM anterior: <strong style={{ color: '#555555' }}>{lastKm ? lastKm.toLocaleString('pt-BR') : '—'}</strong>
             </p>
 
@@ -236,7 +236,7 @@ export default function OdometerPage() {
 
             {/* Zoom slider */}
             <div className="mt-3 flex items-center gap-3">
-              <span style={{ fontSize: 11, color: '#8d949a', minWidth: 20 }}>1×</span>
+              <span style={{ fontSize: 11, color: '#5e6673', minWidth: 20 }}>1×</span>
               <input
                 type="range"
                 min={1}
@@ -246,7 +246,7 @@ export default function OdometerPage() {
                 onChange={e => applyZoom(parseFloat(e.target.value))}
                 style={{ flex: 1, accentColor: '#f86924' }}
               />
-              <span style={{ fontSize: 11, color: '#8d949a', minWidth: 28 }}>
+              <span style={{ fontSize: 11, color: '#5e6673', minWidth: 28 }}>
                 {maxZoom > 1 ? `${Math.round(maxZoom)}×` : '5×'}
               </span>
             </div>
@@ -272,7 +272,7 @@ export default function OdometerPage() {
                 📸 Fotografar
               </button>
               <button onClick={() => { stopCamera(); setCorrecting(true); setStep('confirm') }}
-                style={{ padding: '16px 14px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', color: '#8d949a', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                style={{ padding: '16px 14px', borderRadius: 12, background: '#ffffff', border: '1px solid #1a2040', color: '#5e6673', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                 Digitar KM
               </button>
             </div>
@@ -313,7 +313,7 @@ export default function OdometerPage() {
                   <path d="M5 13l4 4L19 7" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <div>
-                  <p style={{ fontSize: 10, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>IA leu automaticamente</p>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>IA leu automaticamente</p>
                   <p style={{ fontSize: 28, fontWeight: 700, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif" }}>
                     {kmAuto.toLocaleString('pt-BR')} km
                   </p>
@@ -323,7 +323,7 @@ export default function OdometerPage() {
 
             {(correcting || !kmAuto) && (
               <div>
-                <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
                   {kmAuto ? 'Corrigir KM' : 'KM atual'}
                 </label>
                 <input
@@ -350,14 +350,14 @@ export default function OdometerPage() {
 
               {kmAuto && !correcting && (
                 <button onClick={() => { setCorrecting(true); setKmInput(String(kmAuto)) }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: 10, background: 'none', border: 'none', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
                   Leitura incorreta? Corrigir
                 </button>
               )}
 
               {(correcting || !kmAuto) && photoUrl && (
                 <button onClick={() => { setStep('camera'); setPhotoUrl(''); setPhotoBlob(null); setCorrecting(false); setKmAuto(null); setKmInput(''); startCamera() }}
-                  style={{ padding: 10, background: 'none', border: 'none', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: 10, background: 'none', border: 'none', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
                   ← Tirar foto novamente
                 </button>
               )}

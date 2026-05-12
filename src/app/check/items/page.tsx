@@ -107,7 +107,7 @@ export default function ChecklistItemsPage() {
       <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-bg)' }}>
         <div style={{ background: 'var(--cd-navy)', padding: '16px 20px' }}>
           <div className="step-bar"><div className="step-bar-fill" style={{ width: '95%' }} /></div>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', marginTop: 8, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginTop: 8, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             {vehicle.plate} · Resumo da saída
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function ChecklistItemsPage() {
             </div>
           )}
           <div style={{ padding: '12px 16px', background: 'rgba(248,105,36,0.06)', border: '1px solid rgba(248,105,36,0.2)', borderRadius: 'var(--radius-md)' }}>
-            <p style={{ fontSize: 12, color: 'var(--cd-text)', lineHeight: 1.6 }}>🚗 Ao chegar ao destino, abra o FleetCheck e selecione este veículo para registrar a chegada.</p>
+            <p style={{ fontSize: 14, color: 'var(--cd-text)', lineHeight: 1.6 }}>🚗 Ao chegar ao destino, abra o FleetCheck e selecione este veículo para registrar a chegada.</p>
           </div>
           <button onClick={finishChecklist} disabled={saving} className="btn-primary" style={{ marginTop: 4 }}>
             {saving ? 'Registrando saída...' : 'CONFIRMAR SAÍDA →'}
@@ -145,7 +145,7 @@ export default function ChecklistItemsPage() {
       {/* Progress header */}
       <div style={{ background: 'var(--cd-navy)', padding: '14px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             {vehicle.plate} · SAÍDA · {currentIndex + 1}/{items.length}
           </p>
           <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--cd-orange)' }}>{progress}%</span>

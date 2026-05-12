@@ -86,7 +86,7 @@ export default function VehicleDeepLinkPage() {
             <div className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin"
                 style={{ borderColor: '#f86924', borderTopColor: 'transparent' }} />
-              <p style={{ color: '#8d949a', fontSize: 14 }}>{message}</p>
+              <p style={{ color: '#5e6673', fontSize: 14 }}>{message}</p>
             </div>
           </>
         ) : (

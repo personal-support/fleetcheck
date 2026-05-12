@@ -182,7 +182,7 @@ export default function ScanPage() {
                     { label: 'Último check', value: vehicle.last_check_at ? new Date(vehicle.last_check_at).toLocaleDateString('pt-BR') : 'Nunca' },
                   ].map(({ label, value }) => (
                     <div key={label} style={{ padding: '10px 12px', background: 'var(--cd-bg)', borderRadius: 'var(--radius-sm)' }}>
-                      <p style={{ fontSize: 10, color: 'var(--cd-subtext)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{label}</p>
+                      <p style={{ fontSize: 12, color: 'var(--cd-subtext)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{label}</p>
                       <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--cd-text)' }}>{value}</p>
                     </div>
                   ))}
@@ -289,7 +289,7 @@ export default function ScanPage() {
                         </div>
                         <div>
                           <p style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 20, fontWeight: 700, color: 'var(--cd-navy)', letterSpacing: 0.5 }}>{v.plate}</p>
-                          <p style={{ fontSize: 14, color: 'var(--cd-subtext)', marginTop: 2 }}>{v.model} · {v.year}</p>
+                          <p style={{ fontSize: 14, fontWeight: 600, color: '#5e6673', marginTop: 2 }}>{v.model} · {v.year}</p>
                         </div>
                       </div>
                       {loadingVehicle

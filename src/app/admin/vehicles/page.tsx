@@ -123,7 +123,7 @@ export default function AdminVehiclesPage() {
     <main className="min-h-screen" style={{ background: '#ebeff2' }}>
       {/* Header */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1a2040' }}>
-        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#8d949a', cursor: 'pointer' }}>
+        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -148,7 +148,7 @@ export default function AdminVehiclesPage() {
               { key: 'year', label: 'Ano', placeholder: '2020' },
             ].map(({ key, label, placeholder }) => (
               <div key={key}>
-                <label style={{ display: 'block', fontSize: 11, color: '#8d949a', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{label}</label>
+                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{label}</label>
                 <input type={key === 'year' ? 'number' : 'text'} placeholder={placeholder}
                   value={form[key as keyof typeof form]}
                   onChange={e => setForm(prev => ({ ...prev, [key]: e.target.value }))}
@@ -176,7 +176,7 @@ export default function AdminVehiclesPage() {
               return v ? <QRCanvas vehicleId={v.id} plate={v.plate} /> : null
             })()}
             <button onClick={() => setShowQR(null)}
-              style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#8d949a', fontSize: 13, cursor: 'pointer' }}>
+              style={{ width: '100%', marginTop: 12, padding: 12, borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#5e6673', fontSize: 13, cursor: 'pointer' }}>
               Fechar
             </button>
           </div>
@@ -192,7 +192,7 @@ export default function AdminVehiclesPage() {
           </div>
         )}
         {!loading && vehicles.length === 0 && (
-          <p style={{ color: '#8d949a', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo cadastrado</p>
+          <p style={{ color: '#5e6673', fontSize: 14, textAlign: 'center', paddingTop: 40 }}>Nenhum veículo cadastrado</p>
         )}
         {vehicles.map(v => (
           <div key={v.id} className="p-4 rounded-xl" style={{ background: '#ffffff', border: '1px solid #1a2040' }}>
@@ -201,8 +201,8 @@ export default function AdminVehiclesPage() {
                 <p style={{ fontSize: 19, fontWeight: 800, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: 1 }}>
                   {v.plate}
                 </p>
-                <p style={{ fontSize: 13, color: '#8d949a' }}>{v.model}{v.year ? ` · ${v.year}` : ''}</p>
-                <p style={{ fontSize: 12, color: '#8d949a', marginTop: 4 }}>
+                <p style={{ fontSize: 13, color: '#5e6673' }}>{v.model}{v.year ? ` · ${v.year}` : ''}</p>
+                <p style={{ fontSize: 12, color: '#5e6673', marginTop: 4 }}>
                   KM: {v.last_km ? v.last_km.toLocaleString('pt-BR') : '—'} ·
                   Check: {v.last_check_at ? new Date(v.last_check_at).toLocaleDateString('pt-BR') : 'Nunca'}
                 </p>
