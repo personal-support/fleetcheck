@@ -1,6 +1,5 @@
 'use client'
 
-import { ConsuldataLogo } from '@/components/ConsuldataLogo'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -57,7 +56,7 @@ export default function LoginPage() {
       {/* Top bar */}
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
-          <ConsuldataLogo variant="dark" height={34} /><span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <img src="/LOGO_CONSULDATA.jpg" alt="Consuldata" style={{ height: 36, width: 'auto', objectFit: 'contain' }} /><span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
           </span>
           <div style={{ width: 80 }} />

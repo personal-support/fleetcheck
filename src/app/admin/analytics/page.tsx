@@ -1,6 +1,5 @@
 'use client'
 
-import { ConsuldataLogo } from '@/components/ConsuldataLogo'
 
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
@@ -162,7 +161,7 @@ export default function AnalyticsPage() {
     <main style={{minHeight:'100vh',display:'flex',flexDirection:'column',background:'#ebeff2',paddingBottom:80}}>
       <header style={{background:'#212771',padding:'0 20px',position:'sticky',top:0,zIndex:40}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',height:56,position:'relative'}}>
-          <ConsuldataLogo variant="dark" height={34} /><span style={{fontFamily:"'Barlow Condensed', sans-serif",fontSize:18,fontWeight:800,color:'#fff',position:'absolute',left:'50%',transform:'translateX(-50%)',whiteSpace:'nowrap'}}>
+          <img src="/LOGO_CONSULDATA.jpg" alt="Consuldata" style={{ height: 36, width: 'auto', objectFit: 'contain' }} /><span style={{fontFamily:"'Barlow Condensed', sans-serif",fontSize:18,fontWeight:800,color:'#fff',position:'absolute',left:'50%',transform:'translateX(-50%)',whiteSpace:'nowrap'}}>
             FLEET<span style={{color:'#f86924'}}>CHECK</span>
             <span style={{fontSize:12,fontWeight:400,color:'rgba(255,255,255,0.5)',marginLeft:6}}>Analytics</span>
           </span>
