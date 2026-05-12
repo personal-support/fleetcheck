@@ -96,9 +96,16 @@ export default function AdminVehiclesPage() {
     const { data } = await supabase
       .from('vehicles').select('*')
       .eq('company_id', CONSULDATA_COMPANY_ID)
-      .order('plate')
+      .order('active', { ascending: false }).order('plate')
     if (data) setVehicles(data as Vehicle[])
     setLoading(false)
+  }
+
+  async function toggleVehicle(id: string, active: boolean, plate: string) {
+    if (!confirm(`${active ? 'Desativar' : 'Reativar'} o veículo ${plate}?`)) return
+    const supabase = createClient()
+    await supabase.from('vehicles').update({ active: !active }).eq('id', id)
+    loadVehicles()
   }
 
   async function addVehicle() {
@@ -217,6 +224,10 @@ export default function AdminVehiclesPage() {
                   <path d="M14 14h2v2h-2zM18 14h3M14 18h2M18 18h3M14 21h3v-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
                 QR Code
+              </button>
+              <button onClick={() => toggleVehicle(v.id, v.active, v.plate)}
+                style={{ padding: '8px 12px', borderRadius: 8, background: v.active ? 'rgba(240,90,73,0.08)' : 'rgba(53,188,122,0.08)', border: `1px solid ${v.active ? '#f05a49' : '#35bc7a'}`, color: v.active ? '#f05a49' : '#35bc7a', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                {v.active ? '⏸ Desativar' : '▶ Reativar'}
               </button>
             </div>
           </div>

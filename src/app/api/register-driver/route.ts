@@ -70,3 +70,49 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({ success: true })
 }
+
+// PATCH — reset password for existing driver
+export async function PATCH(request: NextRequest) {
+  const { email, cpf, birth_date } = await request.json()
+  if (!email || !cpf || !birth_date) {
+    return NextResponse.json({ error: 'Dados insuficientes.' }, { status: 400 })
+  }
+
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!serviceRoleKey) return NextResponse.json({ error: 'Configuração incompleta.' }, { status: 500 })
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    serviceRoleKey,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  // Regenerate password using same formula
+  function generatePassword(cpfDigits: string, birthDate: string): string {
+    const date = new Date(birthDate + 'T12:00:00')
+    if (isNaN(date.getTime())) return ''
+    const dd = String(date.getDate()).padStart(2, '0')
+    const cpfGroup2 = cpfDigits.slice(3, 6)
+    const yearReversed = String(date.getFullYear()).slice(-2).split('').reverse().join('')
+    return `${dd}${cpfGroup2}${yearReversed}`
+  }
+
+  const password = generatePassword(cpf, birth_date)
+  if (!password) return NextResponse.json({ error: 'Erro ao gerar senha.' }, { status: 400 })
+
+  // Find user by email
+  const { data: { users }, error } = await supabase.auth.admin.listUsers()
+  if (error) return NextResponse.json({ error: 'Erro ao buscar usuário.' }, { status: 500 })
+
+  const authUser = users.find(u => u.email === email)
+  if (!authUser) return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 })
+
+  // Update password in Auth
+  const { error: updateError } = await supabase.auth.admin.updateUserById(authUser.id, { password })
+  if (updateError) return NextResponse.json({ error: 'Erro ao atualizar senha.' }, { status: 500 })
+
+  // Update generated_password in users table
+  await supabase.from('users').update({ generated_password: password }).eq('id', authUser.id)
+
+  return NextResponse.json({ success: true, password })
+}
