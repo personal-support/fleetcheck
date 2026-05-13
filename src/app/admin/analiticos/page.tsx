@@ -1,7 +1,7 @@
 'use client'
 
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import {
@@ -57,6 +57,10 @@ export default function AnalyticsPage() {
   const [filterDriver, setFilterDriver] = useState('all')
   const [vehicles, setVehicles] = useState<{id:string;plate:string}[]>([])
   const [drivers, setDrivers] = useState<{id:string;name:string}[]>([])
+  const [searchQuestion, setSearchQuestion] = useState('')
+  const [searchLoading, setSearchLoading] = useState(false)
+  const [searchHistory, setSearchHistory] = useState<{q:string;a:string}[]>([])
+  const searchRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => { loadAll() }, [])
 
@@ -156,6 +160,21 @@ export default function AnalyticsPage() {
 
   const card: React.CSSProperties = {background:'#fff',border:'1px solid #dddddd',borderRadius:14,boxShadow:'0 1px 3px rgba(0,0,0,0.06)',padding:'16px 18px'}
   const ttStyle = {fontFamily:"'Open Sans', sans-serif",fontSize:12,borderRadius:8,border:'1px solid #dddddd'}
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault()
+    const q = searchQuestion.trim()
+    if (!q || searchLoading) return
+    setSearchLoading(true)
+    try {
+      const res = await fetch('/api/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: q }) })
+      const data = await res.json()
+      setSearchHistory(prev => [{ q, a: data.answer }, ...prev])
+      setSearchQuestion('')
+      setTimeout(() => searchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+    } catch { setSearchHistory(prev => [{ q, a: 'Erro ao processar a busca. Tente novamente.' }, ...prev]) }
+    setSearchLoading(false)
+  }
 
   return (
     <main style={{minHeight:'100vh',display:'flex',flexDirection:'column',background:'#ebeff2',paddingBottom:80}}>
