@@ -11,7 +11,7 @@ export function ConsuldataFooter() {
       gap: 8,
     }}>
       <span style={{ fontSize: 10, color: 'var(--cd-subtext)', fontFamily: "'Open Sans', sans-serif" }}>
-        © Todos os Direitos Reservados a Consuldata
+        Consuldata - Logística
       </span>
       <span style={{ fontSize: 10, color: 'var(--cd-subtext)', fontFamily: "'Open Sans', sans-serif", textAlign: 'right' }}>
         Desenvolvido por Jucimar Lopes
