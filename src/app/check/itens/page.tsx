@@ -178,6 +178,13 @@ export default function ChecklistItemsPage() {
                 ✓ OK
               </button>
             </div>
+            {/* Reminder tip */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '10px 14px', background: 'rgba(248,105,36,0.06)', border: '1px solid rgba(248,105,36,0.18)', borderRadius: 'var(--radius-sm)', maxWidth: 380, marginTop: 8 }}>
+              <span style={{ fontSize: 16, flexShrink: 0 }}>💡</span>
+              <p style={{ fontSize: 12, color: 'var(--cd-text)', lineHeight: 1.5, margin: 0 }}>
+                Encontrou algum problema? <strong>Foto e descrição detalhada</strong> ajudam no registro correto e facilitam o acompanhamento pela equipe.
+              </p>
+            </div>
           </div>
         ) : (
           <div className="animate-fade-in" style={{ paddingTop: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -224,6 +231,13 @@ export default function ChecklistItemsPage() {
                 )}
               </div>
             )}
+            {/* NOK reminder */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '10px 14px', background: 'rgba(248,105,36,0.06)', border: '1px solid rgba(248,105,36,0.18)', borderRadius: 'var(--radius-sm)' }}>
+              <span style={{ fontSize: 15, flexShrink: 0 }}>📸</span>
+              <p style={{ fontSize: 12, color: 'var(--cd-text)', lineHeight: 1.5, margin: 0 }}>
+                <strong>Dica:</strong> Quanto mais detalhes na descrição e uma boa foto, mais fácil resolver o problema rapidamente.
+              </p>
+            </div>
             <button onClick={submitNok} disabled={!!(isPhotoRequired && !photoBlob)}
               className="btn-primary"
               style={{ background: isPhotoRequired && !photoBlob ? '#ccc' : 'var(--cd-red)', marginTop: 8 }}>
