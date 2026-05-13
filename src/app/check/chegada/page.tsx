@@ -158,7 +158,7 @@ export default function ArrivalPage() {
     // Clear session
     ;['fc_vehicle','fc_checklist_id','fc_phase','fc_km','fc_km_auto','fc_km_was_manual','fc_dt_auto','fc_lat_auto','fc_lng_auto','fc_km_photo'].forEach(k => sessionStorage.removeItem(k))
 
-    sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/done?phase=arrival')
+    sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/concluido?phase=arrival')
   }
 
   if (!vehicle) return null

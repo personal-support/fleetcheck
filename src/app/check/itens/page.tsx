@@ -91,12 +91,12 @@ export default function ChecklistItemsPage() {
           await supabase.from('vehicles').update({ last_km: km, last_check_at: new Date().toISOString(), last_location_lat: latFinal, last_location_lng: lngFinal }).eq('id', vehicle.id)
           sessionStorage.setItem('fc_checklist_id', inserted.id);
           ['fc_vehicle','fc_km','fc_km_auto','fc_km_was_manual','fc_dt_auto','fc_lat_auto','fc_lng_auto','fc_phase'].forEach(k => sessionStorage.removeItem(k))
-          sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/done?phase=departure'); return
+          sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/concluido?phase=departure'); return
         }
       } catch { }
     }
     await savePendingChecklist({ localId: `local_${Date.now()}`, checklist: checklistData as never, photoBlobs: photoBlobs.current, createdAt: Date.now() })
-    sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/done?phase=departure&offline=1')
+    sessionStorage.setItem('fc_just_completed', '1'); router.push('/check/concluido?phase=departure&offline=1')
   }
 
   const nokFields = currentItem?.if_nok?.fields ?? []
