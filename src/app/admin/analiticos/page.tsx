@@ -217,6 +217,48 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
+      {/* ── Busca em linguagem natural ── */}
+      <div ref={searchRef} style={{background:'#fff',borderBottom:'1px solid #ddd',padding:'12px 16px'}}>
+        <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:16,fontWeight:800,color:'#212771',marginBottom:10}}>
+          🔍 Busca Inteligente
+        </p>
+        <form onSubmit={handleSearch} style={{display:'flex',gap:8}}>
+          <input
+            className="cd-input"
+            value={searchQuestion}
+            onChange={e=>setSearchQuestion(e.target.value)}
+            placeholder='Ex: "quem usou o Argo final 02 na segunda passada?"'
+            disabled={searchLoading}
+            style={{flex:1,fontSize:14,minHeight:44}}
+          />
+          <button type="submit" disabled={searchLoading||!searchQuestion.trim()}
+            style={{padding:'0 18px',background:searchLoading||!searchQuestion.trim()?'#ccc':'#f86924',color:'white',border:'none',borderRadius:'var(--radius-sm)',fontSize:13,fontWeight:700,cursor:searchLoading||!searchQuestion.trim()?'not-allowed':'pointer',minHeight:44,whiteSpace:'nowrap',fontFamily:"'Open Sans',sans-serif"}}>
+            {searchLoading?'...':'Perguntar'}
+          </button>
+        </form>
+        <p style={{fontSize:11,color:'#5e6673',marginTop:6}}>
+          Pergunte sobre motoristas, veículos, KMs, pendências, datas — em qualquer linguagem.
+        </p>
+        {searchHistory.length>0&&(
+          <div style={{marginTop:14,display:'flex',flexDirection:'column',gap:10}}>
+            {searchHistory.map((item,i)=>(
+              <div key={i} style={{display:'flex',flexDirection:'column',gap:6}}>
+                <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'8px 14px',borderRadius:'12px 12px 4px 12px',fontSize:13,maxWidth:'85%'}}>
+                  {item.q}
+                </div>
+                <div style={{alignSelf:'flex-start',background:'#ebeff2',border:'1px solid #ddd',padding:'10px 14px',borderRadius:'4px 12px 12px 12px',fontSize:13,color:'#555',maxWidth:'90%',lineHeight:1.6,whiteSpace:'pre-wrap'}}>
+                  {item.a}
+                </div>
+              </div>
+            ))}
+            <button onClick={()=>setSearchHistory([])}
+              style={{alignSelf:'flex-start',background:'none',border:'none',color:'#8d949a',fontSize:11,cursor:'pointer',textDecoration:'underline',padding:0,marginTop:2}}>
+              Limpar histórico
+            </button>
+          </div>
+        )}
+      </div>
+
       {loading ? (
         <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center'}}>
           <div className="spin" style={{width:36,height:36,borderRadius:'50%',border:'3px solid #dddddd',borderTopColor:'#f86924'}}/>
