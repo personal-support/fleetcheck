@@ -219,7 +219,7 @@ export default function AnalyticsPage() {
 
       {/* ── Busca em linguagem natural ── */}
       <div ref={searchRef} style={{background:'#fff',borderBottom:'1px solid #ddd',padding:'12px 16px'}}>
-        <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:16,fontWeight:800,color:'#212771',marginBottom:10}}>
+        <p style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:20,fontWeight:800,color:'#212771',marginBottom:12}}>
           🔍 Busca Inteligente
         </p>
         <form onSubmit={handleSearch} style={{display:'flex',gap:8}}>
@@ -229,30 +229,30 @@ export default function AnalyticsPage() {
             onChange={e=>setSearchQuestion(e.target.value)}
             placeholder='Ex: "quem usou o Argo final 02 na segunda passada?"'
             disabled={searchLoading}
-            style={{flex:1,fontSize:14,minHeight:44}}
+            style={{flex:1,fontSize:16,minHeight:48}}
           />
           <button type="submit" disabled={searchLoading||!searchQuestion.trim()}
-            style={{padding:'0 18px',background:searchLoading||!searchQuestion.trim()?'#ccc':'#f86924',color:'white',border:'none',borderRadius:'var(--radius-sm)',fontSize:13,fontWeight:700,cursor:searchLoading||!searchQuestion.trim()?'not-allowed':'pointer',minHeight:44,whiteSpace:'nowrap',fontFamily:"'Open Sans',sans-serif"}}>
+            style={{padding:'0 18px',background:searchLoading||!searchQuestion.trim()?'#ccc':'#f86924',color:'white',border:'none',borderRadius:'var(--radius-sm)',fontSize:15,fontWeight:700,cursor:searchLoading||!searchQuestion.trim()?'not-allowed':'pointer',minHeight:44,whiteSpace:'nowrap',fontFamily:"'Open Sans',sans-serif"}}>
             {searchLoading?'...':'Perguntar'}
           </button>
         </form>
-        <p style={{fontSize:11,color:'#5e6673',marginTop:6}}>
+        <p style={{fontSize:13,color:'#5e6673',marginTop:6}}>
           Pergunte sobre motoristas, veículos, KMs, pendências, datas — em qualquer linguagem.
         </p>
         {searchHistory.length>0&&(
           <div style={{marginTop:14,display:'flex',flexDirection:'column',gap:10}}>
             {searchHistory.map((item,i)=>(
               <div key={i} style={{display:'flex',flexDirection:'column',gap:6}}>
-                <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'8px 14px',borderRadius:'12px 12px 4px 12px',fontSize:13,maxWidth:'85%'}}>
+                <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'10px 16px',borderRadius:'12px 12px 4px 12px',fontSize:15,maxWidth:'85%'}}>
                   {item.q}
                 </div>
-                <div style={{alignSelf:'flex-start',background:'#ebeff2',border:'1px solid #ddd',padding:'10px 14px',borderRadius:'4px 12px 12px 12px',fontSize:13,color:'#555',maxWidth:'90%',lineHeight:1.6,whiteSpace:'pre-wrap'}}>
+                <div style={{alignSelf:'flex-start',background:'#ebeff2',border:'1px solid #ddd',padding:'12px 16px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#333',maxWidth:'90%',lineHeight:1.6,whiteSpace:'pre-wrap'}}>
                   {item.a}
                 </div>
               </div>
             ))}
             <button onClick={()=>setSearchHistory([])}
-              style={{alignSelf:'flex-start',background:'none',border:'none',color:'#8d949a',fontSize:11,cursor:'pointer',textDecoration:'underline',padding:0,marginTop:2}}>
+              style={{alignSelf:'flex-start',background:'none',border:'none',color:'#8d949a',fontSize:13,cursor:'pointer',textDecoration:'underline',padding:0,marginTop:2}}>
               Limpar histórico
             </button>
           </div>
