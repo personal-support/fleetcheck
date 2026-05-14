@@ -32,7 +32,20 @@ export default function ChecklistItemsPage() {
   const latAuto = typeof window !== 'undefined' ? parseFloat(sessionStorage.getItem('fc_lat_auto') ?? '0') || null : null
   const lngAuto = typeof window !== 'undefined' ? parseFloat(sessionStorage.getItem('fc_lng_auto') ?? '0') || null : null
 
-  useEffect(() => { if (!vehicle) { router.replace('/check/selecionar'); return }; loadTemplate() }, [])
+  useEffect(() => {
+    if (!vehicle) { router.replace('/check/selecionar'); return }
+    loadTemplate()
+    // Restore NOK form state if camera caused a remount
+    const savedNokIndex = sessionStorage.getItem('fc_nok_index')
+    const savedNokData = sessionStorage.getItem('fc_nok_data')
+    const savedResults = sessionStorage.getItem('fc_nok_results')
+    if (savedNokIndex !== null) {
+      setCurrentIndex(parseInt(savedNokIndex))
+      setShowNok(true)
+      if (savedNokData) { try { setNokData(JSON.parse(savedNokData)) } catch { } }
+      if (savedResults) { try { setResults(JSON.parse(savedResults)) } catch { } }
+    }
+  }, [])
 
   async function loadTemplate() {
     const supabase = createClient()
@@ -53,6 +66,7 @@ export default function ChecklistItemsPage() {
 
   function handleOk() {
     const updated = [...results]; updated[currentIndex] = { id: currentItem.id, status: 'ok' }
+    sessionStorage.removeItem('fc_nok_index'); sessionStorage.removeItem('fc_nok_data'); sessionStorage.removeItem('fc_nok_results')
     setResults(updated); setShowNok(false); setNokData({}); setPhotoBlob(null); setPhotoPreview('')
     setCurrentIndex(prev => prev + 1)
   }
@@ -66,6 +80,7 @@ export default function ChecklistItemsPage() {
   function submitNok() {
     const photoKey = `photo_${currentItem.id}`; if (photoBlob) photoBlobs.current[photoKey] = photoBlob
     const updated = [...results]; updated[currentIndex] = { id: currentItem.id, status: 'nok', nok_data: nokData, photo_url: photoBlob ? photoKey : undefined }
+    sessionStorage.removeItem('fc_nok_index'); sessionStorage.removeItem('fc_nok_data'); sessionStorage.removeItem('fc_nok_results')
     setResults(updated); setShowNok(false); setNokData({}); setPhotoBlob(null); setPhotoPreview('')
     setCurrentIndex(prev => prev + 1)
   }
@@ -171,7 +186,11 @@ export default function ChecklistItemsPage() {
             </h2>
             <p style={{ fontSize: 17, color: 'var(--cd-subtext)', lineHeight: 1.5, maxWidth: 320 }}>{currentItem.description}</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, width: '100%', maxWidth: 380, marginTop: 24 }}>
-              <button onClick={() => setShowNok(true)} style={{ padding: '22px 0', borderRadius: 'var(--radius-md)', background: 'var(--cd-red-dim)', border: '2px solid var(--cd-red)', color: 'var(--cd-red)', fontSize: 15, fontWeight: 700, cursor: 'pointer', minHeight: 80, fontFamily: "'Open Sans', sans-serif" }}>
+              <button onClick={() => {
+                sessionStorage.setItem('fc_nok_index', String(currentIndex))
+                sessionStorage.setItem('fc_nok_results', JSON.stringify(results))
+                setShowNok(true)
+              }} style={{ padding: '22px 0', borderRadius: 'var(--radius-md)', background: 'var(--cd-red-dim)', border: '2px solid var(--cd-red)', color: 'var(--cd-red)', fontSize: 15, fontWeight: 700, cursor: 'pointer', minHeight: 80, fontFamily: "'Open Sans', sans-serif" }}>
                 ⚠ PROBLEMA
               </button>
               <button onClick={handleOk} style={{ padding: '22px 0', borderRadius: 'var(--radius-md)', background: 'var(--cd-green-dim)', border: '2px solid var(--cd-green)', color: 'var(--cd-green)', fontSize: 15, fontWeight: 700, cursor: 'pointer', minHeight: 80, fontFamily: "'Open Sans', sans-serif" }}>
@@ -189,7 +208,7 @@ export default function ChecklistItemsPage() {
         ) : (
           <div className="animate-fade-in" style={{ paddingTop: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div>
-              <button onClick={() => setShowNok(false)} style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', padding: 0, marginBottom: 12 }}>← Voltar</button>
+              <button onClick={() => { sessionStorage.removeItem('fc_nok_index'); sessionStorage.removeItem('fc_nok_data'); sessionStorage.removeItem('fc_nok_results'); setShowNok(false) }} style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', padding: 0, marginBottom: 12 }}>← Voltar</button>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', background: 'var(--cd-red-dim)', borderRadius: 'var(--radius-md)', border: '1px solid var(--cd-red)' }}>
                 <span style={{ fontSize: 22 }}>{currentItem.icon}</span>
                 <div>
@@ -204,14 +223,14 @@ export default function ChecklistItemsPage() {
                 {field.type === 'select' ? (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                     {field.options?.map(opt => (
-                      <button key={opt} onClick={() => setNokData(prev => ({ ...prev, [field.id]: opt }))}
+                      <button key={opt} onClick={() => setNokData(prev => { const next = { ...prev, [field.id]: opt }; sessionStorage.setItem('fc_nok_data', JSON.stringify(next)); return next })}
                         style={{ padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: nokData[field.id] === opt ? 700 : 400, background: nokData[field.id] === opt ? 'var(--cd-navy)' : 'var(--cd-surface)', border: `1.5px solid ${nokData[field.id] === opt ? 'var(--cd-navy)' : 'var(--cd-border)'}`, color: nokData[field.id] === opt ? '#fff' : 'var(--cd-text)', cursor: 'pointer', transition: 'all 0.15s', fontFamily: "'Open Sans', sans-serif" }}>
                         {opt}
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <input className="cd-input" type="text" placeholder={field.placeholder} value={nokData[field.id] ?? ''} onChange={e => setNokData(prev => ({ ...prev, [field.id]: e.target.value }))} />
+                  <input className="cd-input" type="text" placeholder={field.placeholder} value={nokData[field.id] ?? ''} onChange={e => setNokData(prev => { const next = { ...prev, [field.id]: e.target.value }; sessionStorage.setItem('fc_nok_data', JSON.stringify(next)); return next })} />
                 )}
               </div>
             ))}
