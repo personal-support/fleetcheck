@@ -30,10 +30,17 @@ export default function AdminPage() {
   const router = useRouter()
   const [checklists, setChecklists] = useState<ChecklistRow[]>([])
   const [loading, setLoading] = useState(true)
+  const [pendingInvites, setPendingInvites] = useState(0)
   const [filter, setFilter] = useState<'all' | 'open' | 'nok'>('all')
   const [selected, setSelected] = useState<ChecklistRow | null>(null)
 
-  useEffect(() => { loadChecklists() }, [])
+  useEffect(() => { loadChecklists(); loadPendingInvites() }, [])
+
+  async function loadPendingInvites() {
+    const supabase = createClient()
+    const { count } = await supabase.from('admin_invites').select('*', { count: 'exact', head: true }).eq('status', 'pending')
+    if (count) setPendingInvites(count)
+  }
 
   async function loadChecklists() {
     const supabase = createClient()
@@ -68,6 +75,7 @@ export default function AdminPage() {
             <div style={{ display: 'flex', gap: 4 }}>
               {[
                 { label: '📊 Analytics', action: () => router.push('/admin/analiticos') },
+                { label: pendingInvites > 0 ? `🔔 Convites (${pendingInvites})` : 'Convites', action: () => router.push('/admin/convites') },
                 { label: 'Checklist', action: () => router.push('/check/selecionar') },
                 { label: 'Motoristas', action: () => router.push('/admin/motoristas') },
                 { label: 'Veículos', action: () => router.push('/admin/veiculos') },

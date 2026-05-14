@@ -113,10 +113,14 @@ export default function LoginPage() {
                 <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: 4 }}>
                   {loading ? 'Entrando...' : 'Entrar'}
                 </button>
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button type="button" onClick={() => router.push('/cadastro')}
                     style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
-                    Primeiro acesso? Gerar minha senha
+                    Primeiro acesso?
+                  </button>
+                  <button type="button" onClick={() => router.push('/esqueci-senha')}
+                    style={{ background: 'none', border: 'none', color: 'var(--cd-subtext)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
+                    Esqueci minha senha
                   </button>
                 </div>
               </form>
@@ -141,6 +145,12 @@ export default function LoginPage() {
                 <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: 4 }}>
                   {loading ? 'Enviando...' : 'Enviar link de acesso'}
                 </button>
+                <div style={{ textAlign: 'center', marginTop: 4 }}>
+                  <button type="button" onClick={() => router.push('/admin/solicitar-acesso')}
+                    style={{ background: 'none', border: 'none', color: 'var(--cd-subtext)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
+                    Solicitar acesso como administrador
+                  </button>
+                </div>
               </form>
             )}
 
