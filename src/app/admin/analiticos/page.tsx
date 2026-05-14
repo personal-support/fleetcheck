@@ -243,10 +243,10 @@ export default function AnalyticsPage() {
           <div style={{marginTop:14,display:'flex',flexDirection:'column',gap:10}}>
             {searchHistory.map((item,i)=>(
               <div key={i} style={{display:'flex',flexDirection:'column',gap:6}}>
-                <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'10px 16px',borderRadius:'12px 12px 4px 12px',fontSize:15,maxWidth:'85%'}}>
+                <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'11px 18px',borderRadius:'12px 12px 4px 12px',fontSize:15,fontWeight:600,maxWidth:'85%'}}>
                   {item.q}
                 </div>
-                <div style={{alignSelf:'flex-start',background:'#ebeff2',border:'1px solid #ddd',padding:'12px 16px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#333',maxWidth:'90%',lineHeight:1.6,whiteSpace:'pre-wrap'}}>
+                <div style={{alignSelf:'flex-start',background:'#f0f2ff',border:'1px solid #c8cef0',padding:'14px 18px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#212121',fontWeight:500,lineHeight:'1.7',maxWidth:'90%',lineHeight:1.6,whiteSpace:'pre-wrap'}}>
                   {item.a}
                 </div>
               </div>
