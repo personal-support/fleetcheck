@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { syncPendingChecklists } from '@/lib/sync'
 import { ConsuldataFooter } from '@/components/ConsuldataFooter'
 import type { Vehicle } from '@/types'
 
