@@ -26,6 +26,8 @@ export default function OdometerPage() {
   const [zoomSupported, setZoomSupported] = useState(false)
   const [torchOn, setTorchOn] = useState(false)
   const [torchSupported, setTorchSupported] = useState(false)
+  const [kmWarning, setKmWarning] = useState('')
+  const [kmWarningAcknowledged, setKmWarningAcknowledged] = useState(false)
   const [lastKmFromDb, setLastKmFromDb] = useState<number>(0)
 
   const phase = typeof window !== 'undefined' ? sessionStorage.getItem('fc_phase') ?? 'departure' : 'departure'
@@ -169,18 +171,31 @@ export default function OdometerPage() {
     }, 'image/jpeg', 0.95)
   }, [stopCamera])
 
-  function confirm() {
+  async function confirm() {
     const km = parseInt(kmInput.replace(/\D/g, ''))
     if (!km || km < 1) { setError('Informe um KM válido.'); return }
     // Use DB last KM if available, fallback to vehicle.last_km
     const referenceKm = lastKmFromDb > 0 ? lastKmFromDb : (vehicle?.last_km ?? 0)
     if (referenceKm > 0 && km < referenceKm) {
-      setError(
-        `KM informado (${km.toLocaleString('pt-BR')}) é inferior ao último registro (${referenceKm.toLocaleString('pt-BR')} km). ` +
-        `O hodômetro não pode regredir. Verifique e informe o valor correto.`
-      )
-      return
+      const diff = referenceKm - km
+      if (diff > 2) {
+        setError(
+          `KM informado (${km.toLocaleString('pt-BR')}) é inferior ao último registro (${referenceKm.toLocaleString('pt-BR')} km). ` +
+          `Diferença de ${diff} km — verifique e corrija antes de continuar.`
+        )
+        return
+      }
+      // Diferença pequena (≤2km): alerta mas permite confirmar
+      if (!kmWarningAcknowledged) {
+        setKmWarning(
+          `KM informado (${km.toLocaleString('pt-BR')}) está ${diff} km abaixo do último registro (${referenceKm.toLocaleString('pt-BR')} km). ` +
+          `Pode ser uma manobra. Confirme se estiver correto.`
+        )
+        setKmWarningAcknowledged(true)
+        return
+      }
     }
+    setKmWarning('')
     const wasManual = kmAuto !== null ? km !== kmAuto : true
     sessionStorage.setItem('fc_km', String(km))
     sessionStorage.setItem('fc_km_auto', String(kmAuto ?? km))
@@ -193,7 +208,22 @@ export default function OdometerPage() {
       },
       () => {}
     )
-    if (photoBlob) sessionStorage.setItem('fc_km_photo', URL.createObjectURL(photoBlob))
+    if (photoBlob) {
+      try {
+        const { createClient } = await import('@/lib/supabase/client')
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        const path = `${vehicle?.id ?? 'unknown'}/${Date.now()}_hodometro.jpg`
+        const { data: uploaded } = await supabase.storage
+          .from('checklist-photos')
+          .upload(path, photoBlob, { contentType: 'image/jpeg', upsert: true })
+        if (uploaded) {
+          const { data: urlData } = supabase.storage.from('checklist-photos').getPublicUrl(uploaded.path)
+          sessionStorage.setItem('fc_km_photo_url', urlData.publicUrl)
+        }
+      } catch { /* salva localmente como fallback */ }
+      sessionStorage.setItem('fc_km_photo', URL.createObjectURL(photoBlob))
+    }
     router.push(phase === 'departure' ? '/check/itens' : '/check/chegada')
   }
 
@@ -374,7 +404,7 @@ export default function OdometerPage() {
                   type="number"
                   inputMode="numeric"
                   value={kmInput}
-                  onChange={e => setKmInput(e.target.value)}
+                  onChange={e => { setKmInput(e.target.value); setKmWarning(''); setKmWarningAcknowledged(false) }}
                   placeholder={lastKm ? `Último: ${lastKm.toLocaleString('pt-BR')}` : 'Ex: 110846'}
                   autoFocus
                   style={{ width: '100%', padding: '14px 16px', borderRadius: 10, background: '#ffffff', border: '1px solid #1a2040', color: '#555555', fontSize: 28, outline: 'none', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, colorScheme: 'dark' }}
@@ -386,10 +416,25 @@ export default function OdometerPage() {
 
             {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
 
+            {/* Aviso de tolerância */}
+            {kmWarning && (
+              <div style={{ padding: '12px 14px', background: 'var(--cd-warn-dim)', border: '1px solid var(--cd-warn)', borderRadius: 'var(--radius-sm)' }}>
+                <p style={{ fontSize: 13, color: '#b45309', fontWeight: 700, marginBottom: 4 }}>⚠️ Diferença pequena detectada</p>
+                <p style={{ fontSize: 13, color: 'var(--cd-text)' }}>{kmWarning}</p>
+                <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginTop: 6 }}>Toque em <strong>Confirmar assim mesmo</strong> se o KM estiver certo, ou corrija o valor acima.</p>
+              </div>
+            )}
+
+            {/* Instrução de verificação */}
+            <div style={{ padding: '10px 14px', background: 'rgba(33,39,113,0.05)', border: '1px solid rgba(33,39,113,0.12)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 16, flexShrink: 0 }}>👁️</span>
+              <p style={{ fontSize: 12, color: 'var(--cd-navy)' }}>Confira o número no painel do veículo antes de confirmar.</p>
+            </div>
+
             <div className="flex flex-col gap-2">
               <button onClick={confirm}
                 style={{ width: '100%', padding: 14, borderRadius: 10, background: '#f86924', color: 'white', fontWeight: 700, fontSize: 15, border: 'none', cursor: 'pointer' }}>
-                CONFIRMAR E CONTINUAR →
+                {kmWarning ? 'CONFIRMAR ASSIM MESMO →' : 'CONFIRMAR E CONTINUAR →'}
               </button>
 
               {kmAuto && !correcting && (
