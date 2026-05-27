@@ -52,17 +52,9 @@ export default function OdometerPage() {
         .limit(1)
         .single()
       const dbKm = data?.arrival_km_final ?? data?.departure_km_final ?? 0
-      if (dbKm > 0) {
-        setLastKmFromDb(dbKm)
-        setKmInput(String(dbKm))
-        setCorrecting(true)
-        setStep('confirm')
-      } else {
-        startCamera()
-      }
-    } catch {
-      startCamera()
-    }
+      if (dbKm > 0) setLastKmFromDb(dbKm)
+    } catch { /* ignore */ }
+    startCamera()
   }
 
   const stopCamera = useCallback(() => {
@@ -161,15 +153,32 @@ export default function OdometerPage() {
         } else {
           setKmAuto(null)
           setCorrecting(true)
+          if (lastKmFromDb > 0) setKmInput(String(lastKmFromDb))
           setStep('confirm')
         }
       } catch {
         setKmAuto(null)
         setCorrecting(true)
+        if (lastKmFromDb > 0) setKmInput(String(lastKmFromDb))
         setStep('confirm')
       }
+
+      // Upload foto imediatamente — independente do resultado do OCR
+      try {
+        const { createClient } = await import('@/lib/supabase/client')
+        const supabase = createClient()
+        const path = `${vehicle?.id ?? 'unknown'}/${Date.now()}_hodometro.jpg`
+        const { data: uploaded } = await supabase.storage
+          .from('checklist-photos')
+          .upload(path, blob, { contentType: 'image/jpeg', upsert: true })
+        if (uploaded) {
+          const { data: urlData } = supabase.storage.from('checklist-photos').getPublicUrl(uploaded.path)
+          sessionStorage.setItem('fc_km_photo_url', urlData.publicUrl)
+        }
+      } catch { /* upload em segundo plano, não bloqueia */ }
+
     }, 'image/jpeg', 0.95)
-  }, [stopCamera])
+  }, [stopCamera, lastKmFromDb, vehicle])
 
   async function confirm() {
     const km = parseInt(kmInput.replace(/\D/g, ''))
@@ -209,19 +218,6 @@ export default function OdometerPage() {
       () => {}
     )
     if (photoBlob) {
-      try {
-        const { createClient } = await import('@/lib/supabase/client')
-        const supabase = createClient()
-        const { data: { user } } = await supabase.auth.getUser()
-        const path = `${vehicle?.id ?? 'unknown'}/${Date.now()}_hodometro.jpg`
-        const { data: uploaded } = await supabase.storage
-          .from('checklist-photos')
-          .upload(path, photoBlob, { contentType: 'image/jpeg', upsert: true })
-        if (uploaded) {
-          const { data: urlData } = supabase.storage.from('checklist-photos').getPublicUrl(uploaded.path)
-          sessionStorage.setItem('fc_km_photo_url', urlData.publicUrl)
-        }
-      } catch { /* salva localmente como fallback */ }
       sessionStorage.setItem('fc_km_photo', URL.createObjectURL(photoBlob))
     }
     router.push(phase === 'departure' ? '/check/itens' : '/check/chegada')
@@ -383,6 +379,7 @@ export default function OdometerPage() {
                   <p style={{ fontSize: 28, fontWeight: 700, color: '#555555', fontFamily: "'Barlow Condensed', sans-serif" }}>
                     {kmAuto.toLocaleString('pt-BR')} km
                   </p>
+                  <p style={{ fontSize: 12, color: '#b45309', marginTop: 4 }}>⚠️ Confira no painel — a leitura automática pode cometer erros.</p>
                 </div>
               </div>
             )}
@@ -428,7 +425,7 @@ export default function OdometerPage() {
             {/* Instrução de verificação */}
             <div style={{ padding: '10px 14px', background: 'rgba(33,39,113,0.05)', border: '1px solid rgba(33,39,113,0.12)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 16, flexShrink: 0 }}>👁️</span>
-              <p style={{ fontSize: 12, color: 'var(--cd-navy)' }}>Confira o número no painel do veículo antes de confirmar.</p>
+              <p style={{ fontSize: 12, color: 'var(--cd-navy)' }}><strong>Sempre confira o número no painel do veículo.</strong> A leitura automática pode falhar em condições de pouca luz ou ângulo ruim.</p>
             </div>
 
             <div className="flex flex-col gap-2">
