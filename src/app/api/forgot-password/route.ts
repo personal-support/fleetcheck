@@ -24,20 +24,16 @@ export async function POST(request: NextRequest) {
 
   // Admin → password reset link → /definir-senha
   // Driver → OTP magic link → /recuperar-senha (formula CPF)
-  if (isAdmin) {
-    const anon = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
-    const { error } = await anon.auth.resetPasswordForEmail(email, {
-      redirectTo: `${APP_URL}/auth/callback?next=/definir-senha`,
-    })
-    if (error) return NextResponse.json({ error: 'Erro ao enviar e-mail.' }, { status: 500 })
-  } else {
-    const anon = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
-    const { error } = await anon.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${APP_URL}/auth/callback?next=/recuperar-senha` },
-    })
-    if (error) return NextResponse.json({ error: 'Erro ao enviar e-mail.' }, { status: 500 })
-  }
+  const redirectTo = isAdmin
+    ? `${APP_URL}/auth/callback?next=/definir-senha`
+    : `${APP_URL}/auth/callback?next=/recuperar-senha`
+
+  const { error: linkError } = await supabase.auth.admin.generateLink({
+    type: isAdmin ? 'recovery' : 'magiclink',
+    email,
+    options: { redirectTo },
+  })
+  if (linkError) return NextResponse.json({ error: 'Erro ao enviar e-mail.' }, { status: 500 })
 
   return NextResponse.json({ success: true })
 }
