@@ -66,29 +66,25 @@ export default function LoginPage() {
             <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: 4 }}>
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <button type="button" onClick={() => router.push('/cadastro')}
-                style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
-                Primeiro acesso?
-              </button>
+            <div style={{ textAlign: 'center' }}>
               <button type="button" onClick={() => router.push('/esqueci-senha')}
-                style={{ background: 'none', border: 'none', color: 'var(--cd-subtext)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
+                style={{ background: 'none', border: 'none', color: 'var(--cd-orange)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
                 Esqueci minha senha
               </button>
             </div>
-            <div style={{ textAlign: 'center', padding: '10px 14px', background: 'rgba(33,39,113,0.05)', borderRadius: 'var(--radius-sm)' }}>
-              <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginBottom: 4 }}>Não tem e-mail corporativo?</p>
-              <button type="button" onClick={() => router.push('/login-cpf')}
-                style={{ background: 'none', border: 'none', color: 'var(--cd-navy)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}>
-                Entrar com CPF
+            <div style={{ borderTop: '1px solid var(--cd-border)', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <p style={{ fontSize: 11, color: 'var(--cd-subtext)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>Primeiro acesso?</p>
+              <button type="button" onClick={() => router.push('/cadastro')}
+                style={{ background: 'none', border: '1px solid var(--cd-border)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', color: 'var(--cd-text)', fontSize: 13, cursor: 'pointer', textAlign: 'center' }}>
+                🚗 Sou motorista — gerar minha senha
               </button>
-              <span style={{ color: 'var(--cd-subtext)', fontSize: 12, margin: '0 6px' }}>ou</span>
-              <span style={{ fontSize: 12, color: 'var(--cd-subtext)' }}>contate o administrador</span>
-            </div>
-            <div style={{ textAlign: 'center' }}>
+              <button type="button" onClick={() => router.push('/login-cpf')}
+                style={{ background: 'none', border: '1px solid var(--cd-border)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', color: 'var(--cd-text)', fontSize: 13, cursor: 'pointer', textAlign: 'center' }}>
+                🪪 Entrar com CPF (sem e-mail corporativo)
+              </button>
               <button type="button" onClick={() => router.push('/admin/solicitar-acesso')}
-                style={{ background: 'none', border: 'none', color: 'var(--cd-subtext)', fontSize: 12, cursor: 'pointer', textDecoration: 'underline' }}>
-                Solicitar acesso como administrador
+                style={{ background: 'none', border: '1px solid var(--cd-border)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', color: 'var(--cd-text)', fontSize: 13, cursor: 'pointer', textAlign: 'center' }}>
+                ⚙️ Quero ser administrador — solicitar acesso
               </button>
             </div>
           </form>
