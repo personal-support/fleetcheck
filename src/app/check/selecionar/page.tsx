@@ -31,6 +31,7 @@ export default function ScanPage() {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       if (!authUser) { router.replace('/login'); return }
       const { data } = await supabase.from('users').select('name, role').eq('id', authUser.id).single()
+      if (data?.role) sessionStorage.setItem('fc_user_role', data.role)
       if (data) setUserName(data.name.split(' ')[0])
     } catch { router.replace('/login') }
   }

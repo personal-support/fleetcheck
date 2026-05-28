@@ -308,7 +308,9 @@ export default function ArrivalPage() {
       </div>
 
       <ConsuldataFooter />
-      <BackButton href='/check/selecionar' label="Cancelar chegada" />
+      {typeof window !== 'undefined' && sessionStorage.getItem('fc_user_role') === 'admin'
+        ? <BackButton href='/admin' label="← Voltar ao painel" />
+        : <BackButton href='/check/selecionar' label="Cancelar chegada" />}
     </main>
   )
 }

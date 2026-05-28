@@ -451,7 +451,9 @@ export default function OdometerPage() {
       </div>
 
       <ConsuldataFooter />
-      <BackButton href='/check/selecionar' label="Voltar para lista de veículos" />
+      {typeof window !== 'undefined' && sessionStorage.getItem('fc_user_role') === 'admin'
+        ? <BackButton href='/admin' label="← Voltar ao painel" />
+        : <BackButton href='/check/selecionar' label="Voltar para lista de veículos" />}
     </main>
   )
 }
