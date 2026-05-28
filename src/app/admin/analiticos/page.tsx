@@ -163,13 +163,8 @@ export default function AnalyticsPage() {
 
   function renderAnswer(text: string) {
     const html = text
-      .replace(/[*][*](.+?)[*][*]/g, '<strong style="color:#0f1c3f;font-weight:800">$1</strong>')
-      .replace(/[*](.+?)[*]/g, '<em style="font-style:normal;color:#333">$1</em>')
-      .split('
-
-').join('<br/><br/>')
-      .split('
-').join('<br/>')
+      .replace(/[*][*]([\s\S]+?)[*][*]/g, '<b style="color:#0f1c3f;font-weight:800">$1</b>')
+      .split("\n").join("<br/>")
     return <span dangerouslySetInnerHTML={{ __html: html }} />
   }
 
