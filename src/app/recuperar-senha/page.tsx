@@ -19,7 +19,7 @@ export default function RecuperarSenhaPage() {
       const { data } = await supabase.from('users').select('cpf, birth_date, role').eq('id', user.id).single()
       if (!data?.cpf || !data?.birth_date) {
         // Admin — no formula password, just redirect to admin
-        if (data?.role === 'admin') { router.replace('/admin'); return }
+        if (data?.role === 'admin') { router.replace('/definir-senha'); return }
         setError('Não foi possível recuperar sua senha. Contate o administrador.'); setLoading(false); return
       }
 

@@ -53,7 +53,7 @@ export async function PATCH(request: NextRequest) {
   if (action === 'approve') {
     // Create/invite user via Supabase Auth — they'll receive a magic link
     const { error: inviteError } = await supabase.auth.admin.inviteUserByEmail(invite.email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://fleetcheck.vercel.app'}/auth/callback?next=/admin`,
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://fleetcheck.vercel.app'}/auth/callback?next=/definir-senha`,
     })
     if (inviteError && !inviteError.message.includes('already been registered')) {
       return NextResponse.json({ error: 'Erro ao enviar convite.' }, { status: 500 })

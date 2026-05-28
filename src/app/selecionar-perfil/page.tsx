@@ -7,9 +7,7 @@ export default function SelecionarPerfilPage() {
   const router = useRouter()
 
   // Desktop nunca deve ver esta tela — vai direto para /login
-  useEffect(() => {
-    if (window.innerWidth >= 1024) router.replace('/login')
-  }, [])
+  useEffect(() => { router.replace('/login') }, [])
 
   function choose(type: 'driver' | 'admin') {
     localStorage.setItem('fc_user_type', type)
