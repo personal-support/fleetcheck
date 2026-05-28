@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Utilização — FleetCheck — OPR-MAN-FRT-001 — ConsulData</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background:#f5f5f5}
+
+    /* Sidebar */
+    .sidebar-menu{position:fixed;left:0;top:100px;width:280px;height:calc(100vh - 100px);background:white;box-shadow:2px 0 10px rgba(0,0,0,.1);overflow-y:auto;z-index:1000;padding:20px}
+    .sidebar-menu h2{color:#212771;font-size:16px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #f86924}
+    .sidebar-menu ul{list-style:none}
+    .sidebar-menu li{margin-bottom:6px}
+    .sidebar-menu a{color:#212771;text-decoration:none;display:block;padding:7px 12px;border-radius:4px;transition:background .2s;font-size:13px}
+    .sidebar-menu a:hover{background:#fff3ee;color:#f86924}
+    .sidebar-menu .sub{padding-left:20px;font-size:12px;color:#555}
+
+    /* Back to top */
+    .back-to-top{position:fixed;bottom:30px;right:30px;background:#212771;color:white;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(33,39,113,.4);transition:all .3s;z-index:1000;text-decoration:none;font-size:22px;font-weight:bold}
+    .back-to-top:hover{background:#f86924;transform:translateY(-4px)}
+
+    /* Header */
+    .header{background:linear-gradient(135deg,#212771 0%,#3b4cc0 100%);color:white;padding:18px 0;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+    .header-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:20px}
+    .logo{height:56px}
+    .header-title{flex:1;text-align:center}
+    .header-title h1{font-size:22px;font-weight:600;margin-bottom:4px}
+    .header-title p{font-size:13px;opacity:.9}
+    .header-badge{background:rgba(248,105,36,.25);border:1px solid rgba(248,105,36,.5);color:#ffd4b8;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+
+    /* Container */
+    .container{max-width:1100px;margin:28px auto 28px 300px;padding:0 20px}
+
+    /* Info box */
+    .info-box{background:white;border-radius:8px;padding:24px;margin-bottom:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:5px solid #f86924}
+    .info-table{width:100%;border-collapse:collapse}
+    .info-table td{padding:10px 12px;border:1px solid #ddd;font-size:14px}
+    .info-table td:first-child{background:#f8f9fa;font-weight:600;width:190px;color:#212771}
+
+    /* Section */
+    .section{background:white;border-radius:8px;padding:28px 32px;margin-bottom:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);scroll-margin-top:110px}
+    .section h2{color:#212771;font-size:22px;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid #f86924;text-transform:uppercase;letter-spacing:.3px}
+    .section h3{color:#212771;font-size:17px;margin-top:26px;margin-bottom:12px;padding-left:10px;border-left:3px solid #f86924}
+    .section h4{color:#f86924;font-size:15px;margin-top:18px;margin-bottom:8px;font-weight:700}
+    .section p{margin-bottom:14px;font-size:15px;text-align:justify}
+    .section ul{margin-left:28px;margin-bottom:14px}
+    .section li{margin-bottom:8px;font-size:15px}
+    .bold{font-weight:700}
+    .ok{color:#35bc7a;margin-right:5px}
+
+    /* Boxes */
+    .highlight-box{background:#eff3ff;border-left:4px solid #212771;padding:14px 16px;margin:16px 0;border-radius:4px;font-size:14px}
+    .warning-box{background:#fff8ee;border-left:4px solid #f86924;padding:14px 16px;margin:16px 0;border-radius:4px;font-size:14px}
+    .success-box{background:#f0fdf4;border-left:4px solid #35bc7a;padding:14px 16px;margin:16px 0;border-radius:4px;font-size:14px}
+
+    /* Tables */
+    .table-container{overflow-x:auto;margin:18px 0}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th{background:#212771;color:white;padding:11px 14px;text-align:left;font-weight:600}
+    td{padding:10px 14px;border:1px solid #ddd}
+    tr:nth-child(even){background:#f8f9fa}
+
+    /* Steps */
+    .step-list{counter-reset:step;list-style:none;margin-left:0}
+    .step-list li{counter-increment:step;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;padding:12px 16px;background:#f8f9ff;border-radius:6px;border:1px solid #e0e5ff}
+    .step-list li::before{content:counter(step);background:#212771;color:white;font-weight:700;font-size:13px;min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .step-list li.orange::before{background:#f86924}
+    .step-list li span{font-size:14px}
+
+    /* Actor grid */
+    .actor-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+    .actor-card{background:#f8f9ff;border:1px solid #d0d8ff;border-radius:8px;padding:18px}
+    .actor-card h4{color:#212771;font-size:15px;margin-bottom:8px;font-weight:700}
+    .actor-card p{font-size:14px;color:#555;margin-bottom:0}
+
+    /* Phone mockups */
+    .screens-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin:24px 0}
+    .screen-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .screen-label{font-size:12px;font-weight:700;color:#212771;text-align:center;text-transform:uppercase;letter-spacing:.4px}
+    .screen-desc{font-size:12px;color:#666;text-align:center;max-width:200px;line-height:1.4}
+    .phone{width:200px;height:380px;background:#ebeff2;border-radius:22px;border:3px solid #212771;overflow:hidden;position:relative;box-shadow:0 6px 20px rgba(33,39,113,.18);display:flex;flex-direction:column}
+    .ph{background:#212771;height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;flex-shrink:0}
+    .ph-logo{font-size:9px;font-weight:800;color:white;letter-spacing:.5px}
+    .ph-logo span{color:#f86924}
+    .ph-body{flex:1;overflow:hidden;padding:8px;display:flex;flex-direction:column;gap:5px;font-size:11px;color:#333}
+    .ph-title{font-size:12px;font-weight:800;color:#212771;text-transform:uppercase}
+    .ph-sub{font-size:10px;color:#5e6673}
+    .ph-card{background:white;border-radius:7px;padding:7px 10px;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid #ddd}
+    .ph-plate{font-size:14px;font-weight:800;color:#212771;letter-spacing:.5px}
+    .ph-model{font-size:10px;color:#5e6673}
+    .ph-btn{background:#f86924;color:white;border-radius:7px;padding:7px;text-align:center;font-size:10px;font-weight:700}
+    .ph-btn-g{background:rgba(53,188,122,.12);border:2px solid #35bc7a;color:#35bc7a;border-radius:7px;padding:8px 4px;text-align:center;font-size:10px;font-weight:700;flex:1}
+    .ph-btn-r{background:rgba(240,90,73,.1);border:2px solid #f05a49;color:#f05a49;border-radius:7px;padding:8px 4px;text-align:center;font-size:10px;font-weight:700;flex:1}
+    .ph-btn-s{background:white;border:1.5px solid #ddd;color:#5e6673;border-radius:7px;padding:7px;text-align:center;font-size:10px;font-weight:600}
+    .ph-row{display:flex;gap:5px}
+    .ph-tab-row{display:flex;border-bottom:1px solid #ddd}
+    .ph-tab{flex:1;text-align:center;padding:5px;font-size:9px;font-weight:700;color:#5e6673}
+    .ph-tab.on{color:#f86924;border-bottom:2px solid #f86924}
+    .ph-inp{background:white;border:1.5px solid #ddd;border-radius:6px;padding:5px 8px;font-size:10px;color:#aaa}
+    .ph-inp.on{border-color:#f86924}
+    .ph-prog{height:4px;background:#ddd;border-radius:4px;overflow:hidden;margin:2px 0}
+    .ph-prog-f{height:100%;background:#f86924;border-radius:4px}
+    .ph-emoji{font-size:26px;text-align:center;padding:4px 0}
+    .ph-item-lbl{font-size:11px;font-weight:800;color:#212771;text-align:center;text-transform:uppercase}
+    .ph-cam{background:#111;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;color:white;font-size:9px;position:relative}
+    .ph-cam-f{width:60px;height:35px;border:2px solid #f86924;border-radius:3px;position:absolute}
+    .ph-badge-g{background:rgba(53,188,122,.12);color:#35bc7a;border-radius:10px;padding:2px 7px;font-size:8px;font-weight:700;display:inline-block}
+    .ph-badge-w{background:rgba(255,159,0,.12);color:#ff9f00;border-radius:10px;padding:2px 7px;font-size:8px;font-weight:700;display:inline-block}
+    .ph-divider{height:1px;background:#e0e0e0}
+    .kpi2{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+    .kpi-mini{background:white;border-radius:5px;padding:5px;text-align:center;border:1px solid #ddd}
+    .kpi-val{font-size:18px;font-weight:800}
+    .kpi-lbl{font-size:8px;color:#5e6673;text-transform:uppercase;font-weight:700}
+
+    /* Install steps visual */
+    .install-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
+    .install-card{background:#f8f9ff;border:1px solid #d0d8ff;border-radius:8px;padding:16px;text-align:center}
+    .install-card .ico{font-size:32px;margin-bottom:8px}
+    .install-card h5{color:#212771;font-size:14px;font-weight:700;margin-bottom:6px}
+    .install-card p{font-size:13px;color:#555;margin-bottom:0}
+
+    /* Footer */
+    .footer{background:#1e293b;color:#94a3b8;padding:18px 20px;margin-top:40px;margin-left:280px;width:calc(100% - 280px);font-size:12px;text-align:center}
+    .footer p{margin:4px 0;text-align:center}
+    .footer strong{color:#cbd5e1}
+
+    @media print{.sidebar-menu,.back-to-top{display:none}.container{margin-left:auto}.footer{margin-left:0;width:100%}}
+    @media(max-width:900px){.sidebar-menu{display:none}.container{margin-left:auto}.footer{margin-left:0;width:100%}.actor-grid,.install-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div class="sidebar-menu">
+  <h2>SUMÁRIO</h2>
+  <ul>
+    <li><a href="#info">📄 Informações do Documento</a></li>
+    <li><a href="#objetivo">1. Objetivo</a></li>
+    <li><a href="#escopo">2. Escopo</a></li>
+    <li><a href="#papeis">3. Papéis e Responsabilidades</a></li>
+    <li><a href="#instalar">4. Como Instalar no Celular</a></li>
+    <li><a href="#acesso">5. Acesso ao Sistema</a></li>
+    <li><a class="sub" href="#login-email">5.1. Login com e-mail e senha</a></li>
+    <li><a class="sub" href="#login-cpf">5.2. Login com CPF (sem e-mail)</a></li>
+    <li><a class="sub" href="#esqueci">5.3. Esqueci minha senha</a></li>
+    <li><a class="sub" href="#primeiro-acesso">5.4. Primeiro acesso</a></li>
+    <li><a href="#motorista">6. Guia do Motorista</a></li>
+    <li><a class="sub" href="#mot-veiculo">6.1. Selecionar o veículo</a></li>
+    <li><a class="sub" href="#mot-km">6.2. Registrar a quilometragem</a></li>
+    <li><a class="sub" href="#mot-check">6.3. Checklist de saída</a></li>
+    <li><a class="sub" href="#mot-chegada">6.4. Registrar a chegada</a></li>
+    <li><a href="#admin">7. Guia do Administrador</a></li>
+    <li><a class="sub" href="#adm-painel">7.1. Painel de acompanhamento</a></li>
+    <li><a class="sub" href="#adm-motoristas">7.2. Gestão de motoristas</a></li>
+    <li><a class="sub" href="#adm-veiculos">7.3. Gestão de veículos</a></li>
+    <li><a class="sub" href="#adm-relatorios">7.4. Relatórios e análises</a></li>
+    <li><a class="sub" href="#adm-busca">7.5. Busca inteligente</a></li>
+    <li><a class="sub" href="#adm-novoadmin">7.6. Adicionar administrador</a></li>
+    <li><a href="#telas">8. Telas do Sistema</a></li>
+    <li><a href="#disposicoes">9. Disposições Finais</a></li>
+  </ul>
+</div>
+
+<div class="header">
+  <div class="header-content">
+    <img src="LOGO_CONSULDATA.png" alt="ConsulData" class="logo" onerror="this.style.display='none'">
+    <div class="header-title">
+      <h1>Manual de Utilização do Sistema FleetCheck</h1>
+      <p>Gestão e Controle de Frota · Versão 2.2 · 28/05/2026</p>
+    </div>
+    <div class="header-badge">OPR-MAN-FRT-001</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- INFO -->
+  <div class="info-box" id="info">
+    <table class="info-table">
+      <tr><td>Código:</td><td><strong>OPR-MAN-FRT-001</strong></td></tr>
+      <tr><td>Tipo:</td><td>Manual de Utilização</td></tr>
+      <tr><td>Título:</td><td>Manual de Utilização do Sistema FleetCheck — Gestão e Controle de Frota</td></tr>
+      <tr><td>Data de Emissão:</td><td>14/05/2026</td></tr>
+      <tr><td>Elaborado Por:</td><td>Jucimar Lopes — Assistente de Compras</td></tr>
+      <tr><td>Versão:</td><td>2.2 — Login unificado, acesso por CPF, fluxos de senha por perfil</td></tr>
+      <tr><td>Revisor(a):</td><td>—</td></tr>
+      <tr><td>Aprovação:</td><td>—</td></tr>
+      <tr><td>Início da Vigência:</td><td>—</td></tr>
+      <tr><td>Próxima Revisão:</td><td>14/05/2027</td></tr>
+      <tr><td>Acesso ao Sistema:</td><td><strong><a href="https://fleetcheck.vercel.app" target="_blank">https://fleetcheck.vercel.app</a></strong></td></tr>
+    </table>
+    <div class="highlight-box">
+      <strong>Histórico de Revisões:</strong><br><br>
+      <table style="font-size:13px">
+        <thead><tr><th>Versão</th><th>Data</th><th>Descrição</th><th>Responsável</th></tr></thead>
+        <tbody>
+          <tr><td>1.0</td><td>12/05/2026</td><td>Emissão inicial</td><td>Jucimar Lopes</td></tr>
+          <tr><td>2.0</td><td>14/05/2026</td><td>Reescrita para uso operacional — linguagem simplificada, foco em instalação e utilização</td><td>Jucimar Lopes</td></tr>
+          <tr><td>2.1</td><td>27/05/2026</td><td>Seção 6.2 e mockup do hodômetro atualizados</td><td>Jucimar Lopes</td></tr>
+          <tr><td>2.2</td><td>28/05/2026</td><td>Seção 5 reescrita: login unificado email+senha, CPF login, esqueci senha por perfil, primeiro acesso. Seção 7.2: cadastro sem e-mail. Seção 7.6: fluxo definir senha para novo admin</td><td>Jucimar Lopes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 1. OBJETIVO -->
+  <div class="section" id="objetivo">
+    <h2>1. Objetivo</h2>
+    <p>Este manual orienta os colaboradores da ConsulData sobre como utilizar o <strong>FleetCheck</strong>, sistema de gestão e controle de frota da empresa.</p>
+    <p>O FleetCheck substitui o controle manual de entrada e saída de veículos por um processo simples, feito pelo celular, que registra automaticamente a quilometragem, o estado de conservação do veículo e as ocorrências de cada viagem.</p>
+  </div>
+
+  <!-- 2. ESCOPO -->
+  <div class="section" id="escopo">
+    <h2>2. Escopo</h2>
+    <p>Este manual aplica-se a todos os colaboradores envolvidos no uso dos veículos da frota ConsulData:</p>
+    <ul>
+      <li><span class="ok">✓</span> <strong>Motoristas</strong> — qualquer colaborador que utilize os veículos da empresa</li>
+      <li><span class="ok">✓</span> <strong>Administradores</strong> — responsáveis pelo acompanhamento, cadastros e relatórios da frota</li>
+    </ul>
+    <div class="table-container">
+      <table>
+        <thead><tr><th>Placa</th><th>Modelo</th><th>Ano</th></tr></thead>
+        <tbody>
+          <tr><td>EYC6961</td><td>Fiat/Uno Vivace 1.0</td><td>2012</td></tr>
+          <tr><td>FIM2694</td><td>Chevrolet/Onix 1.0MT LS</td><td>2016</td></tr>
+          <tr><td>FMO5943</td><td>VW/Gol 1.0 GIV</td><td>2014</td></tr>
+          <tr><td>FXC5F02</td><td>Fiat/Argo Drive 1.0</td><td>2023</td></tr>
+          <tr><td>GFR5I24</td><td>Fiat/Argo Drive 1.0</td><td>2023</td></tr>
+          <tr><td>FJW5316</td><td>Chevrolet/Montana LS</td><td>2015</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. PAPEIS -->
+  <div class="section" id="papeis">
+    <h2>3. Papéis e Responsabilidades</h2>
+    <div class="actor-grid">
+      <div class="actor-card">
+        <h4>🚗 Motorista</h4>
+        <p>Realiza o checklist antes de sair com o veículo e registra a chegada ao retornar. Responsável pelo preenchimento correto e honesto de todas as informações.</p>
+      </div>
+      <div class="actor-card">
+        <h4>⚙️ Administrador</h4>
+        <p>Cadastra motoristas e veículos, acompanha os checklists em tempo real, analisa relatórios e aprova novos administradores. Tem acesso completo ao sistema.</p>
+      </div>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead><tr><th>Ação</th><th>Motorista</th><th>Administrador</th></tr></thead>
+        <tbody>
+          <tr><td>Realizar checklist de saída</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Registrar chegada do veículo</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Cadastrar motoristas</td><td style="text-align:center;color:#bbb">—</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Cadastrar e gerenciar veículos</td><td style="text-align:center;color:#bbb">—</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Visualizar e acompanhar checklists</td><td style="text-align:center;color:#bbb">—</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Acessar relatórios e análises</td><td style="text-align:center;color:#bbb">—</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Resetar senha de motorista</td><td style="text-align:center;color:#bbb">—</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+          <tr><td>Aprovar novos administradores</td><td style="text-align:center;color:#bbb">—</td><td style="text-align:center;color:#35bc7a;font-weight:700">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. INSTALAR -->
+  <div class="section" id="instalar">
+    <h2>4. Como Instalar o FleetCheck no Celular</h2>
+    <p>O FleetCheck abre diretamente pelo navegador do celular — sem precisar baixar nada na loja de aplicativos. Mas você pode salvá-lo na tela inicial para acessar com um único toque, como se fosse um aplicativo instalado.</p>
+
+    <div class="install-grid">
+      <div class="install-card">
+        <div class="ico">🤖</div>
+        <h5>Android (Chrome)</h5>
+        <p>Abra o Chrome, acesse <strong>fleetcheck.vercel.app</strong>, toque nos <strong>3 pontinhos</strong> no canto superior direito e selecione <strong>"Adicionar à tela inicial"</strong>. Confirme tocando em <strong>"Adicionar"</strong>.</p>
+      </div>
+      <div class="install-card">
+        <div class="ico">🍎</div>
+        <h5>iPhone (Safari)</h5>
+        <p>Abra o Safari, acesse <strong>fleetcheck.vercel.app</strong>, toque no ícone de <strong>compartilhar</strong> (quadradinho com seta) e selecione <strong>"Adicionar à Tela de Início"</strong>. Confirme tocando em <strong>"Adicionar"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="success-box">
+      <strong>✅ Resultado:</strong> O ícone do FleetCheck aparecerá na tela inicial do seu celular. Ao tocar nele, o sistema abre como um aplicativo, sem precisar digitar o endereço.
+    </div>
+    <div class="highlight-box">
+      <strong>💡 Sem internet?</strong> O FleetCheck funciona mesmo sem conexão. Se você fizer um checklist em local sem sinal, as informações são salvas no celular e enviadas automaticamente quando a internet voltar.
+    </div>
+  </div>
+
+  <!-- 5. ACESSO -->
+  <div class="section" id="acesso">
+    <h2>5. Acesso ao Sistema</h2>
+    <p>O endereço do sistema é: <strong><a href="https://fleetcheck.vercel.app" target="_blank">fleetcheck.vercel.app</a></strong></p>
+    <p>O FleetCheck usa <strong>uma única tela de login</strong> para todos os usuários — motoristas e administradores. Após entrar, o sistema reconhece o perfil de cada um e direciona automaticamente para a área correta.</p>
+
+    <h3 id="login-email">5.1. Login com e-mail e senha</h3>
+    <p>Funciona para motoristas com e-mail corporativo e para administradores.</p>
+    <ol class="step-list">
+      <li><span>Acesse <strong>fleetcheck.vercel.app</strong></span></li>
+      <li><span>Digite seu <strong>e-mail @consuldata.com.br</strong> e sua <strong>senha</strong></span></li>
+      <li><span>Toque em <strong>Entrar</strong> — o sistema redireciona automaticamente para a área correta</span></li>
+    </ol>
+    <div class="highlight-box">
+      <strong>💡 Redirecionamento automático:</strong> Administradores vão direto para o painel de gestão. Motoristas vão direto para a seleção de veículo.
+    </div>
+
+    <h3 id="login-cpf">5.2. Login com CPF (motoristas sem e-mail corporativo)</h3>
+    <p>Para motoristas que não possuem e-mail @consuldata.com.br. O cadastro é feito pelo administrador — o motorista recebe apenas o CPF e a senha.</p>
+    <ol class="step-list">
+      <li><span>Na tela de login, toque em <strong>🪪 SEM E-MAIL CORPORATIVO</strong></span></li>
+      <li><span>Digite seu <strong>CPF</strong> e a <strong>senha</strong> fornecida pelo administrador</span></li>
+      <li><span>Toque em <strong>Entrar</strong></span></li>
+    </ol>
+
+    <h3 id="esqueci">5.3. Esqueci minha senha</h3>
+    <p>O processo é diferente para motoristas e administradores:</p>
+
+    <h4>Motorista — recuperar senha:</h4>
+    <ol class="step-list">
+      <li><span>Na tela de login, toque em <strong>ESQUECI MINHA SENHA</strong></span></li>
+      <li><span>Informe seu e-mail @consuldata.com.br e confirme</span></li>
+      <li><span>Abra o e-mail recebido e clique no link</span></li>
+      <li><span>Sua senha é recalculada e exibida na tela — <strong>anote antes de fechar</strong></span></li>
+    </ol>
+    <div class="warning-box">
+      <strong>⚠️ Motorista sem e-mail ou sem acesso ao e-mail:</strong> Fale com o administrador. Ele pode gerar uma nova senha pelo painel em segundos.
+    </div>
+
+    <h4>Administrador — redefinir senha:</h4>
+    <ol class="step-list orange">
+      <li><span>Na tela de login, toque em <strong>ESQUECI MINHA SENHA</strong></span></li>
+      <li><span>Informe seu e-mail @consuldata.com.br</span></li>
+      <li><span>Abra o e-mail e clique no link recebido</span></li>
+      <li><span>Você será levado à tela <strong>Definir Senha</strong> — crie sua nova senha e confirme</span></li>
+      <li><span>Após salvar, você entra automaticamente no painel</span></li>
+    </ol>
+
+    <h3 id="primeiro-acesso">5.4. Primeiro acesso</h3>
+    <p>Na tela de login há três opções para quem está acessando pela primeira vez:</p>
+
+    <div class="actor-grid">
+      <div class="actor-card">
+        <h4>🚗 Cadastrar como motorista</h4>
+        <p>Para motoristas com e-mail @consuldata.com.br. Informe e-mail, CPF e data de nascimento — o sistema gera a senha automaticamente e a exibe uma vez. Anote antes de fechar.</p>
+      </div>
+      <div class="actor-card">
+        <h4>🪪 Sem e-mail corporativo</h4>
+        <p>O administrador realiza o cadastro pelo painel. O motorista recebe o CPF e a senha para entrar pela tela de login com CPF.</p>
+      </div>
+    </div>
+    <div class="actor-card" style="margin-top:16px;background:#f8f9ff;border:1px solid #d0d8ff;border-radius:8px;padding:18px">
+      <h4 style="color:#212771;font-size:15px;margin-bottom:8px;font-weight:700">⚙️ Solicitar acesso como administrador</h4>
+      <p style="font-size:14px;color:#555">Clique em <strong>"Solicitar acesso como administrador"</strong> na tela de login. Informe seu e-mail @consuldata.com.br. Um administrador existente recebe a solicitação e pode aprovar ou rejeitar. Após aprovação, você recebe um e-mail com link para definir sua senha e acessar o sistema.</p>
+    </div>
+  </div>
+
+    <div class="section" id="motorista">
+    <h2>6. Guia do Motorista</h2>
+    <p>O fluxo do motorista é simples: <strong>selecionar o veículo → registrar a quilometragem → fazer o checklist → usar o veículo → registrar a chegada</strong>.</p>
+    <div class="warning-box">
+      <strong>⚠️ Importante:</strong> O checklist de saída é <strong>obrigatório</strong> antes de qualquer utilização do veículo. Não é possível iniciar uma nova saída com uma viagem anterior em aberto.
+    </div>
+
+    <h3 id="mot-veiculo">6.1. Selecionar o Veículo</h3>
+    <p>Ao entrar no sistema, você verá a lista de veículos disponíveis. Há duas formas de selecionar:</p>
+    <div class="actor-grid">
+      <div class="actor-card">
+        <h4>📋 Pela lista</h4>
+        <p>Procure o veículo pelo nome ou pela placa. Use o campo de busca se necessário. Toque no card do veículo desejado. Cada card mostra o último checklist registrado.</p>
+      </div>
+      <div class="actor-card">
+        <h4>📷 Pelo QR Code</h4>
+        <p>Toque em "QR Code" na tela. Aponte a câmera para o QR Code fixado no veículo. O sistema identifica o veículo automaticamente.</p>
+      </div>
+    </div>
+    <p>Após selecionar, o sistema mostra se o veículo está <span class="ph-badge-g">Disponível</span> ou se há uma <span class="ph-badge-w">Viagem em aberto</span>.</p>
+
+    <h3 id="mot-km">6.2. Registrar a Quilometragem</h3>
+    <p>Ao iniciar o checklist, a câmera abre automaticamente para fotografar o hodômetro. Este passo é sempre obrigatório — a foto fica registrada independentemente do resultado da leitura.</p>
+
+    <ol class="step-list orange">
+      <li><span>A câmera abre automaticamente apontada para o painel. O flash acende sozinho para melhorar a leitura</span></li>
+      <li><span>Enquadre o display do hodômetro dentro da marcação laranja na tela e toque em <strong>"📸 Fotografar"</strong></span></li>
+      <li><span>O sistema lê o KM automaticamente e exibe o campo já preenchido com o valor lido</span></li>
+      <li><span><strong>Sempre verifique o número no painel do veículo antes de confirmar.</strong> A leitura automática pode cometer erros em condições de pouca luz ou ângulo ruim</span></li>
+      <li><span>Se o valor estiver correto, toque em <strong>CONFIRMAR E CONTINUAR →</strong></span></li>
+      <li><span>Se estiver errado, corrija o número no campo e confirme</span></li>
+    </ol>
+
+    <div class="warning-box">
+      <strong>⚠️ Atenção:</strong> A leitura automática é uma ajuda, não uma garantia. <strong>O motorista é sempre responsável por confirmar o KM correto</strong> antes de avançar. Em caso de dúvida, corrija manualmente.
+    </div>
+    <div class="highlight-box">
+      <strong>💡 Se o OCR não conseguir ler:</strong> O campo aparecerá preenchido com o último KM registrado como referência. Verifique no painel e corrija se necessário antes de confirmar.
+    </div>
+
+    <h3 id="mot-check">6.3. Checklist de Saída</h3>
+    <p>O checklist apresenta <strong>6 itens</strong> para verificação, um por vez. Para cada item, responda com honestidade:</p>
+
+    <div class="table-container">
+      <table>
+        <thead><tr><th>Item</th><th>O que verificar</th></tr></thead>
+        <tbody>
+          <tr><td>🔵 Pneus</td><td>Estado e calibragem de todos os pneus, incluindo o estepe</td></tr>
+          <tr><td>🪟 Vidros</td><td>Abrem, fecham e travam normalmente</td></tr>
+          <tr><td>💡 Luzes</td><td>Faróis, lanternas, setas e luz de freio funcionando</td></tr>
+          <tr><td>🚗 Funilaria/Pintura</td><td>Sem danos externos novos na lataria ou pintura</td></tr>
+          <tr><td>⚠️ Danos Gerais</td><td>Cintos, alavancas, travas, bancos, revestimentos, barulhos</td></tr>
+          <tr><td>💧 Água e Óleo</td><td>Nível de fluidos do veículo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Como responder cada item:</h4>
+    <ol class="step-list">
+      <li><span>Se o item estiver em bom estado: toque em <strong style="color:#35bc7a">✓ OK</strong></span></li>
+      <li><span>Se houver algum problema: toque em <strong style="color:#f05a49">⚠ PROBLEMA</strong> e preencha os detalhes</span></li>
+    </ol>
+    <div class="highlight-box">
+      <strong>💡 Ao registrar um problema:</strong> Quanto mais detalhes na descrição e uma boa foto, mais rápido o problema será resolvido. O campo de descrição é obrigatório em todos os itens com problema.
+    </div>
+    <p>Ao responder os 6 itens, o sistema exibe um resumo. Confira e toque em <strong>CONFIRMAR SAÍDA</strong>. A viagem está registrada — você pode fechar o aplicativo.</p>
+
+    <h3 id="mot-chegada">6.4. Registrar a Chegada</h3>
+    <p>Ao retornar com o veículo, é obrigatório registrar a chegada para fechar a viagem.</p>
+    <ol class="step-list orange">
+      <li><span>Abra o FleetCheck e faça login</span></li>
+      <li><span>O sistema detecta automaticamente a viagem em aberto. Selecione o mesmo veículo</span></li>
+      <li><span>Registre a quilometragem de chegada (mesmo processo da saída)</span></li>
+      <li><span>Informe se houve alguma ocorrência durante a viagem (opcional, mas importante)</span></li>
+      <li><span>Toque em <strong>CONFIRMAR CHEGADA</strong></span></li>
+    </ol>
+    <div class="success-box">
+      <strong>✅ Viagem concluída!</strong> O registro fica disponível para o administrador no painel de acompanhamento.
+    </div>
+  </div>
+
+  <!-- 7. ADMIN -->
+  <div class="section" id="admin">
+    <h2>7. Guia do Administrador</h2>
+
+    <h3 id="adm-painel">7.1. Painel de Acompanhamento</h3>
+    <p>Ao acessar o sistema como administrador, você vê o painel com todos os checklists realizados. Na parte superior, há 4 contadores:</p>
+    <ul>
+      <li><strong>Total:</strong> todos os registros</li>
+      <li><strong>Em aberto:</strong> veículos com saída registrada e chegada pendente</li>
+      <li><strong>Com pendência:</strong> checklists onde o motorista encontrou algum problema</li>
+      <li><strong>Hoje:</strong> registros do dia atual</li>
+    </ul>
+    <p>Use os filtros <strong>Todos · Em aberto · Com pendência</strong> para localizar rapidamente o que precisa.</p>
+    <p>Toque em <strong>"Ver detalhes"</strong> em qualquer checklist para ver todos os itens verificados, os dados dos problemas encontrados e as fotos registradas pelo motorista.</p>
+
+    <h3 id="adm-motoristas">7.2. Gestão de Motoristas</h3>
+    <p>Acesse pelo menu <strong>Motoristas</strong> no cabeçalho.</p>
+
+    <h4>Cadastrar motorista com e-mail corporativo:</h4>
+    <ol class="step-list">
+      <li><span>Toque em <strong>+ Cadastrar</strong></span></li>
+      <li><span>Preencha nome, e-mail (@consuldata.com.br), CPF e data de nascimento</span></li>
+      <li><span>O sistema gera a senha automaticamente. <strong>Anote e entregue ao motorista</strong> — ela não será exibida novamente</span></li>
+    </ol>
+
+    <h4>Cadastrar motorista sem e-mail corporativo:</h4>
+    <ol class="step-list orange">
+      <li><span>Toque em <strong>+ Cadastrar</strong></span></li>
+      <li><span>Ative o toggle <strong>"Motorista sem e-mail corporativo"</strong></span></li>
+      <li><span>Preencha nome, CPF e data de nascimento — o campo de e-mail some automaticamente</span></li>
+      <li><span>Anote a senha gerada e entregue ao motorista junto com o CPF — ele entra pelo botão <strong>"SEM E-MAIL CORPORATIVO"</strong> na tela de login</span></li>
+    </ol>
+
+    <h4>Gerar nova senha para um motorista:</h4>
+    <ol class="step-list orange">
+      <li><span>Localize o motorista na lista</span></li>
+      <li><span>Toque em <strong>🔑 Nova senha</strong></span></li>
+      <li><span>Confirme — o sistema exibe a nova senha. Entregue ao motorista</span></li>
+    </ol>
+    <div class="warning-box">
+      <strong>⚠️ Privacidade:</strong> Nenhum administrador consegue ver a senha de outro usuário no sistema. As senhas só são exibidas no momento do cadastro ou da renovação.
+    </div>
+
+    <h3 id="adm-veiculos">7.3. Gestão de Veículos</h3>
+    <p>Acesse pelo menu <strong>Veículos</strong> no cabeçalho.</p>
+
+    <h4>Cadastrar novo veículo:</h4>
+    <ol class="step-list">
+      <li><span>Toque em <strong>+ Novo Veículo</strong></span></li>
+      <li><span>Preencha placa, modelo e ano</span></li>
+      <li><span>Após salvar, toque em <strong>QR Code</strong> para gerar o código do veículo</span></li>
+      <li><span>Faça o download em PNG e imprima para fixar no veículo</span></li>
+    </ol>
+    <div class="success-box">
+      <strong>💡 Onde colocar o QR Code:</strong> Cole em local visível e protegido do veículo, como o canto interno do para-brisa. O motorista lê com a câmera do celular para ir direto ao checklist do veículo certo.
+    </div>
+
+    <h4>Desativar um veículo que saiu da frota:</h4>
+    <ol class="step-list orange">
+      <li><span>Localize o veículo na lista</span></li>
+      <li><span>Toque em <strong>⏸ Desativar</strong></span></li>
+      <li><span>O veículo deixa de aparecer para os motoristas. O histórico é mantido</span></li>
+      <li><span>Para reativar, toque em <strong>▶ Reativar</strong></span></li>
+    </ol>
+
+    <h3 id="adm-relatorios">7.4. Relatórios e Análises</h3>
+    <p>Acesse pelo botão <strong>📊 Analytics</strong> no cabeçalho do painel.</p>
+    <p>Aplique os filtros no topo para refinar os dados:</p>
+    <ul>
+      <li><strong>Período:</strong> Hoje · 7 dias · Mês · Ano · Personalizado</li>
+      <li><strong>Veículo:</strong> filtra por uma placa específica</li>
+      <li><strong>Motorista:</strong> filtra por um colaborador específico</li>
+    </ul>
+    <p>O painel exibe automaticamente:</p>
+    <ul>
+      <li>Total de checklists realizados, em aberto e com pendência no período</li>
+      <li>Quilometragem total rodada pela frota</li>
+      <li>Gráfico de checklists por dia</li>
+      <li>Distribuição de status (concluídas, em aberto, com pendência)</li>
+      <li>Ranking de veículos e motoristas por quilometragem rodada</li>
+      <li>Lista de veículos com pendências registradas</li>
+      <li>Mapa com os pontos de saída e chegada dos veículos no período</li>
+    </ul>
+
+    <h3 id="adm-busca">7.5. Busca Inteligente</h3>
+    <p>No topo da tela de Analytics há uma caixa de busca onde você pode fazer perguntas em <strong>português normal</strong> sobre os dados da frota.</p>
+    <div class="highlight-box">
+      <strong>Exemplos de perguntas que funcionam:</strong><br><br>
+      • "Quem estava com o Argo final 02 na segunda passada?"<br>
+      • "Quantos km o Jucimar rodou esta semana?"<br>
+      • "Algum veículo com viagem em aberto agora?"<br>
+      • "Quais pendências de funilaria foram registradas?"<br>
+      • "Qual veículo mais rodou em maio?"<br>
+      • "Houve algum problema de pneu este mês?"
+    </div>
+    <p>O sistema busca os dados reais e responde com a informação solicitada. Se não houver registros, informa claramente que não encontrou.</p>
+
+    <h3 id="adm-novoadmin">7.6. Adicionar Novo Administrador</h3>
+    <p>O acesso de administrador é por convite e aprovação. Não é possível criar um novo administrador sem a aprovação de quem já é administrador.</p>
+
+    <h4>Fluxo de solicitação:</h4>
+    <ol class="step-list">
+      <li><span>O candidato acessa a tela de login, clica em <strong>"Solicitar acesso como administrador"</strong> (abaixo da aba Admin)</span></li>
+      <li><span>Informa o e-mail corporativo (@consuldata.com.br) e envia a solicitação</span></li>
+      <li><span>Um administrador existente recebe a notificação no painel (<strong>🔔 Convites</strong> no menu)</span></li>
+      <li><span>O administrador acessa a tela de Convites, analisa a solicitação e clica em <strong>Aprovar</strong> ou <strong>Rejeitar</strong></span></li>
+      <li><span>Se aprovado, o candidato recebe um e-mail com link para <strong>definir sua senha</strong></span></li>
+      <li><span>O candidato clica no link, cria a própria senha e entra no sistema como administrador</span></li>
+    </ol>
+  </div>
+
+  <!-- 8. TELAS -->
+  <div class="section" id="telas">
+    <h2>8. Telas do Sistema</h2>
+    <p>Representação visual das principais telas do FleetCheck.</p>
+
+    <h3>8.1. Fluxo do Motorista</h3>
+    <div class="screens-grid">
+
+      <div class="screen-wrap">
+        <div class="screen-label">Login</div>
+        <div class="phone">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div style="text-align:center;padding:6px 0 2px"><div style="font-size:10px;font-weight:800;color:#212771">ConsulData</div></div>
+            <div class="ph-tab-row">
+              <div class="ph-tab on">🚗 Motorista</div>
+              <div class="ph-tab">⚙️ Admin</div>
+            </div>
+            <div class="ph-sub" style="margin-top:2px">E-mail corporativo e senha</div>
+            <div class="ph-inp">nome@consuldata.com.br</div>
+            <div class="ph-inp">••••••••</div>
+            <div class="ph-btn" style="margin-top:2px">ENTRAR</div>
+            <div style="display:flex;justify-content:space-between;margin-top:3px">
+              <div style="font-size:9px;color:#f86924">Primeiro acesso?</div>
+              <div style="font-size:9px;color:#5e6673">Esqueci minha senha</div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-desc">Login com e-mail e senha. Opções de primeiro acesso e recuperação.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Lista de Veículos</div>
+        <div class="phone">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div style="display:flex;gap:4px">
+              <div style="background:#212771;color:white;border-radius:6px;padding:3px 7px;font-size:9px;font-weight:700">📋 Lista</div>
+              <div style="background:white;border:1px solid #ddd;border-radius:6px;padding:3px 7px;font-size:9px;font-weight:700;color:#5e6673">📷 QR Code</div>
+            </div>
+            <div class="ph-inp">🔍 Buscar por placa...</div>
+            <div class="ph-card">
+              <div class="ph-plate">EYC6961</div>
+              <div class="ph-model">Fiat/Uno Vivace · 2012</div>
+              <div style="font-size:9px;color:#5e6673;margin-top:1px">Último check: 13/05/2026</div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-plate">FIM2694</div>
+              <div class="ph-model">Chevrolet/Onix · 2016</div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-plate">FMO5943</div>
+              <div class="ph-model">VW/Gol · 2014</div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-desc">Lista de veículos com data do último checklist. Ou use o QR Code do veículo.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Hodômetro</div>
+        <div class="phone">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div class="ph-sub">FMO5943 · SAÍDA · HODÔMETRO</div>
+            <div class="ph-prog"><div class="ph-prog-f" style="width:50%"></div></div>
+            <div style="font-size:8px;color:#f86924;font-weight:700;margin-bottom:2px">📸 Câmera abre automaticamente</div>
+            <div class="ph-cam">
+              <div class="ph-cam-f"></div>
+              <div style="position:absolute;bottom:3px;font-size:7px">Enquadre o display</div>
+            </div>
+            <div style="font-size:8px;color:#5e6673">🔦 Flash ativo · Foto sempre salva</div>
+            <div class="ph-btn" style="margin-top:4px">📸 Fotografar</div>
+          </div>
+        </div>
+        <div class="screen-desc">Câmera abre automática. Foto sempre salva. Toque em Fotografar.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Confirmar KM</div>
+        <div class="phone">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div class="ph-sub">FMO5943 · SAÍDA · HODÔMETRO</div>
+            <div class="ph-prog"><div class="ph-prog-f" style="width:60%"></div></div>
+            <div class="ph-title" style="margin-top:4px">CONFIRMAR KM</div>
+            <div style="background:rgba(53,188,122,.08);border:1px solid #35bc7a;border-radius:7px;padding:8px">
+              <div style="font-size:9px;font-weight:700;color:#35bc7a;text-transform:uppercase">Lido automaticamente</div>
+              <div style="font-size:20px;font-weight:800;color:#333">102.060 km</div>
+            </div>
+            <div style="font-size:8px;color:#b45309;background:#fff8ee;border-radius:4px;padding:4px 6px;margin-bottom:2px">⚠️ Sempre confirme no painel do veículo</div>
+            <div class="ph-btn">CONFIRMAR E CONTINUAR →</div>
+            <div style="text-align:center;font-size:9px;color:#5e6673">Leitura incorreta? Corrigir</div>
+          </div>
+        </div>
+        <div class="screen-desc">O sistema lê o KM. Confirme se estiver correto ou corrija manualmente.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Item do Checklist</div>
+        <div class="phone">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div style="background:#212771;margin:-8px -8px 4px;padding:5px 8px">
+              <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.8)">FMO5943 · SAÍDA · 2/6</div>
+            </div>
+            <div style="display:flex;gap:3px;justify-content:center;margin-bottom:3px">
+              <div style="width:12px;height:4px;border-radius:3px;background:#35bc7a"></div>
+              <div style="width:18px;height:4px;border-radius:3px;background:#f86924"></div>
+              <div style="width:5px;height:4px;border-radius:3px;background:rgba(0,0,0,.15)"></div>
+              <div style="width:5px;height:4px;border-radius:3px;background:rgba(0,0,0,.15)"></div>
+              <div style="width:5px;height:4px;border-radius:3px;background:rgba(0,0,0,.15)"></div>
+              <div style="width:5px;height:4px;border-radius:3px;background:rgba(0,0,0,.15)"></div>
+            </div>
+            <div class="ph-emoji">🪟</div>
+            <div class="ph-item-lbl">Vidros</div>
+            <div style="font-size:9px;color:#5e6673;text-align:center;margin:2px 0">Abrem e fecham normalmente?</div>
+            <div class="ph-row" style="margin-top:4px">
+              <div class="ph-btn-r">⚠ PROBLEMA</div>
+              <div class="ph-btn-g">✓ OK</div>
+            </div>
+            <div style="font-size:9px;color:#f86924;background:rgba(248,105,36,.06);border:1px solid rgba(248,105,36,.18);border-radius:5px;padding:5px;margin-top:3px">
+              💡 Problemas com foto e descrição são resolvidos mais rápido
+            </div>
+          </div>
+        </div>
+        <div class="screen-desc">Cada item aparece individualmente. Toque OK ou PROBLEMA.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Chegada</div>
+        <div class="phone">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div class="ph-sub">FMO5943 · CHEGADA</div>
+            <div class="ph-prog"><div class="ph-prog-f" style="width:85%"></div></div>
+            <div style="background:rgba(255,159,0,.1);border:1px solid #ff9f00;border-radius:7px;padding:6px 8px;font-size:9px">
+              ⚠️ <strong>Viagem em aberto</strong> — registre a chegada
+            </div>
+            <div class="ph-sub" style="margin-top:2px">KM DE CHEGADA</div>
+            <div class="ph-inp on" style="font-size:13px;font-weight:700;color:#333">102.174 km</div>
+            <div class="ph-sub" style="margin-top:2px">OCORRÊNCIAS (opcional)</div>
+            <div class="ph-inp" style="min-height:24px">Descreva se houver...</div>
+            <div class="ph-btn" style="margin-top:4px;background:#ff9f00">CONFIRMAR CHEGADA →</div>
+          </div>
+        </div>
+        <div class="screen-desc">Registre a chegada com o KM e qualquer ocorrência da viagem.</div>
+      </div>
+
+    </div>
+
+    <h3>8.2. Painel do Administrador</h3>
+    <div class="screens-grid">
+
+      <div class="screen-wrap">
+        <div class="screen-label">Painel Admin</div>
+        <div class="phone" style="height:400px">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span> <span style="color:rgba(255,255,255,.4);font-weight:400;font-size:8px">Admin</span></div></div>
+          <div class="ph-body">
+            <div style="display:flex;gap:3px;flex-wrap:wrap">
+              <div style="background:#f0f2ff;color:#212771;border-radius:4px;padding:2px 5px;font-size:8px;font-weight:700">📊 Analytics</div>
+              <div style="background:#f0f2ff;color:#212771;border-radius:4px;padding:2px 5px;font-size:8px;font-weight:700">Motoristas</div>
+              <div style="background:#f0f2ff;color:#212771;border-radius:4px;padding:2px 5px;font-size:8px;font-weight:700">Veículos</div>
+            </div>
+            <div class="kpi2">
+              <div class="kpi-mini"><div class="kpi-val" style="color:#212771">12</div><div class="kpi-lbl">Total</div></div>
+              <div class="kpi-mini"><div class="kpi-val" style="color:#35bc7a">10</div><div class="kpi-lbl">Concluídas</div></div>
+              <div class="kpi-mini"><div class="kpi-val" style="color:#ff9f00">1</div><div class="kpi-lbl">Em aberto</div></div>
+              <div class="kpi-mini"><div class="kpi-val" style="color:#f05a49">2</div><div class="kpi-lbl">Pendências</div></div>
+            </div>
+            <div class="ph-card" style="border-top:2px solid #ff9f00">
+              <div class="ph-plate" style="font-size:12px">FIM2694</div>
+              <div class="ph-model">João Silva · 13/05</div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px">
+                <span class="ph-badge-w">Em aberto</span>
+                <span style="font-size:9px;color:#212771;font-weight:700">Ver detalhes</span>
+              </div>
+            </div>
+            <div class="ph-card" style="border-top:2px solid #f05a49">
+              <div class="ph-plate" style="font-size:12px">FMO5943</div>
+              <div class="ph-model">Valeria · 12/05</div>
+              <div style="margin-top:4px"><span style="background:rgba(240,90,73,.1);color:#f05a49;border-radius:8px;padding:2px 7px;font-size:8px;font-weight:700">🔴 1 pendência</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-desc">Painel com contadores, filtros e lista de checklists. "Ver detalhes" mostra fotos e itens.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Analytics</div>
+        <div class="phone" style="height:400px">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span> <span style="color:rgba(255,255,255,.4);font-weight:400;font-size:8px">Analytics</span></div></div>
+          <div class="ph-body">
+            <div style="display:flex;gap:3px;flex-wrap:wrap">
+              <div style="background:#ebeff2;color:#5e6673;border-radius:4px;padding:2px 5px;font-size:8px">Hoje</div>
+              <div style="background:#212771;color:white;border-radius:4px;padding:2px 5px;font-size:8px;font-weight:700">7 dias</div>
+              <div style="background:#ebeff2;color:#5e6673;border-radius:4px;padding:2px 5px;font-size:8px">Mês</div>
+              <div style="background:#ebeff2;color:#5e6673;border-radius:4px;padding:2px 5px;font-size:8px">Ano</div>
+            </div>
+            <div style="background:white;border:1px solid #ddd;border-radius:6px;padding:6px 8px">
+              <div style="font-size:8px;color:#5e6673;font-weight:700;text-transform:uppercase">KM total no período</div>
+              <div style="font-size:18px;font-weight:800;color:#212771">114 km</div>
+            </div>
+            <div style="background:white;border:1px solid #ddd;border-radius:6px;padding:6px 8px">
+              <div style="font-size:8px;font-weight:800;color:#212771;margin-bottom:4px">🔍 Busca Inteligente</div>
+              <div class="ph-inp" style="font-size:8px">"quem usou o Argo na segunda?"</div>
+              <div style="background:#f0f2ff;border:1px solid #c8cef0;border-radius:5px;padding:5px;margin-top:4px;font-size:8px;color:#212121">Encontrei: FXC5F02 usado por João Silva na segunda-feira às 08h14...</div>
+            </div>
+            <div style="background:white;border:1px solid #ddd;border-radius:6px;padding:6px 8px">
+              <div style="font-size:8px;font-weight:800;color:#212771;margin-bottom:3px">Ranking Veículos</div>
+              <div style="font-size:9px;font-weight:800;color:#212771">#1 EYC6961</div>
+              <div style="background:#f86924;height:5px;border-radius:3px;width:80%"></div>
+              <div style="font-size:9px;font-weight:800;color:#212771;margin-top:2px">#2 FIM2694</div>
+              <div style="background:#f86924;height:5px;border-radius:3px;width:25%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-desc">Analytics com filtros, KM total, busca inteligente e rankings.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Motoristas</div>
+        <div class="phone" style="height:400px">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span></div></div>
+          <div class="ph-body">
+            <div class="ph-title">MOTORISTAS</div>
+            <div class="ph-sub">2 motoristas cadastrados</div>
+            <div class="ph-card">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:#212771">Jucimar Alves Lopes</div>
+                  <div class="ph-model">compras@consuldata.com.br</div>
+                </div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <div style="border:1px solid #f86924;color:#f86924;border-radius:4px;padding:2px 5px;font-size:8px;font-weight:700">🔑</div>
+                  <div style="color:#aaa;font-size:12px">×</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:#212771">Valeria Ribeiro</div>
+                  <div class="ph-model">teste@consuldata.com.br</div>
+                </div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <div style="border:1px solid #f86924;color:#f86924;border-radius:4px;padding:2px 5px;font-size:8px;font-weight:700">🔑</div>
+                  <div style="color:#aaa;font-size:12px">×</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-btn" style="margin-top:auto">+ Cadastrar</div>
+          </div>
+        </div>
+        <div class="screen-desc">Lista de motoristas. 🔑 gera nova senha. × remove o cadastro.</div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Convites Admin</div>
+        <div class="phone" style="height:400px">
+          <div class="ph"><div class="ph-logo">FLEET<span>CHECK</span> <span style="color:rgba(255,255,255,.4);font-weight:400;font-size:8px">Convites</span></div></div>
+          <div class="ph-body">
+            <div class="ph-title">CONVITES ADMIN</div>
+            <div style="font-size:9px;font-weight:700;color:#5e6673;margin-bottom:6px">⏳ AGUARDANDO APROVAÇÃO (1)</div>
+            <div class="ph-card">
+              <div style="font-size:11px;font-weight:700;color:#212771">igor@consuldata.com.br</div>
+              <div class="ph-model">Solicitado em 14/05/2026</div>
+              <div class="ph-row" style="margin-top:6px">
+                <div style="flex:1;background:rgba(240,90,73,.08);border:1px solid #f05a49;color:#f05a49;border-radius:5px;padding:4px;text-align:center;font-size:9px;font-weight:700">Rejeitar</div>
+                <div style="flex:1;background:rgba(53,188,122,.08);border:1px solid #35bc7a;color:#35bc7a;border-radius:5px;padding:4px;text-align:center;font-size:9px;font-weight:700">Aprovar</div>
+              </div>
+            </div>
+            <div class="ph-divider" style="margin:8px 0"></div>
+            <div style="font-size:9px;font-weight:700;color:#5e6673;margin-bottom:4px">HISTÓRICO</div>
+            <div class="ph-card">
+              <div style="display:flex;justify-content:space-between">
+                <div style="font-size:10px;color:#555">laryssa@consuldata.com.br</div>
+                <span class="ph-badge-g">✓ Aprovado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-desc">Solicitações de acesso admin pendentes. Aprovar envia o link por e-mail.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 9. DISPOSIÇÕES FINAIS -->
+  <div class="section" id="disposicoes">
+    <h2>9. Disposições Finais</h2>
+    <div class="actor-grid">
+      <div class="actor-card">
+        <h4>📋 Preenchimento correto</h4>
+        <p>O preenchimento correto e honesto do checklist é responsabilidade do motorista. Omissões ou registros incorretos são de responsabilidade do colaborador.</p>
+      </div>
+      <div class="actor-card">
+        <h4>📱 Disponibilidade</h4>
+        <p>O sistema está disponível 24 horas em <strong>fleetcheck.vercel.app</strong>. Em caso de dificuldade, fale com o administrador.</p>
+      </div>
+      <div class="actor-card">
+        <h4>🔄 Revisão</h4>
+        <p>Este manual deve ser revisado anualmente ou sempre que houver alterações relevantes no sistema ou nos processos da frota.</p>
+      </div>
+      <div class="actor-card">
+        <h4>👥 Treinamento</h4>
+        <p>Recomenda-se treinamento de todos os motoristas ao ingressar na empresa e sempre que houver atualização no sistema.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p><strong>OPR-MAN-FRT-001</strong> · Manual de Utilização do Sistema FleetCheck · Versão 2.2 · 28/05/2026</p>
+  <p>© Todos os Direitos Reservados &nbsp;|&nbsp; Desenvolvido por Jucimar Lopes</p>
+</div>
+
+<a href="#" class="back-to-top" title="Voltar ao topo">↑</a>
+
+</body>
+</html>
