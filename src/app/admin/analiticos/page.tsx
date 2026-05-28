@@ -162,16 +162,14 @@ export default function AnalyticsPage() {
   const ttStyle = {fontFamily:"'Open Sans', sans-serif",fontSize:12,borderRadius:8,border:'1px solid #dddddd'}
 
   function renderAnswer(text: string) {
-    // Convert markdown to styled HTML
     const html = text
-      .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#0f1c3f;font-weight:700">$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/^- (.+)$/gm, '<span style="display:block;padding-left:12px;margin:2px 0">• $1</span>')
-      .replace(/
+      .replace(/[*][*](.+?)[*][*]/g, '<strong style="color:#0f1c3f;font-weight:800">$1</strong>')
+      .replace(/[*](.+?)[*]/g, '<em style="font-style:normal;color:#333">$1</em>')
+      .split('
 
-/g, '<br/><br/>')
-      .replace(/
-/g, '<br/>')
+').join('<br/><br/>')
+      .split('
+').join('<br/>')
     return <span dangerouslySetInnerHTML={{ __html: html }} />
   }
 
