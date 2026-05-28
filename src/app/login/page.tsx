@@ -1,7 +1,7 @@
 'use client'
 
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { ConsuldataFooter } from '@/components/ConsuldataFooter'
@@ -11,6 +11,26 @@ type Mode = 'driver' | 'admin'
 export default function LoginPage() {
   const router = useRouter()
   const [mode, setMode] = useState<Mode>('driver')
+
+  useEffect(() => {
+    const isDesktop = window.innerWidth >= 1024
+    const stored = localStorage.getItem('fc_user_type') as Mode | null
+    if (isDesktop) {
+      // Desktop: sempre admin
+      setMode('admin')
+    } else if (stored) {
+      // Mobile com preferência salva
+      setMode(stored)
+    } else {
+      // Mobile sem preferência: vai para seletor
+      router.replace('/selecionar-perfil')
+    }
+  }, [])
+
+  function switchMode(m: Mode) {
+    setMode(m)
+    localStorage.setItem('fc_user_type', m)
+  }
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
