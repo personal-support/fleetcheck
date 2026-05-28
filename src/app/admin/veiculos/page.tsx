@@ -217,8 +217,9 @@ export default function AdminVehiclesPage() {
                   Check: {v.last_check_at ? new Date(v.last_check_at).toLocaleDateString('pt-BR') : 'Nunca'}
                 </p>
               </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
               <button onClick={() => setShowQR(v.id)}
-                style={{ padding: '8px 14px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                style={{ width: 110, padding: '8px 14px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                   <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
                   <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.5"/>
@@ -228,9 +229,10 @@ export default function AdminVehiclesPage() {
                 QR Code
               </button>
               <button onClick={() => toggleVehicle(v.id, v.active, v.plate)}
-                style={{ padding: '8px 12px', borderRadius: 8, background: v.active ? 'rgba(240,90,73,0.08)' : 'rgba(53,188,122,0.08)', border: `1px solid ${v.active ? '#f05a49' : '#35bc7a'}`, color: v.active ? '#f05a49' : '#35bc7a', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                style={{ width: 110, padding: '8px 12px', borderRadius: 8, background: v.active ? 'rgba(240,90,73,0.08)' : 'rgba(53,188,122,0.08)', border: `1px solid ${v.active ? '#f05a49' : '#35bc7a'}`, color: v.active ? '#f05a49' : '#35bc7a', fontSize: 12, fontWeight: 600, cursor: 'pointer', textAlign: 'center' }}>
                 {v.active ? '⏸ Desativar' : '▶ Reativar'}
               </button>
+              </div>
             </div>
           </div>
         ))}
