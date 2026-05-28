@@ -246,7 +246,7 @@ export default function AnalyticsPage() {
                 <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'11px 18px',borderRadius:'12px 12px 4px 12px',fontSize:15,fontWeight:600,maxWidth:'85%'}}>
                   {item.q}
                 </div>
-                <div style={{alignSelf:'flex-start',background:'#f0f2ff',border:'1px solid #c8cef0',padding:'14px 18px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#212121',fontWeight:500,lineHeight:'1.7',maxWidth:'90%',lineHeight:1.6,whiteSpace:'pre-wrap'}}>
+                <div style={{alignSelf:'flex-start',background:'#f0f2ff',border:'1px solid #c8cef0',padding:'14px 18px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#212121',fontWeight:500,lineHeight:1.6,maxWidth:'90%',whiteSpace:'pre-wrap'}}>
                   {item.a}
                 </div>
               </div>
