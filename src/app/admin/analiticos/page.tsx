@@ -161,6 +161,20 @@ export default function AnalyticsPage() {
   const card: React.CSSProperties = {background:'#fff',border:'1px solid #dddddd',borderRadius:14,boxShadow:'0 1px 3px rgba(0,0,0,0.06)',padding:'16px 18px'}
   const ttStyle = {fontFamily:"'Open Sans', sans-serif",fontSize:12,borderRadius:8,border:'1px solid #dddddd'}
 
+  function renderAnswer(text: string) {
+    // Convert markdown to styled HTML
+    const html = text
+      .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#0f1c3f;font-weight:700">$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/^- (.+)$/gm, '<span style="display:block;padding-left:12px;margin:2px 0">• $1</span>')
+      .replace(/
+
+/g, '<br/><br/>')
+      .replace(/
+/g, '<br/>')
+    return <span dangerouslySetInnerHTML={{ __html: html }} />
+  }
+
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     const q = searchQuestion.trim()
@@ -246,8 +260,8 @@ export default function AnalyticsPage() {
                 <div style={{alignSelf:'flex-end',background:'#212771',color:'white',padding:'11px 18px',borderRadius:'12px 12px 4px 12px',fontSize:15,fontWeight:600,maxWidth:'85%'}}>
                   {item.q}
                 </div>
-                <div style={{alignSelf:'flex-start',background:'#f0f2ff',border:'1px solid #c8cef0',padding:'14px 18px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#212121',fontWeight:500,lineHeight:1.6,maxWidth:'90%',whiteSpace:'pre-wrap'}}>
-                  {item.a}
+                <div style={{alignSelf:'flex-start',background:'#f0f2ff',border:'1px solid #c8cef0',padding:'14px 18px',borderRadius:'4px 12px 12px 12px',fontSize:15,color:'#444',fontWeight:400,lineHeight:1.7,maxWidth:'90%'}}>
+                  {renderAnswer(item.a)}
                 </div>
               </div>
             ))}
