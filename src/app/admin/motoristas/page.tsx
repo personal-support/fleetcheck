@@ -141,7 +141,7 @@ export default function AdminDriversPage() {
           </div>
           <div className="flex gap-2">
             <button onClick={() => copyText(newPassword, 'new')}
-              style={{ flex: 1, padding: 10, borderRadius: 8, background: copiedId === 'new' ? 'rgba(34,197,94,0.1)' : '#dddddd', border: `1px solid ${copiedId === 'new' ? '#22c55e' : '#b6bcc2'}`, color: copiedId === 'new' ? '#22c55e' : '#e8eaf0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+              style={{ flex: 1, padding: 10, borderRadius: 8, background: copiedId === 'new' ? 'rgba(34,197,94,0.1)' : '#dddddd', border: `1px solid ${copiedId === 'new' ? '#22c55e' : '#b6bcc2'}`, color: copiedId === 'new' ? '#22c55e' : '#333333', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
               {copiedId === 'new' ? '✓ Copiado' : '📋 Copiar senha'}
             </button>
             <button onClick={resetForm}

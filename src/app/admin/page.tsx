@@ -31,10 +31,21 @@ export default function AdminPage() {
   const [checklists, setChecklists] = useState<ChecklistRow[]>([])
   const [loading, setLoading] = useState(true)
   const [pendingInvites, setPendingInvites] = useState(0)
+  const [templateItems, setTemplateItems] = useState<Record<string, {label: string; icon: string}>>({})
   const [filter, setFilter] = useState<'all' | 'open' | 'nok'>('all')
   const [selected, setSelected] = useState<ChecklistRow | null>(null)
 
-  useEffect(() => { loadChecklists(); loadPendingInvites() }, [])
+  useEffect(() => { loadChecklists(); loadPendingInvites(); loadTemplate() }, [])
+
+  async function loadTemplate() {
+    const supabase = createClient()
+    const { data } = await supabase.from('checklist_templates').select('items').single()
+    if (data?.items) {
+      const map: Record<string, {label: string; icon: string}> = {}
+      ;(data.items as {id: string; label: string; icon: string}[]).forEach(i => { map[i.id] = { label: i.label, icon: i.icon } })
+      setTemplateItems(map)
+    }
+  }
 
   async function loadPendingInvites() {
     const supabase = createClient()
@@ -243,9 +254,9 @@ export default function AdminPage() {
                       <div key={item.id ?? i} style={{ border: `1px solid ${item.status === 'nok' ? 'var(--cd-red)' : 'var(--cd-border)'}`, borderRadius: 'var(--radius-sm)', overflow: 'hidden', background: item.status === 'nok' ? 'var(--cd-red-dim)' : 'var(--cd-surface)' }}>
                         <div style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            {item.icon && <span style={{ fontSize: 18 }}>{item.icon}</span>}
+                            {(item.icon || templateItems[item.id]?.icon) && <span style={{ fontSize: 18 }}>{item.icon ?? templateItems[item.id]?.icon}</span>}
                             <span style={{ fontSize: 14, fontWeight: item.status === 'nok' ? 700 : 400, color: 'var(--cd-text)' }}>
-                              {item.label ?? `Item ${i + 1}`}
+                              {item.label ?? templateItems[item.id]?.label ?? `Item ${i + 1}`}
                             </span>
                           </div>
                           <span className={`badge ${item.status === 'ok' ? 'badge-green' : item.status === 'nok' ? 'badge-red' : 'badge-navy'}`}>
