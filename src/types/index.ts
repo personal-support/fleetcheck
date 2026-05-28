@@ -68,6 +68,8 @@ export interface ChecklistItemResult {
   status: 'ok' | 'nok' | null
   nok_data?: Record<string, string>
   photo_url?: string
+  label?: string
+  icon?: string
 }
 
 export interface Checklist {
