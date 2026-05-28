@@ -67,7 +67,9 @@ export default function ScanPage() {
     } catch { setScannerActive(false); setError('Câmera não disponível. Use a lista de veículos.'); setMode('list') }
   }
 
-  async function selectVehicleById(vehicleId: string) {
+  async function selectVehicleById(raw: string) {
+    // Extrai só o UUID se vier URL completa
+    const vehicleId = raw.includes('/check/veiculo/') ? raw.split('/check/veiculo/')[1].split('?')[0].trim() : raw.trim()
     setLoadingVehicle(true); setError('')
     try {
       const supabase = createClient()
