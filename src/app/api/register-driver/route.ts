@@ -6,8 +6,8 @@ const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
 export async function POST(request: NextRequest) {
   const { email, name, cpf, birth_date, password } = await request.json()
 
-  if (!email?.endsWith('@consuldata.com.br')) {
-    return NextResponse.json({ error: 'E-mail deve ser @consuldata.com.br.' }, { status: 400 })
+  if (!email?.endsWith('@consuldata.com.br') && !email?.endsWith('@consuldata.local')) {
+    return NextResponse.json({ error: 'E-mail inválido.' }, { status: 400 })
   }
 
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY

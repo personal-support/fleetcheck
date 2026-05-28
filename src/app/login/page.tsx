@@ -123,6 +123,15 @@ export default function LoginPage() {
                     Esqueci minha senha
                   </button>
                 </div>
+                <div style={{ textAlign: 'center', marginTop: 8, padding: '10px 14px', background: 'rgba(33,39,113,0.05)', borderRadius: 'var(--radius-sm)' }}>
+                  <p style={{ fontSize: 12, color: 'var(--cd-subtext)', marginBottom: 4 }}>Não tem e-mail corporativo?</p>
+                  <button type="button" onClick={() => router.push('/login-cpf')}
+                    style={{ background: 'none', border: 'none', color: 'var(--cd-navy)', fontSize: 13, cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}>
+                    Entrar com CPF
+                  </button>
+                  <span style={{ color: 'var(--cd-subtext)', fontSize: 12, margin: '0 6px' }}>ou</span>
+                  <span style={{ fontSize: 12, color: 'var(--cd-subtext)' }}>contate o administrador</span>
+                </div>
               </form>
             )}
 

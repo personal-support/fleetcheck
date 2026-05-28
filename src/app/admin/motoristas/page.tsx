@@ -45,6 +45,7 @@ export default function AdminDriversPage() {
   const [copiedId, setCopiedId] = useState('')
   const [error, setError] = useState('')
   const [form, setForm] = useState({ email: '', name: '', cpf: '', birth_date: '' })
+  const [semEmail, setSemEmail] = useState(false)
 
   useEffect(() => { loadDrivers() }, [])
 
@@ -61,7 +62,10 @@ export default function AdminDriversPage() {
 
   async function registerDriver() {
     setError('')
-    if (!form.email.endsWith('@consuldata.com.br')) { setError('E-mail deve ser @consuldata.com.br'); return }
+    const emailFinal = semEmail
+      ? `${form.cpf.replace(/\D/g, '')}@consuldata.local`
+      : form.email.trim().toLowerCase()
+    if (!semEmail && !emailFinal.endsWith('@consuldata.com.br')) { setError('E-mail deve ser @consuldata.com.br'); return }
     if (form.name.trim().split(' ').length < 2) { setError('Nome completo obrigatório'); return }
     if (form.cpf.replace(/\D/g, '').length !== 11) { setError('CPF inválido'); return }
     if (!form.birth_date) { setError('Data de nascimento obrigatória'); return }
@@ -73,7 +77,7 @@ export default function AdminDriversPage() {
     const res = await fetch('/api/register-driver', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: form.email.toLowerCase(), name: form.name.trim(), cpf: form.cpf.replace(/\D/g, ''), birth_date: form.birth_date, password }),
+      body: JSON.stringify({ email: emailFinal, name: form.name.trim(), cpf: form.cpf.replace(/\D/g, ''), birth_date: form.birth_date, password }),
     })
     const data = await res.json()
     if (!res.ok) { setError(data.error || 'Erro ao cadastrar'); setSaving(false); return }
@@ -81,6 +85,7 @@ export default function AdminDriversPage() {
     setNewPassword(password)
     setSaving(false)
     setForm({ email: '', name: '', cpf: '', birth_date: '' })
+    setSemEmail(false)
     loadDrivers()
   }
 
@@ -155,18 +160,40 @@ export default function AdminDriversPage() {
             <button onClick={resetForm} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer', fontSize: 18 }}>×</button>
           </div>
           <div className="flex flex-col gap-3">
-            {[
-              { key: 'email', label: 'E-mail (@consuldata.com.br)', placeholder: 'nome@consuldata.com.br', type: 'email' },
-              { key: 'name', label: 'Nome completo', placeholder: 'João da Silva', type: 'text' },
-            ].map(({ key, label, placeholder, type }) => (
-              <div key={key}>
-                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>{label}</label>
-                <input type={type} placeholder={placeholder} value={form[key as keyof typeof form]}
-                  onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
+            {/* Toggle sem e-mail */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'rgba(33,39,113,0.06)', borderRadius: 8, cursor: 'pointer' }}
+              onClick={() => setSemEmail(p => !p)}>
+              <div style={{ width: 36, height: 20, borderRadius: 10, background: semEmail ? 'var(--cd-orange)' : '#ccc', position: 'relative', transition: 'background .2s', flexShrink: 0 }}>
+                <div style={{ width: 16, height: 16, borderRadius: '50%', background: 'white', position: 'absolute', top: 2, left: semEmail ? 18 : 2, transition: 'left .2s' }} />
+              </div>
+              <span style={{ fontSize: 13, color: 'var(--cd-text)', fontWeight: 500 }}>Motorista sem e-mail corporativo</span>
+            </div>
+
+            {/* Nome */}
+            <div>
+              <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Nome completo</label>
+              <input type="text" placeholder="João da Silva" value={form.name}
+                onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
+                onFocus={e => e.target.style.borderColor = '#f86924'} onBlur={e => e.target.style.borderColor = '#dddddd'} />
+            </div>
+
+            {/* E-mail — só aparece se tem e-mail */}
+            {!semEmail && (
+              <div>
+                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>E-mail (@consuldata.com.br)</label>
+                <input type="email" placeholder="nome@consuldata.com.br" value={form.email}
+                  onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                   style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
                   onFocus={e => e.target.style.borderColor = '#f86924'} onBlur={e => e.target.style.borderColor = '#dddddd'} />
               </div>
-            ))}
+            )}
+            {semEmail && (
+              <div style={{ padding: '8px 12px', background: '#fff3ee', border: '1px solid rgba(248,105,36,.3)', borderRadius: 8 }}>
+                <p style={{ fontSize: 12, color: 'var(--cd-orange)', fontWeight: 600 }}>Login por CPF</p>
+                <p style={{ fontSize: 12, color: '#555' }}>O motorista entrará com o CPF e a senha gerada. Não precisa de e-mail.</p>
+              </div>
+            )}
             <div>
               <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>CPF</label>
               <input type="text" inputMode="numeric" placeholder="000.000.000-00" value={form.cpf} maxLength={14}
