@@ -1,7 +1,7 @@
 {
-  "name": "FleetCheck — Consuldata",
+  "name": "FleetCheck \u2014 Alpha Comex e Transportes",
   "short_name": "FleetCheck",
-  "description": "Gestão e controle de frota Consuldata",
+  "description": "Gest\u00e3o e controle de frota Consuldata",
   "start_url": "/check/selecionar",
   "display": "standalone",
   "background_color": "#212771",
@@ -9,9 +9,26 @@
   "orientation": "portrait",
   "lang": "pt-BR",
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
   ],
-  "categories": ["utilities", "business"]
+  "categories": [
+    "utilities",
+    "business"
+  ]
 }

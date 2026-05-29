@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import type { Vehicle, ChecklistTemplate, ChecklistTemplateItem, ChecklistItemResult } from '@/types'
 import { BackButton } from '@/components/BackButton'
 
-const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
+const CONSULDATA_COMPANY_ID = 'b2c3d4e5-0000-0000-0000-000000000001'
 
 export default function ArrivalPage() {
   const router = useRouter()

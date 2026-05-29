@@ -124,7 +124,7 @@ export default function ScanPage() {
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, position: 'relative' }}>
           {/* Logo */}
-          <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 36, width: 'auto', objectFit: 'contain' }} />{/* App name center */}
+          <img src="/LOGO_ALPHA.png" alt="Alpha Comex e Transportes" style={{ height: 36, width: 'auto', objectFit: 'contain' }} />{/* App name center */}
           <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: '0.5px', position: 'absolute', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
           </span>
