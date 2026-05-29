@@ -13,6 +13,10 @@ export function ConsuldataFooter() {
       <span style={{ fontSize: 10, color: 'var(--cd-subtext)', fontFamily: "'Open Sans', sans-serif" }}>
         Consuldata - Logística
       </span>
+      <a href="/manual.html" target="_blank" rel="noreferrer"
+        style={{ fontSize: 10, color: 'var(--cd-orange)', fontFamily: "'Open Sans', sans-serif", textDecoration: 'none', fontWeight: 600 }}>
+        📋 Manual
+      </a>
       <span style={{ fontSize: 10, color: 'var(--cd-subtext)', fontFamily: "'Open Sans', sans-serif", textAlign: 'right' }}>
         Desenvolvido por Jucimar Lopes
       </span>
