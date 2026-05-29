@@ -129,7 +129,8 @@ export default function RegisterPage() {
   // SUCCESS SCREEN
   if (generatedPassword) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#ebeff2' }}>
+      <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
+        <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:"32px 24px"}}>
         <div className="w-full max-w-sm animate-fade-up">
           <div className="text-center mb-6">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
@@ -200,7 +201,7 @@ export default function RegisterPage() {
 
   // REGISTER FORM
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#ebeff2' }}>
+    <main className="min-h-screen flex flex-col" style={{ background: '#ebeff2' }}>
       <div className="w-full max-w-sm animate-fade-up">
         {/* Header */}
         <div className="text-center mb-6">

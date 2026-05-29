@@ -130,7 +130,7 @@ export default function AdminVehiclesPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ background: '#ebeff2' }}>
+    <main className="min-h-screen" style={{ background: '#ebeff2', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <div className="px-5 pt-6 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid #1a2040' }}>
         <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: '#5e6673', cursor: 'pointer' }}>
