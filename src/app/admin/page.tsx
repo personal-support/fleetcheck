@@ -75,32 +75,36 @@ export default function AdminPage() {
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-bg)' }}>
 
       {/* Header */}
-      <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, position: 'relative' }}>
-          <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 36, width: 'auto', objectFit: 'contain' }} />
-          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', position: 'absolute', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>
+      <header style={{ background: 'var(--cd-navy)' }}>
+        {/* Linha principal: logo + título + sair */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56, padding: '0 16px', position: 'relative' }}>
+          <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 32, width: 'auto', objectFit: 'contain', flexShrink: 0 }} />
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 20, fontWeight: 800, color: '#fff', position: 'absolute', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
-            <span style={{ fontSize: 12, fontWeight: 400, color: 'rgba(255,255,255,0.45)', marginLeft: 6 }}>Admin</span>
+            <span style={{ fontSize: 11, fontWeight: 400, color: 'rgba(255,255,255,0.45)', marginLeft: 6 }}>Admin</span>
           </span>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-            <div style={{ display: 'flex', gap: 4 }}>
-              {[
-                { label: '📊 Analytics', action: () => router.push('/admin/analiticos') },
-                { label: pendingInvites > 0 ? `🔔 Convites (${pendingInvites})` : 'Convites', action: () => router.push('/admin/convites') },
-                { label: 'Checklist', action: () => router.push('/check/selecionar') },
-                { label: 'Motoristas', action: () => router.push('/admin/motoristas') },
-                { label: 'Veículos', action: () => router.push('/admin/veiculos') },
-              ].map(({ label, action }) => (
-                <button key={label} onClick={action}
-                  style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'rgba(255,255,255,0.85)', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, cursor: 'pointer', letterSpacing: '0.03em' }}>
-                  {label}
-                </button>
-              ))}
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
             <button onClick={async () => { await createClient().auth.signOut(); router.replace('/login') }}
               style={{ background: 'rgba(248,105,36,0.2)', border: '1px solid rgba(248,105,36,0.4)', color: 'var(--cd-orange)', fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 4, cursor: 'pointer', alignSelf: 'flex-end' }}>
               SAIR
             </button>
+          </div>
+        </div>
+        {/* Nav scrollável */}
+        <div style={{ overflowX: 'auto', borderTop: '1px solid rgba(255,255,255,0.08)', scrollbarWidth: 'none' as const }}>
+          <div style={{ display: 'flex', gap: 4, padding: '7px 12px', minWidth: 'max-content' }}>
+            {[
+              { label: '📊 Analytics', action: () => router.push('/admin/analiticos') },
+              { label: pendingInvites > 0 ? `🔔 Convites (${pendingInvites})` : '🔔 Convites', action: () => router.push('/admin/convites') },
+              { label: '✅ Checklist', action: () => router.push('/check/selecionar') },
+              { label: '👤 Motoristas', action: () => router.push('/admin/motoristas') },
+              { label: '🚗 Veículos', action: () => router.push('/admin/veiculos') },
+            ].map(({ label, action }) => (
+              <button key={label} onClick={action}
+                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)', fontSize: 12, fontWeight: 700, padding: '6px 14px', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' as const, fontFamily: "'Open Sans', sans-serif" }}>
+                {label}
+              </button>
+            ))}
           </div>
         </div>
       </header>
