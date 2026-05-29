@@ -194,8 +194,9 @@ export default function RegisterPage() {
             </button>
           </div>
         </div>
+        </div>
         <ConsuldataFooter />
-    </main>
+      </main>
     )
   }
 
