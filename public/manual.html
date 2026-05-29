@@ -127,7 +127,61 @@
     .footer strong{color:#cbd5e1}
 
     @media print{.sidebar-menu,.back-to-top{display:none}.container{margin-left:auto}.footer{margin-left:0;width:100%}}
-    @media(max-width:900px){.sidebar-menu{display:none}.container{margin-left:auto}.footer{margin-left:0;width:100%}.actor-grid,.install-grid{grid-template-columns:1fr}}
+
+    /* Tablet */
+    @media(max-width:900px){
+      .sidebar-menu{display:none}
+      .container{margin-left:auto;padding:32px 24px}
+      .footer{margin-left:0;width:100%}
+      .actor-grid,.install-grid{grid-template-columns:1fr}
+      .header-title h1{font-size:18px}
+      .section-title{font-size:26px}
+    }
+
+    /* Mobile */
+    @media(max-width:600px){
+      .container{padding:20px 14px}
+      .section{padding:20px 16px;scroll-margin-top:70px}
+      .section h2{font-size:20px}
+      .section h3{font-size:15px}
+      .section p,.section li{font-size:14px}
+      .header-title h1{font-size:15px}
+      .header-title p{display:none}
+      .logo{height:36px}
+      .header-badge{font-size:10px;padding:3px 10px}
+      .screens-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+      .phone{width:150px;height:285px}
+      .ph-body{font-size:9px}
+      .ph-plate{font-size:11px}
+      .ph-title{font-size:10px}
+      .ph-btn{font-size:8px;padding:5px}
+      .screen-label{font-size:11px}
+      .screen-desc{font-size:11px;max-width:150px}
+      .info-table td{font-size:12px;padding:7px 10px}
+      .info-table td:first-child{width:130px}
+      .step-list li{padding:10px 12px;gap:10px}
+      .step-list li::before{min-width:24px;height:24px;font-size:12px}
+      .step-list li span{font-size:13px}
+      .highlight-box,.warning-box,.success-box{font-size:13px;padding:12px 14px}
+      table{font-size:12px}
+      th,td{padding:8px 10px}
+      .tl-title{font-size:17px}
+      .tl-desc{font-size:13px}
+      .check-grid{grid-template-columns:1fr}
+      .check-item{padding:12px 14px}
+      .cta-block h3{font-size:24px}
+      .cta-contacts{flex-direction:column;align-items:stretch}
+      .cta-contact{justify-content:center}
+      .doc-footer{flex-direction:column;gap:4px;text-align:center;font-size:11px}
+      .back-to-top{width:40px;height:40px;font-size:18px;bottom:20px;right:16px}
+    }
+
+    /* Mobile pequeno */
+    @media(max-width:380px){
+      .screens-grid{grid-template-columns:1fr}
+      .phone{width:200px;height:380px;margin:0 auto}
+      .container{padding:16px 12px}
+    }
   </style>
 </head>
 <body>
