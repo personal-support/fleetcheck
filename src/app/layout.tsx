@@ -4,12 +4,27 @@ import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'FleetCheck — Consuldata',
-  description: 'Sistema de checklist veicular — Consuldata Teleprocessamento',
+  description: 'Sistema de checklist veicular inteligente com IA — Consuldata Teleprocessamento',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, statusBarStyle: 'black-translucent', title: 'FleetCheck' },
   icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
     apple: '/icons/apple-touch-icon.png',
-    icon: '/icons/icon-192.png',
+  },
+  openGraph: {
+    title: 'FleetCheck — Consuldata',
+    description: 'Sistema de checklist veicular inteligente com IA — Gestão e controle de frota em tempo real.',
+    url: 'https://fleetcheck.vercel.app',
+    siteName: 'FleetCheck',
+    images: [{ url: 'https://fleetcheck.vercel.app/icons/icon-512.png', width: 512, height: 512, alt: 'FleetCheck' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'FleetCheck — Consuldata',
+    description: 'Sistema de checklist veicular inteligente com IA — Gestão e controle de frota em tempo real.',
+    images: ['https://fleetcheck.vercel.app/icons/icon-512.png'],
   },
 }
 
