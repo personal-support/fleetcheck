@@ -14,8 +14,8 @@ function adminClient() {
 // POST — request admin access
 export async function POST(request: NextRequest) {
   const { email } = await request.json()
-  if (!email?.endsWith('@consuldata.com.br'))
-    return NextResponse.json({ error: 'E-mail deve ser @consuldata.com.br.' }, { status: 400 })
+  if (!email?.endsWith('@fleetcheck.com.br'))
+    return NextResponse.json({ error: 'E-mail deve ser @fleetcheck.com.br.' }, { status: 400 })
 
   const supabase = adminClient()
 
