@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
+const CONSULDATA_COMPANY_ID = 'b2c3d4e5-0000-0000-0000-000000000001'
 
 export async function POST(request: NextRequest) {
   const { email, name, cpf, birth_date, password } = await request.json()
 
-  if (!email?.endsWith('@consuldata.com.br') && !email?.endsWith('@consuldata.local')) {
+  if (!email?.endsWith('@fleetcheck.com.br') && !email?.endsWith('@fleetcheck.local')) {
     return NextResponse.json({ error: 'E-mail inválido.' }, { status: 400 })
   }
 

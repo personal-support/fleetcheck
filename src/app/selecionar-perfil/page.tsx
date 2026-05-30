@@ -17,7 +17,7 @@ export default function SelecionarPerfilPage() {
   return (
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-navy)' }}>
       <div style={{ padding: '40px 24px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 44, objectFit: 'contain', marginBottom: 20 }} />
+        <img src="/LOGO_ALPHA.png" alt="Alpha Comex e Transportes" style={{ height: 44, objectFit: 'contain', marginBottom: 20 }} />
         <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 32, fontWeight: 900, color: '#fff', letterSpacing: 1 }}>
           FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
         </span>

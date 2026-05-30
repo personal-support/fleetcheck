@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import type { Vehicle, ChecklistTemplate, ChecklistTemplateItem, ChecklistItemResult } from '@/types'
 import { BackButton } from '@/components/BackButton'
 
-const CONSULDATA_COMPANY_ID = 'a1b2c3d4-0000-0000-0000-000000000001'
+const CONSULDATA_COMPANY_ID = 'b2c3d4e5-0000-0000-0000-000000000001'
 
 export default function ArrivalPage() {
   const router = useRouter()
@@ -133,8 +133,8 @@ export default function ArrivalPage() {
       arrival_dt_was_manual: false,
       arrival_lat_auto: latAuto,
       arrival_lng_auto: lngAuto,
-      arrival_lat_final: latFinal,
-      arrival_lng_final: lngFinal,
+      arrival_location_lat: latFinal,
+      arrival_location_lng: lngFinal,
       arrival_location_was_manual: locationWasManual,
       arrival_occurrences: finalOccurrences,
       arrival_notes: notes || null,
