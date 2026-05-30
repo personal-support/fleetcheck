@@ -78,7 +78,7 @@ export default function AdminPage() {
       <header style={{ background: 'var(--cd-navy)' }}>
         {/* Linha principal: logo + título + sair */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56, padding: '0 16px', position: 'relative' }}>
-          <img src="/LOGO_ALPHA.png" alt="Alpha Comex e Transportes" style={{ height: 32, width: 'auto', objectFit: 'contain', flexShrink: 0 }} />
+          <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 32, width: 'auto', objectFit: 'contain', flexShrink: 0 }} />
           <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 20, fontWeight: 800, color: '#fff', position: 'absolute', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
             <span style={{ fontSize: 11, fontWeight: 400, color: 'rgba(255,255,255,0.45)', marginLeft: 6 }}>Admin</span>

@@ -3,8 +3,8 @@ import './globals.css'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'FleetCheck — Alpha Comex e Transportes',
-  description: 'Sistema de checklist veicular inteligente com IA — Alpha Comex e Transportes',
+  title: 'FleetCheck — Consuldata',
+  description: 'Sistema de checklist veicular inteligente com IA — Consuldata Teleprocessamento',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, statusBarStyle: 'black-translucent', title: 'FleetCheck' },
   icons: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     apple: '/icons/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'FleetCheck — Alpha Comex e Transportes',
+    title: 'FleetCheck — Consuldata',
     description: 'Sistema de checklist veicular inteligente com IA — Gestão e controle de frota em tempo real.',
     url: 'https://fleetcheck.vercel.app',
     siteName: 'FleetCheck',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'FleetCheck — Alpha Comex e Transportes',
+    title: 'FleetCheck — Consuldata',
     description: 'Sistema de checklist veicular inteligente com IA — Gestão e controle de frota em tempo real.',
     images: ['https://fleetcheck.vercel.app/icons/icon-512.png'],
   },

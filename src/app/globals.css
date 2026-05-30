@@ -4,12 +4,12 @@
 
 
 :root {
-  --cd-orange: #C9A84C;
+  --cd-orange: #f86924;
   --cd-orange-hover: #e05a18;
   --cd-orange-dim: rgba(248,105,36,0.1);
-  --cd-navy: #0A0A0A;
+  --cd-navy: #212771;
   --cd-navy-dim: rgba(33,39,113,0.08);
-  --cd-bg: #f0f0f0;
+  --cd-bg: #ebeff2;
   --cd-surface: #ffffff;
   --cd-border: #dddddd;
   --cd-text: #555555;

@@ -71,8 +71,8 @@ export default function RegisterPage() {
     setError('')
 
     // Validations
-    if (!form.email.endsWith('@fleetcheck.com.br')) {
-      setError('O e-mail deve ser do domínio @fleetcheck.com.br.')
+    if (!form.email.endsWith('@consuldata.com.br')) {
+      setError('O e-mail deve ser do domínio @consuldata.com.br.')
       return
     }
     if (form.name.trim().split(' ').length < 2) {
@@ -225,7 +225,7 @@ export default function RegisterPage() {
               </label>
               <input type="email" value={form.email}
                 onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="seu.nome@fleetcheck.com.br" required
+                placeholder="seu.nome@consuldata.com.br" required
                 style={{ width: '100%', padding: '12px 14px', borderRadius: 10, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
                 onFocus={e => e.target.style.borderColor = '#f86924'}
                 onBlur={e => e.target.style.borderColor = '#dddddd'} />

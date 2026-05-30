@@ -63,9 +63,9 @@ export default function AdminDriversPage() {
   async function registerDriver() {
     setError('')
     const emailFinal = semEmail
-      ? `${form.cpf.replace(/\D/g, '')}@fleetcheck.local`
+      ? `${form.cpf.replace(/\D/g, '')}@consuldata.local`
       : form.email.trim().toLowerCase()
-    if (!semEmail && !emailFinal.endsWith('@fleetcheck.com.br')) { setError('E-mail deve ser @fleetcheck.com.br'); return }
+    if (!semEmail && !emailFinal.endsWith('@consuldata.com.br')) { setError('E-mail deve ser @consuldata.com.br'); return }
     if (form.name.trim().split(' ').length < 2) { setError('Nome completo obrigatório'); return }
     if (form.cpf.replace(/\D/g, '').length !== 11) { setError('CPF inválido'); return }
     if (!form.birth_date) { setError('Data de nascimento obrigatória'); return }
@@ -121,7 +121,7 @@ export default function AdminDriversPage() {
           <p style={{ fontSize: 13, color: '#555555', lineHeight: 1.6 }}>
             Motoristas se cadastram em{' '}
             <span style={{ color: '#f86924', fontWeight: 600 }}>fleetcheck.vercel.app/register</span>{' '}
-            usando e-mail <span style={{ color: '#f86924' }}>@fleetcheck.com.br</span>, CPF e data de nascimento.
+            usando e-mail <span style={{ color: '#f86924' }}>@consuldata.com.br</span>, CPF e data de nascimento.
             O sistema gera a senha automaticamente.
           </p>
           <p style={{ fontSize: 12, color: '#5e6673', marginTop: 6 }}>
@@ -181,8 +181,8 @@ export default function AdminDriversPage() {
             {/* E-mail — só aparece se tem e-mail */}
             {!semEmail && (
               <div>
-                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>E-mail (@fleetcheck.com.br)</label>
-                <input type="email" placeholder="nome@fleetcheck.com.br" value={form.email}
+                <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>E-mail (@consuldata.com.br)</label>
+                <input type="email" placeholder="nome@consuldata.com.br" value={form.email}
                   onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                   style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#ebeff2', border: '1px solid #1a2040', color: '#555555', fontSize: 14, outline: 'none' }}
                   onFocus={e => e.target.style.borderColor = '#f86924'} onBlur={e => e.target.style.borderColor = '#dddddd'} />
