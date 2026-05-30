@@ -33,7 +33,7 @@ export default function LoginPage() {
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cd-bg)' }}>
       <header style={{ background: 'var(--cd-navy)', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
-          <img src="/LOGO_ALPHA.png" alt="Alpha Comex e Transportes" style={{ height: 36, objectFit: 'contain' }} />
+          <img src="/LOGO_CONSULDATA.png" alt="Consuldata" style={{ height: 36, objectFit: 'contain' }} />
           <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             FLEET<span style={{ color: 'var(--cd-orange)' }}>CHECK</span>
           </span>
@@ -51,7 +51,7 @@ export default function LoginPage() {
             <div>
               <label className="cd-label" style={{ color: '#222', fontWeight: 700 }}>E-MAIL</label>
               <input className="cd-input" type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="seu.nome@fleetcheck.com.br" required autoComplete="email" />
+                placeholder="seu.nome@consuldata.com.br" required autoComplete="email" />
             </div>
             <div>
               <label className="cd-label" style={{ color: '#222', fontWeight: 700 }}>SENHA</label>
@@ -82,7 +82,7 @@ export default function LoginPage() {
                 <span style={{ fontSize: 22, flexShrink: 0 }}>🚗</span>
                 <div>
                   <p style={{ fontSize: 12, fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>CADASTRAR COMO MOTORISTA</p>
-                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>Com e-mail @fleetcheck.com.br</p>
+                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>Com e-mail @consuldata.com.br</p>
                 </div>
               </button>
 

@@ -5,7 +5,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://fleetcheck.vercel.ap
 
 export async function POST(request: NextRequest) {
   const { email } = await request.json()
-  if (!email?.endsWith('@fleetcheck.com.br') && !email?.endsWith('@fleetcheck.local'))
+  if (!email?.endsWith('@consuldata.com.br') && !email?.endsWith('@consuldata.local'))
     return NextResponse.json({ error: 'E-mail inválido.' }, { status: 400 })
 
   const supabase = createClient(
