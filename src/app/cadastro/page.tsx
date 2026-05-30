@@ -221,7 +221,7 @@ export default function RegisterPage() {
             {/* Email */}
             <div>
               <label style={{ display: 'block', fontSize: 11, color: '#5e6673', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
-                E-mail Consuldata
+                E-mail corporativo
               </label>
               <input type="email" value={form.email}
                 onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}

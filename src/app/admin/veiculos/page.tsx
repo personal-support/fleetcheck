@@ -54,7 +54,7 @@ function QRCanvas({ vehicleId, plate }: { vehicleId: string; plate: string }) {
       <body>
         <img src="${url}" />
         <h2>${plate}</h2>
-        <p>FleetCheck · Consuldata</p>
+        <p>FleetCheck · Alpha Comex e Transportes</p>
         <br/>
         <button onclick="window.print()">Imprimir</button>
       </body></html>

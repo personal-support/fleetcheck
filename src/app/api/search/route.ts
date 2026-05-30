@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     const today = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
 
-    const systemPrompt = `Você é o assistente de busca do FleetCheck, sistema de gestão de frota da ConsulData Teleprocessamento (Santos/SP).
+    const systemPrompt = `Você é o assistente de busca do FleetCheck, sistema de gestão de frota da Alpha Comex e Transportes.
 
 Hoje é ${today}.
 
