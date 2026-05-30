@@ -131,7 +131,7 @@
     /* Tablet */
     @media(max-width:900px){
       .sidebar-menu{display:none}
-      .container{margin-left:auto;padding:32px 24px}
+      .container{margin:28px auto;padding:32px 24px;max-width:100%}
       .footer{margin-left:0;width:100%}
       .actor-grid,.install-grid{grid-template-columns:1fr}
       .header-title h1{font-size:18px}
@@ -140,8 +140,8 @@
 
     /* Mobile */
     @media(max-width:600px){
-      .container{padding:20px 14px}
-      .section{padding:20px 16px;scroll-margin-top:70px}
+      .container{margin:16px auto;padding:20px 14px;max-width:100%}
+      .section{padding:20px 16px;scroll-margin-top:70px;overflow-x:hidden}
       .section h2{font-size:20px}
       .section h3{font-size:15px}
       .section p,.section li{font-size:14px}
@@ -163,7 +163,7 @@
       .step-list li::before{min-width:24px;height:24px;font-size:12px}
       .step-list li span{font-size:13px}
       .highlight-box,.warning-box,.success-box{font-size:13px;padding:12px 14px}
-      table{font-size:12px}
+      table{font-size:12px;width:100%;display:block;overflow-x:auto}
       th,td{padding:8px 10px}
       .tl-title{font-size:17px}
       .tl-desc{font-size:13px}
@@ -180,7 +180,7 @@
     @media(max-width:380px){
       .screens-grid{grid-template-columns:1fr}
       .phone{width:200px;height:380px;margin:0 auto}
-      .container{padding:16px 12px}
+      .container{margin:12px auto;padding:16px 12px;max-width:100%}
     }
   </style>
 </head>
