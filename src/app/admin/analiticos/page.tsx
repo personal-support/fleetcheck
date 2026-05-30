@@ -17,8 +17,8 @@ const MapView = dynamic(() => import('@/components/MapView'), { ssr: false })
 interface ChecklistData {
   id: string; status: string; created_at: string; closed_at: string | null
   departure_km_final: number | null; arrival_km_final: number | null
-  departure_lat_final: number | null; departure_lng_final: number | null
-  arrival_lat_final: number | null; arrival_lng_final: number | null
+  departure_location_lat: number | null; departure_location_lng: number | null
+  arrival_location_lat: number | null; arrival_location_lng: number | null
   departure_items: Array<{ status: string }> | null
   arrival_occurrences: Array<unknown> | null
   vehicle: { id: string; plate: string; model: string } | null
@@ -67,7 +67,7 @@ export default function AnalyticsPage() {
   async function loadAll() {
     const supabase = createClient()
     const [checkRes, vehRes, drvRes] = await Promise.all([
-      supabase.from('checklists').select('id,status,created_at,closed_at,departure_km_final,arrival_km_final,departure_lat_final,departure_lng_final,arrival_lat_final,arrival_lng_final,departure_items,arrival_occurrences,vehicle:vehicles(id,plate,model),user:users(id,name,email)').order('created_at',{ascending:false}).limit(500),
+      supabase.from('checklists').select('id,status,created_at,closed_at,departure_km_final,arrival_km_final,departure_location_lat,departure_location_lng,arrival_location_lat,arrival_location_lng,departure_items,arrival_occurrences,vehicle:vehicles(id,plate,model),user:users(id,name,email)').order('created_at',{ascending:false}).limit(500),
       supabase.from('vehicles').select('id,plate').eq('active',true).order('plate'),
       supabase.from('users').select('id,name').eq('role','driver').order('name'),
     ])
@@ -152,8 +152,8 @@ export default function AnalyticsPage() {
     const pts: Array<{lat:number;lng:number;type:'departure'|'arrival';plate:string}> = []
     filtered.forEach(c => {
       const plate = getVehicle(c)?.plate ?? '?'
-      if(c.departure_lat_final&&c.departure_lng_final) pts.push({lat:c.departure_lat_final,lng:c.departure_lng_final,type:'departure',plate})
-      if(c.arrival_lat_final&&c.arrival_lng_final) pts.push({lat:c.arrival_lat_final,lng:c.arrival_lng_final,type:'arrival',plate})
+      if(c.departure_location_lat&&c.departure_location_lng) pts.push({lat:c.departure_location_lat,lng:c.departure_location_lng,type:'departure',plate})
+      if(c.arrival_location_lat&&c.arrival_location_lng) pts.push({lat:c.arrival_location_lat,lng:c.arrival_location_lng,type:'arrival',plate})
     })
     return pts
   }, [filtered])
